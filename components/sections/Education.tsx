@@ -54,7 +54,7 @@ export function Education() {
                   transition={{ duration: 0.5, ease: EASE }}
                   className="absolute left-5 top-1 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-accent/40 bg-ink-900 sm:left-1/2"
                 >
-                  <svg className="h-[18px] w-[18px] text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg aria-hidden="true" className="h-[18px] w-[18px] text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     {NODE_ICONS[i % NODE_ICONS.length]}
                   </svg>
                 </motion.span>

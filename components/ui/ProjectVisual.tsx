@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { useAmbientMotion } from "@/lib/hooks";
 
 /** Abstract, deterministic project artwork driven by a hue value — now ambient. */
@@ -15,8 +16,12 @@ export function ProjectVisual({
 }) {
   const h = Number(hue);
   const reduce = !useAmbientMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref);
+  const play = inView && !reduce;
   return (
     <div
+      ref={ref}
       className={`relative overflow-hidden ${className}`}
       style={{
         background: `radial-gradient(120% 120% at 20% 10%, hsl(${h} 60% 14% / 0.9), #0a0a0a 60%)`,
@@ -27,7 +32,7 @@ export function ProjectVisual({
       <motion.div
         className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl"
         style={{ background: `hsl(${h} 80% 50% / 0.25)` }}
-        animate={reduce ? undefined : { x: [0, -30, 0], y: [0, 24, 0] }}
+        animate={play ? { x: [0, -30, 0], y: [0, 24, 0] } : undefined}
         transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
       <svg
@@ -53,12 +58,12 @@ export function ProjectVisual({
         <motion.path
           d="M0 180 Q120 120 220 160 T400 110 V240 H0 Z"
           fill={`url(#g-${hue})`}
-          animate={reduce ? undefined : { y: [0, -8, 0] }}
+          animate={play ? { y: [0, -8, 0] } : undefined}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         />
         {/* rotating rings */}
         <motion.g
-          animate={reduce ? undefined : { rotate: 360 }}
+          animate={play ? { rotate: 360 } : undefined}
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
           style={{ transformOrigin: "300px 80px" }}
         >

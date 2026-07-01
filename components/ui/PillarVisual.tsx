@@ -20,7 +20,7 @@ export function PillarVisual({ id }: { id: PillarId }) {
     infra: <InfraScene animate={animate} />,
   };
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/8 bg-ink-900/60">
+    <div aria-hidden="true" className="relative h-full w-full overflow-hidden rounded-2xl border border-white/8 bg-ink-900/60">
       <div
         className="absolute inset-0"
         style={{

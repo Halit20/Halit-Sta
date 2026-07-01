@@ -1,15 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IDENTITY_PILLARS } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 import { PillarVisual } from "@/components/ui/PillarVisual";
 
 type PillarId = "ai" | "web" | "branding" | "media" | "infra";
+type Layout = "both" | "desktop" | "mobile";
 
 export function IdentityReveal() {
   const [active, setActive] = useState<PillarId>("ai");
+  const [layout, setLayout] = useState<Layout>("both");
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setLayout(mq.matches ? "desktop" : "mobile");
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   return (
     <section className="relative py-24 sm:py-28">
@@ -40,20 +49,22 @@ export function IdentityReveal() {
             </p>
 
             {/* live pillar scene (desktop) */}
-            <div className="mt-10 hidden aspect-[4/3] w-full max-w-md lg:block">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.02 }}
-                  transition={{ duration: 0.45, ease: EASE }}
-                  className="h-full w-full"
-                >
-                  <PillarVisual id={active} />
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            {layout !== "mobile" && (
+              <div className="mt-10 hidden aspect-[4/3] w-full max-w-md lg:block">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={active}
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.02 }}
+                    transition={{ duration: 0.45, ease: EASE }}
+                    className="h-full w-full"
+                  >
+                    <PillarVisual id={active} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            )}
           </div>
 
           {/* pillars — active row synced to the visual */}
@@ -102,7 +113,7 @@ export function IdentityReveal() {
                           {pillar.desc}
                         </p>
                         {/* mobile: inline scene for the active pillar */}
-                        {isActive && (
+                        {isActive && layout !== "desktop" && (
                           <div className="mt-5 aspect-[4/3] w-full lg:hidden">
                             <PillarVisual id={pillar.id as PillarId} />
                           </div>
@@ -113,7 +124,7 @@ export function IdentityReveal() {
                         transition={{ duration: 0.4, ease: EASE }}
                         className="mt-1"
                       >
-                        <svg className="h-5 w-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <svg aria-hidden="true" className="h-5 w-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                           <path d="M7 17 17 7M9 7h8v8" />
                         </svg>
                       </motion.span>

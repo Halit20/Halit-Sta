@@ -156,10 +156,10 @@ export function Hero() {
                 {/* one-time shine sweep */}
                 <motion.div
                   aria-hidden
-                  initial={{ x: "-130%" }}
-                  animate={{ x: "130%" }}
+                  initial={{ x: "-130%", rotate: 12 }}
+                  animate={{ x: "130%", rotate: 12 }}
                   transition={{ duration: 1.4, ease: EASE, delay: 1.5 }}
-                  className="pointer-events-none absolute inset-y-0 w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/[0.10] to-transparent"
+                  className="pointer-events-none absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/[0.10] to-transparent"
                 />
               </motion.div>
             </TiltCard>
