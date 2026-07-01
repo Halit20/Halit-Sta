@@ -1,20 +1,21 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 
 type Props = { children: ReactNode; className?: string; max?: number };
 
 /** Pointer-driven 3D tilt (same feel as CreativeControlNav's controller). */
 export function TiltCard({ children, className = "", max = 6 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
   const srx = useSpring(rx, { stiffness: 150, damping: 18, mass: 0.4 });
   const sry = useSpring(ry, { stiffness: 150, damping: 18, mass: 0.4 });
 
   function onMove(e: React.PointerEvent) {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (reduce || window.matchMedia("(pointer: coarse)").matches) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
