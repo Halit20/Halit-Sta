@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SectionAtmosphere } from "@/components/ui/SectionAtmosphere";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { PROFILE } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 
@@ -272,7 +273,7 @@ export function Contact() {
                   />
                 </Field>
 
-                <button type="submit" className="btn-primary mt-1 w-full">
+                <MagneticButton className="btn-primary mt-1 w-full">
                   Start a Project
                   <svg
                     className="h-4 w-4"
@@ -283,7 +284,7 @@ export function Contact() {
                   >
                     <path d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
-                </button>
+                </MagneticButton>
               </form>
             )}
           </motion.div>
@@ -322,7 +323,7 @@ function Field({
           </span>
         )}
       </span>
-      {children}
+      <div className="field-wrap">{children}</div>
     </label>
   );
 }

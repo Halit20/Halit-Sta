@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { ScrubText } from "@/components/ui/ScrubText";
 import { EASE } from "@/lib/motion";
 
 const POINTS = [
@@ -43,19 +44,10 @@ export function Vision() {
               </span>
             </h2>
 
-            <motion.p
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
+            <ScrubText
+              text="I'm growing Halit Statovci into a focused digital solutions studio — one place where businesses in Kosovo and beyond get engineering, design, AI, media, and infrastructure under a single standard, instead of stitching together five vendors who never talk to each other."
               className="mt-7 max-w-xl text-lg leading-relaxed text-mist-400"
-            >
-              I&apos;m growing Halit Statovci into a focused digital solutions
-              studio — one place where businesses in Kosovo and beyond get
-              engineering, design, AI, media, and infrastructure under a single
-              standard, instead of stitching together five vendors who never
-              talk to each other.
-            </motion.p>
+            />
 
             <motion.div
               initial={{ opacity: 0, y: 18 }}

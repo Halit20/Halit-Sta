@@ -150,6 +150,24 @@ body {
   .btn-ghost {
     @apply btn border border-white/10 text-mist-300 hover:border-white/30 hover:text-mist-100;
   }
+
+  .field-wrap {
+    position: relative;
+  }
+  .field-wrap::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .field-wrap:focus-within::after {
+    transform: scaleX(1);
+  }
 }
 
 @layer utilities {
