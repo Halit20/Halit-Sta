@@ -1,4 +1,8 @@
-/** Abstract, deterministic project artwork driven by a hue value. */
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+
+/** Abstract, deterministic project artwork driven by a hue value — now ambient. */
 export function ProjectVisual({
   hue,
   title,
@@ -9,6 +13,7 @@ export function ProjectVisual({
   className?: string;
 }) {
   const h = Number(hue);
+  const reduce = useReducedMotion() ?? false;
   return (
     <div
       className={`relative overflow-hidden ${className}`}
@@ -17,12 +22,13 @@ export function ProjectVisual({
       }}
       aria-hidden="true"
     >
-      {/* mesh glow */}
-      <div
+      {/* drifting mesh glow */}
+      <motion.div
         className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl"
         style={{ background: `hsl(${h} 80% 50% / 0.25)` }}
+        animate={reduce ? undefined : { x: [0, -30, 0], y: [0, 24, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
-      {/* layered geometric planes */}
       <svg
         className="absolute inset-0 h-full w-full opacity-[0.5]"
         viewBox="0 0 400 240"
@@ -42,39 +48,30 @@ export function ProjectVisual({
             <line key={`h${i}`} x1="0" y1={i * 48} x2="400" y2={i * 48} />
           ))}
         </g>
-        <path
+        {/* breathing wave */}
+        <motion.path
           d="M0 180 Q120 120 220 160 T400 110 V240 H0 Z"
           fill={`url(#g-${hue})`}
+          animate={reduce ? undefined : { y: [0, -8, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         />
-        <circle
-          cx="300"
-          cy="80"
-          r="48"
-          fill="none"
-          stroke={`hsl(${h} 80% 65% / 0.4)`}
-          strokeWidth="1"
-        />
-        <circle
-          cx="300"
-          cy="80"
-          r="78"
-          fill="none"
-          stroke={`hsl(${h} 80% 65% / 0.18)`}
-          strokeWidth="1"
-        />
+        {/* rotating rings */}
+        <motion.g
+          animate={reduce ? undefined : { rotate: 360 }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          style={{ transformOrigin: "300px 80px" }}
+        >
+          <circle cx="300" cy="80" r="48" fill="none" stroke={`hsl(${h} 80% 65% / 0.4)`} strokeWidth="1" strokeDasharray="6 10" />
+          <circle cx="300" cy="80" r="78" fill="none" stroke={`hsl(${h} 80% 65% / 0.18)`} strokeWidth="1" />
+        </motion.g>
       </svg>
 
-      {/* monogram of project initials */}
       <div className="absolute inset-0 flex items-center justify-center">
         <span
           className="font-display text-5xl font-bold tracking-tighter opacity-[0.14]"
           style={{ color: `hsl(${h} 30% 90%)` }}
         >
-          {title
-            .split(" ")
-            .slice(0, 2)
-            .map((w) => w[0])
-            .join("")}
+          {title.split(" ").slice(0, 2).map((w) => w[0]).join("")}
         </span>
       </div>
       <div className="noise absolute inset-0 opacity-[0.04]" />
