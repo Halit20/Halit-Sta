@@ -9,6 +9,8 @@ type Props = {
   delay?: number;
   /** animate immediately instead of on scroll into view */
   immediate?: boolean;
+  /** class applied to each per-word inner span (e.g. for gradient text) */
+  wordClassName?: string;
 };
 
 /** Word-by-word mask reveal — each word slides up from behind a clip. */
@@ -17,6 +19,7 @@ export function AnimatedText({
   className = "",
   delay = 0,
   immediate = false,
+  wordClassName = "",
 }: Props) {
   const words = text.split(" ");
   const viewProps = immediate
@@ -36,7 +39,7 @@ export function AnimatedText({
           className="mr-[0.28em] inline-block overflow-hidden py-[0.06em]"
         >
           <motion.span
-            className="inline-block"
+            className={`inline-block ${wordClassName}`}
             variants={{
               hidden: { y: "115%" },
               show: { y: "0%", transition: { duration: 0.85, ease: EASE } },

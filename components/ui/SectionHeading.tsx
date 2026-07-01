@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { EASE } from "@/lib/motion";
+import { AnimatedText } from "@/components/ui/AnimatedText";
 
 type Props = {
   eyebrow: string;
@@ -36,17 +37,13 @@ export function SectionHeading({
         {eyebrow}
       </motion.span>
 
-      <motion.h2
+      <h2
         className={`text-balance text-3xl leading-[1.05] sm:text-4xl lg:text-[2.9rem] ${
           centered ? "max-w-3xl" : "max-w-2xl"
         }`}
-        initial={{ opacity: 0, y: 22 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: EASE, delay: 0.05 }}
       >
-        <span className="text-gradient">{title}</span>
-      </motion.h2>
+        <AnimatedText text={title} wordClassName="text-gradient" delay={0.1} />
+      </h2>
 
       {subtitle && (
         <motion.p
