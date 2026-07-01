@@ -6,8 +6,10 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import { Reveal } from "@/components/ui/Reveal";
+import { TiltCard } from "@/components/ui/TiltCard";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { PROJECTS, type Project } from "@/lib/data";
-import { EASE, fadeUp } from "@/lib/motion";
+import { EASE, fadeUp, staggerParent } from "@/lib/motion";
 
 function DetailRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -49,12 +51,12 @@ export function Projects() {
         className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
       >
         {PROJECTS.map((project) => (
+          <TiltCard key={project.id} max={4} className="h-full">
           <motion.button
-            key={project.id}
             variants={fadeUp}
             onClick={() => setActive(project)}
             aria-label={`View case study: ${project.title}`}
-            className="group surface surface-hover relative flex flex-col overflow-hidden text-left"
+            className="group surface surface-hover relative flex h-full flex-col overflow-hidden text-left"
           >
             <ProjectVisual
               hue={project.hue}
@@ -112,6 +114,7 @@ export function Projects() {
               </div>
             </div>
           </motion.button>
+          </TiltCard>
         ))}
       </Reveal>
 
@@ -138,7 +141,12 @@ export function Projects() {
               transition={{ duration: 0.4, ease: EASE }}
               className="surface relative z-10 max-h-[88vh] w-full max-w-2xl overflow-y-auto"
             >
-              <div className="relative">
+              <motion.div
+                variants={staggerParent(0.08)}
+                initial="hidden"
+                animate="show"
+              >
+              <motion.div variants={fadeUp} className="relative">
                 <ProjectVisual
                   hue={active.hue}
                   title={active.title}
@@ -159,26 +167,32 @@ export function Projects() {
                     <path d="M6 6l12 12M18 6 6 18" />
                   </svg>
                 </button>
-              </div>
+              </motion.div>
 
               <div className="p-7 sm:p-8">
-                <span className="text-[0.72rem] uppercase tracking-[0.18em] text-accent/80">
+                <motion.span
+                  variants={fadeUp}
+                  className="text-[0.72rem] uppercase tracking-[0.18em] text-accent/80"
+                >
                   {active.category}
-                </span>
-                <h3 className="mt-2 font-display text-2xl font-semibold text-mist-100">
+                </motion.span>
+                <motion.h3
+                  variants={fadeUp}
+                  className="mt-2 font-display text-2xl font-semibold text-mist-100"
+                >
                   {active.title}
-                </h3>
-                <p className="mt-3 leading-relaxed text-mist-400">
+                </motion.h3>
+                <motion.p variants={fadeUp} className="mt-3 leading-relaxed text-mist-400">
                   {active.tagline}
-                </p>
+                </motion.p>
 
-                <div className="mt-6">
+                <motion.div variants={fadeUp} className="mt-6">
                   <DetailRow label="Role">{active.role}</DetailRow>
                   <DetailRow label="What I built">{active.built}</DetailRow>
                   <DetailRow label="Purpose">{active.result}</DetailRow>
-                </div>
+                </motion.div>
 
-                <div className="mt-6 flex flex-wrap gap-2">
+                <motion.div variants={fadeUp} className="mt-6 flex flex-wrap gap-2">
                   {active.tags.map((t) => (
                     <span
                       key={t}
@@ -187,25 +201,28 @@ export function Projects() {
                       {t}
                     </span>
                   ))}
-                </div>
+                </motion.div>
 
-                <a
-                  href="#contact"
-                  onClick={() => setActive(null)}
-                  className="btn-primary mt-7 !py-2.5 text-sm"
-                >
-                  Start a project like this
-                  <svg
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+                <motion.div variants={fadeUp}>
+                  <MagneticButton
+                    href="#contact"
+                    onClick={() => setActive(null)}
+                    className="btn-primary mt-7 !py-2.5 text-sm"
                   >
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
-                </a>
+                    Start a project like this
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </MagneticButton>
+                </motion.div>
               </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}

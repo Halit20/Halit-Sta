@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { NAV_LINKS } from "@/lib/data";
 import { useActiveSection, useScrolled } from "@/lib/hooks";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { EASE } from "@/lib/motion";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.replace("#", ""));
@@ -79,12 +80,12 @@ export function Header() {
 
             {/* CTA + mobile toggle */}
             <div className="flex items-center gap-3">
-              <a
+              <MagneticButton
                 href="#contact"
                 className="btn-primary hidden sm:inline-flex !px-5 !py-2.5 text-[0.85rem]"
               >
                 Start a Project
-              </a>
+              </MagneticButton>
               <button
                 onClick={() => setOpen((v) => !v)}
                 aria-label="Toggle menu"

@@ -6,6 +6,8 @@ import { useRef } from "react";
 import halitPortrait from "@/public/img/halit.jpeg";
 import { PROFILE } from "@/lib/data";
 import { AnimatedText } from "@/components/ui/AnimatedText";
+import { MagneticButton } from "@/components/ui/MagneticButton";
+import { TiltCard } from "@/components/ui/TiltCard";
 import { EASE } from "@/lib/motion";
 
 export function Hero() {
@@ -52,7 +54,7 @@ export function Hero() {
               transition={{ duration: 0.7, ease: EASE, delay: 0.8 }}
               className="mt-4 block text-[1.2rem] font-medium leading-snug text-mist-200 sm:text-[1.4rem] lg:text-[1.6rem]"
             >
-              <span className="text-accent-gradient">Full-Cycle AI Engineer</span>
+              <span className="text-accent-gradient animate-gradient-pan">Full-Cycle AI Engineer</span>
               <span className="text-mist-500"> &amp; </span>
               <span className="text-mist-200">Digital Solutions Builder</span>
             </motion.span>
@@ -73,7 +75,7 @@ export function Hero() {
             transition={{ duration: 0.8, ease: EASE, delay: 1.05 }}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
-            <a href="#work" className="btn-primary">
+            <MagneticButton href="#work" className="btn-primary">
               View My Work
               <svg
                 className="h-4 w-4"
@@ -84,10 +86,10 @@ export function Hero() {
               >
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
-            </a>
-            <a href="#contact" className="btn-ghost">
+            </MagneticButton>
+            <MagneticButton href="#contact" className="btn-ghost">
               Start a Project
-            </a>
+            </MagneticButton>
           </motion.div>
 
           {/* Mini capability labels */}
@@ -126,31 +128,41 @@ export function Hero() {
               transition={{ duration: 1.2, ease: EASE, delay: 0.2 }}
               className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-accent/10 via-transparent to-transparent blur-2xl"
             />
-            <motion.div
-              initial={{ opacity: 0, clipPath: "inset(100% 0 0 0)" }}
-              animate={{ opacity: 1, clipPath: "inset(0% 0 0 0)" }}
-              transition={{ duration: 1.1, ease: EASE, delay: 0.35 }}
-              className="relative h-full w-full overflow-hidden rounded-[1.6rem] border border-white/10 bg-ink-800"
-            >
-              <Image
-                src={halitPortrait}
-                alt="Portrait of Halit Statovci"
-                fill
-                priority
-                placeholder="blur"
-                sizes="(max-width: 1024px) 80vw, 420px"
-                className="portrait-duotone object-cover object-[58%_24%]"
-              />
-              {/* graphite duotone deepen */}
-              <div className="absolute inset-0 bg-gradient-to-br from-ink-950/30 via-transparent to-ink-950/60 mix-blend-multiply" />
-              {/* cool cyan key wash */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent/15 via-transparent to-transparent mix-blend-soft-light" />
-              {/* mask edges into the scene (left + bottom) */}
-              <div className="absolute inset-0 bg-gradient-to-r from-ink-950/70 via-transparent to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/15 to-transparent" />
-              {/* rim light: bright top edge + cyan right rim + lifted contrast */}
-              <div className="absolute inset-0 rounded-[1.6rem] shadow-[inset_0_1.5px_0_rgba(255,255,255,0.18),inset_-26px_0_55px_-38px_rgba(125,211,252,0.65),inset_0_-1px_0_rgba(0,0,0,0.5)]" />
-            </motion.div>
+            <TiltCard max={3} className="h-full w-full">
+              <motion.div
+                initial={{ opacity: 0, clipPath: "inset(100% 0 0 0)" }}
+                animate={{ opacity: 1, clipPath: "inset(0% 0 0 0)" }}
+                transition={{ duration: 1.1, ease: EASE, delay: 0.35 }}
+                className="relative h-full w-full overflow-hidden rounded-[1.6rem] border border-white/10 bg-ink-800"
+              >
+                <Image
+                  src={halitPortrait}
+                  alt="Portrait of Halit Statovci"
+                  fill
+                  priority
+                  placeholder="blur"
+                  sizes="(max-width: 1024px) 80vw, 420px"
+                  className="portrait-duotone object-cover object-[58%_24%]"
+                />
+                {/* graphite duotone deepen */}
+                <div className="absolute inset-0 bg-gradient-to-br from-ink-950/30 via-transparent to-ink-950/60 mix-blend-multiply" />
+                {/* cool cyan key wash */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-accent/15 via-transparent to-transparent mix-blend-soft-light" />
+                {/* mask edges into the scene (left + bottom) */}
+                <div className="absolute inset-0 bg-gradient-to-r from-ink-950/70 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/15 to-transparent" />
+                {/* rim light: bright top edge + cyan right rim + lifted contrast */}
+                <div className="absolute inset-0 rounded-[1.6rem] shadow-[inset_0_1.5px_0_rgba(255,255,255,0.18),inset_-26px_0_55px_-38px_rgba(125,211,252,0.65),inset_0_-1px_0_rgba(0,0,0,0.5)]" />
+                {/* one-time shine sweep */}
+                <motion.div
+                  aria-hidden
+                  initial={{ x: "-130%", rotate: 12 }}
+                  animate={{ x: "130%", rotate: 12 }}
+                  transition={{ duration: 1.4, ease: EASE, delay: 1.5 }}
+                  className="pointer-events-none absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/[0.10] to-transparent"
+                />
+              </motion.div>
+            </TiltCard>
 
             {/* floating capability card */}
             <motion.div

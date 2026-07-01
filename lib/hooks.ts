@@ -35,3 +35,21 @@ export function useActiveSection(ids: string[]) {
   }, [ids]);
   return active;
 }
+
+/**
+ * SSR-safe ambient-animation flag: true during server render and hydration
+ * (matching the exported HTML), then reflects the user's reduced-motion
+ * preference after mount. Avoids hydration mismatches from branching
+ * motion props on `useReducedMotion()`, which is false on the server.
+ */
+export function useAmbientMotion() {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduce(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return !reduce;
+}

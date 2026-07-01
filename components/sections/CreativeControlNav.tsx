@@ -5,10 +5,10 @@ import {
   motion,
   useMotionValue,
   useSpring,
-  useReducedMotion,
 } from "framer-motion";
 import { CREATIVE_BLOCKS, type CreativeIcon } from "@/lib/data";
 import { EASE } from "@/lib/motion";
+import { useAmbientMotion } from "@/lib/hooks";
 
 /* ---------- icon set (camera / drone / creator gear) ---------- */
 const ICONS: Record<CreativeIcon, React.ReactNode> = {
@@ -107,7 +107,7 @@ function Screw({ className = "" }: { className?: string }) {
 
 export function CreativeControlNav() {
   const [active, setActive] = useState(CREATIVE_BLOCKS[0].id);
-  const reduce = useReducedMotion();
+  const reduce = !useAmbientMotion();
 
   // 3D tilt on pointer (desktop only)
   const ref = useRef<HTMLDivElement>(null);

@@ -150,6 +150,24 @@ body {
   .btn-ghost {
     @apply btn border border-white/10 text-mist-300 hover:border-white/30 hover:text-mist-100;
   }
+
+  .field-wrap {
+    position: relative;
+  }
+  .field-wrap::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .field-wrap:focus-within::after {
+    transform: scaleX(1);
+  }
 }
 
 @layer utilities {
@@ -193,6 +211,20 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
+  .animate-gradient-pan {
+    background-size: 200% 100%;
+    animation: gradientPan 6s ease-in-out infinite;
+  }
+  @keyframes gradientPan {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
   .mask-fade-x {
     -webkit-mask-image: linear-gradient(
       90deg,
@@ -208,5 +240,22 @@ body {
       #000 88%,
       transparent
     );
+  }
+
+  /* SVG line-icons redraw themselves when the parent .group is hovered */
+  .icon-draw path,
+  .icon-draw circle,
+  .icon-draw line,
+  .icon-draw rect {
+    stroke-dasharray: 80;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0s;
+  }
+  .group:hover .icon-draw path,
+  .group:hover .icon-draw circle,
+  .group:hover .icon-draw line,
+  .group:hover .icon-draw rect {
+    stroke-dashoffset: 160;
+    transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
