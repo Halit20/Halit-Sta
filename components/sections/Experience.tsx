@@ -36,8 +36,8 @@ export function Experience() {
           {EXPERIENCE.map((exp, i) => (
             <motion.div
               key={exp.org}
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: i % 2 ? 36 : -36 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-12% 0px" }}
               transition={{ duration: 0.7, ease: EASE, delay: i * 0.05 }}
               className="relative"
@@ -45,7 +45,13 @@ export function Experience() {
               {/* node */}
               <span className="absolute -left-[33px] top-6 flex h-4 w-4 items-center justify-center sm:-left-[39px]">
                 <span className="absolute h-4 w-4 animate-pulse-slow rounded-full bg-accent/30" />
-                <span className="relative h-2 w-2 rounded-full bg-accent ring-4 ring-ink-950" />
+                <motion.span
+                  whileInView={{
+                    boxShadow: "0 0 18px 2px rgba(56,189,248,0.45)",
+                  }}
+                  viewport={{ once: true, margin: "-30% 0px" }}
+                  className="relative h-2 w-2 rounded-full bg-accent ring-4 ring-ink-950"
+                />
               </span>
 
               <div className="surface surface-hover p-6 sm:p-7">

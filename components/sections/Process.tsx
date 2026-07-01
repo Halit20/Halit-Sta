@@ -50,9 +50,17 @@ export function Process() {
                 className="relative grid grid-cols-1 gap-3 md:grid-cols-[auto_1fr] md:gap-6 md:py-5"
               >
                 <div className="flex items-center gap-4 md:block">
-                  <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-accent/40 bg-ink-900 text-xs font-semibold text-accent">
+                  <motion.span
+                    whileInView={{
+                      borderColor: "rgba(56,189,248,0.6)",
+                      color: "#38bdf8",
+                    }}
+                    viewport={{ once: true, margin: "-35% 0px" }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                    className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-accent/40 bg-ink-900 text-xs font-semibold text-accent"
+                  >
                     {step.num}
-                  </span>
+                  </motion.span>
                 </div>
                 <div className="surface surface-hover p-6">
                   <h3 className="font-display text-lg font-semibold text-mist-100">

@@ -66,10 +66,11 @@ export function Skills() {
                 {group.items.map((item, i) => (
                   <motion.li
                     key={item}
-                    initial={{ opacity: 0, scale: 0.92 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 12, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.02, ease: EASE }}
+                    transition={{ delay: i * 0.025, duration: 0.45, ease: EASE }}
+                    whileHover={{ scale: 1.08, y: -2 }}
                     className="group/badge flex items-center gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-3.5 py-2 text-[0.82rem] text-mist-300 transition-colors hover:border-accent/30 hover:text-mist-100"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-mist-600 transition-colors group-hover/badge:bg-accent" />

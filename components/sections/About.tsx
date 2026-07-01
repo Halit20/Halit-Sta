@@ -1,12 +1,14 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import halitPortrait from "@/public/img/halit.jpeg";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal, RevealItem } from "@/components/ui/Reveal";
-import { EASE } from "@/lib/motion";
+import { CountUp } from "@/components/ui/CountUp";
+import { EASE, blurIn, staggerParent } from "@/lib/motion";
 
 const STATS = [
   { k: "Full-cycle", v: "From idea to deployment" },
@@ -14,13 +16,32 @@ const STATS = [
   { k: "Production-ready", v: "Hosting · SSL · Servers" },
 ];
 
+/** Renders a stat value through CountUp if it's a plain number (optionally with a +/% suffix). */
+function StatValue({ value, className }: { value: string; className?: string }) {
+  const match = /^(\d+)(\+|%)?$/.exec(value.trim());
+  if (!match) return <>{value}</>;
+  const [, num, suffix = ""] = match;
+  return <CountUp to={Number(num)} suffix={suffix} className={className} />;
+}
+
 export function About() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 40]);
+
   return (
     <Section id="about" divider tone="warm">
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+      <div
+        ref={sectionRef}
+        className="grid grid-cols-1 gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16"
+      >
         {/* portrait + floating cards */}
         <div className="relative">
           <motion.div
+            style={{ y: portraitY }}
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -62,32 +83,38 @@ export function About() {
             eyebrow="About"
             title="The builder behind the brand."
           />
-          <div className="mt-7 space-y-5 text-[1rem] leading-relaxed text-mist-400">
-            <p>
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={staggerParent(0.12)}
+            className="mt-7 space-y-5 text-[1rem] leading-relaxed text-mist-400"
+          >
+            <motion.p variants={blurIn}>
               I&apos;m Halit — a Kosovo-based engineer who builds the full digital
               side of a business. Software, AI workflows, branding, media, and the
               infrastructure underneath: I&apos;m comfortable across all of it.
-            </p>
-            <p>
+            </motion.p>
+            <motion.p variants={blurIn}>
               I didn&apos;t come up through a single lane. I&apos;ve worked in
               institutional IT and server environments, built web platforms and
               SaaS interfaces, produced video and drone content, and set up the
               hosting that keeps it all running.
-            </p>
-            <p>
+            </motion.p>
+            <motion.p variants={blurIn}>
               That range is the point.{" "}
               <span className="text-mist-200">
                 I understand both the technical system and the brand on top of it
               </span>{" "}
               — so the things I build look right, work properly, and pull in the
               same direction.
-            </p>
-            <p className="text-mist-300">
+            </motion.p>
+            <motion.p variants={blurIn} className="text-mist-300">
               I don&apos;t just hand over a website. I build the digital
               foundation a business runs on — and I stay close enough to the whole
               picture to make sure it actually launches.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           <Reveal
             stagger={0.1}
@@ -99,7 +126,7 @@ export function About() {
                 className="surface p-5"
               >
                 <p className="font-display text-base font-semibold text-mist-100">
-                  {s.k}
+                  <StatValue value={s.k} />
                 </p>
                 <p className="mt-1 text-[0.8rem] text-mist-500">{s.v}</p>
               </RevealItem>
