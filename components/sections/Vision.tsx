@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { EASE } from "@/lib/motion";
 
 const POINTS = [
@@ -63,7 +64,7 @@ export function Vision() {
               transition={{ duration: 0.7, ease: EASE, delay: 0.25 }}
               className="mt-10"
             >
-              <a href="#contact" className="btn-primary">
+              <MagneticButton href="#contact" className="btn-primary">
                 Build the next one with me
                 <svg
                   className="h-4 w-4"
@@ -74,7 +75,7 @@ export function Vision() {
                 >
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
-              </a>
+              </MagneticButton>
             </motion.div>
           </div>
 
