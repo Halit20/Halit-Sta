@@ -223,4 +223,21 @@ body {
       transparent
     );
   }
+
+  /* SVG line-icons redraw themselves when the parent .group is hovered */
+  .icon-draw path,
+  .icon-draw circle,
+  .icon-draw line,
+  .icon-draw rect {
+    stroke-dasharray: 80;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0s;
+  }
+  .group:hover .icon-draw path,
+  .group:hover .icon-draw circle,
+  .group:hover .icon-draw line,
+  .group:hover .icon-draw rect {
+    stroke-dashoffset: 160;
+    transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
