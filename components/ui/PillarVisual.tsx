@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import type { ReactNode } from "react";
+import { useAmbientMotion } from "@/lib/hooks";
 
 type PillarId = "ai" | "web" | "branding" | "media" | "infra";
 
@@ -10,13 +11,13 @@ const LOOP: Transition = { duration: 4, repeat: Infinity, ease: "easeInOut" };
 
 /** Ambient animated scene for each identity pillar. Fills its parent. */
 export function PillarVisual({ id }: { id: PillarId }) {
-  const reduce = useReducedMotion() ?? false;
+  const animate = useAmbientMotion();
   const scenes: Record<PillarId, ReactNode> = {
-    ai: <AiScene animate={!reduce} />,
-    web: <WebScene animate={!reduce} />,
-    branding: <BrandScene animate={!reduce} />,
-    media: <MediaScene animate={!reduce} />,
-    infra: <InfraScene animate={!reduce} />,
+    ai: <AiScene animate={animate} />,
+    web: <WebScene animate={animate} />,
+    branding: <BrandScene animate={animate} />,
+    media: <MediaScene animate={animate} />,
+    infra: <InfraScene animate={animate} />,
   };
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/8 bg-ink-900/60">

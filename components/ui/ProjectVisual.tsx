@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useAmbientMotion } from "@/lib/hooks";
 
 /** Abstract, deterministic project artwork driven by a hue value — now ambient. */
 export function ProjectVisual({
@@ -13,7 +14,7 @@ export function ProjectVisual({
   className?: string;
 }) {
   const h = Number(hue);
-  const reduce = useReducedMotion() ?? false;
+  const reduce = !useAmbientMotion();
   return (
     <div
       className={`relative overflow-hidden ${className}`}
