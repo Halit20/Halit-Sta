@@ -33,14 +33,10 @@ export function Header() {
             {/* Logo */}
             <a
               href="#home"
-              className="group flex items-center gap-2.5"
+              className="flex items-center"
               aria-label="Halit Statovci — home"
             >
-              <span className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-white/12 bg-ink-800 font-display text-sm font-bold text-mist-100">
-                HS
-                <span className="absolute inset-0 rounded-lg bg-accent/0 transition-colors duration-300 group-hover:bg-accent/10" />
-              </span>
-              <span className="hidden flex-col leading-none sm:flex">
+              <span className="flex flex-col leading-none">
                 <span className="font-display text-[0.95rem] font-semibold tracking-tight text-mist-100">
                   Halit Statovci
                 </span>
