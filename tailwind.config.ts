@@ -33,6 +33,13 @@ const config: Config = {
           deep: "#0ea5e9",
           glow: "rgba(56, 189, 248, 0.55)",
         },
+        // dusk violet — the atmosphere color of the 3D terrain
+        accent2: {
+          DEFAULT: "#8B5CF6",
+          soft: "#A78BFA",
+          deep: "#7C3AED",
+          glow: "rgba(139, 92, 246, 0.5)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

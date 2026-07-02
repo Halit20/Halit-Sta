@@ -5,6 +5,7 @@
 :root {
   --bg: #030303;
   --accent: #38bdf8;
+  --accent2: #8b5cf6;
   --shell-px: clamp(1.25rem, 5vw, 3rem);
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Sora", "Inter", system-ui, sans-serif;
@@ -105,7 +106,8 @@ body {
     border-color: rgba(56, 189, 248, 0.28);
     box-shadow:
       0 30px 60px -30px rgba(0, 0, 0, 0.9),
-      0 0 40px -18px rgba(56, 189, 248, 0.5);
+      0 0 40px -18px rgba(56, 189, 248, 0.45),
+      0 0 60px -24px rgba(139, 92, 246, 0.35);
   }
 
   /* Gradient-clipped text needs breathing room: the bottom padding keeps
@@ -125,7 +127,12 @@ body {
   }
 
   .text-accent-gradient {
-    background: linear-gradient(110deg, #7dd3fc 0%, #38bdf8 50%, #0ea5e9 100%);
+    background: linear-gradient(
+      110deg,
+      #7dd3fc 0%,
+      #38bdf8 40%,
+      #8b5cf6 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -169,7 +176,9 @@ body {
     box-shadow: 0 10px 40px -12px rgba(245, 245, 245, 0.4);
   }
   .btn-primary:hover {
-    box-shadow: 0 14px 50px -10px rgba(56, 189, 248, 0.5);
+    box-shadow:
+      0 14px 50px -10px rgba(56, 189, 248, 0.5),
+      0 6px 60px -14px rgba(139, 92, 246, 0.45);
   }
   .btn-ghost {
     @apply btn border border-white/10 text-mist-300 hover:border-white/30 hover:text-mist-100;
@@ -184,7 +193,7 @@ body {
     inset-inline: 0;
     bottom: 0;
     height: 1.5px;
-    background: linear-gradient(90deg, #38bdf8, #7dd3fc);
+    background: linear-gradient(90deg, #38bdf8, #8b5cf6);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
