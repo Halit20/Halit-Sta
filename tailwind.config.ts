@@ -18,10 +18,13 @@ const config: Config = {
           600: "#232323",
           500: "#2c2c2c",
         },
+        // grays tuned so every step passes WCAG AA (≥4.5:1) on the ink field
         mist: {
-          500: "#737373",
-          400: "#A3A3A3",
+          600: "#838383",
+          500: "#8E8E8E",
+          400: "#A8A8A8",
           300: "#D4D4D4",
+          200: "#E5E5E5",
           100: "#F5F5F5",
         },
         accent: {

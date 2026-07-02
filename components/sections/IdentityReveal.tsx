@@ -27,7 +27,7 @@ export function IdentityReveal() {
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           {/* sticky headline + live visual */}
-          <div className="lg:sticky lg:top-28 lg:h-fit">
+          <div className="headline-shade lg:sticky lg:top-28 lg:h-fit">
             <motion.span
               className="eyebrow mb-6"
               initial={{ opacity: 0 }}

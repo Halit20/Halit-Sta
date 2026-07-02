@@ -61,7 +61,9 @@ export function BackgroundScene() {
     function build() {
       const area = w * h;
       const divisor = coarse ? 15000 : 8500;
-      const count = Math.min(Math.floor(area / divisor), coarse ? 60 : 140);
+      let count = Math.min(Math.floor(area / divisor), coarse ? 60 : 140);
+      // small viewports get 40% of the particle budget
+      if (w <= 768) count = Math.floor(count * 0.4);
       particles = Array.from({ length: count }, () => {
         const z = 0.25 + Math.random() * 0.75;
         return {
@@ -84,9 +86,60 @@ export function BackgroundScene() {
       canvas!.style.height = `${h}px`;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
       build();
+      measureZones();
     }
 
     const linkDist = coarse ? 130 : 180;
+
+    /* ---- per-section density: full in hero, ~50% in content-heavy
+       sections, near-off in contact ---- */
+    const SECTION_FACTORS: Record<string, number> = {
+      home: 1,
+      services: 0.5,
+      work: 0.5,
+      experience: 0.5,
+      contact: 0.04,
+    };
+    const DEFAULT_FACTOR = 0.7;
+    let zones: { top: number; factor: number }[] = [];
+    let density = 1;
+
+    function measureZones() {
+      const ids = [
+        "home",
+        "services",
+        "work",
+        "about",
+        "experience",
+        "skills",
+        "education",
+        "media",
+        "vision",
+        "contact",
+      ];
+      const y0 = window.scrollY;
+      zones = ids
+        .map((id) => {
+          const el = document.getElementById(id);
+          if (!el) return null;
+          return {
+            top: el.getBoundingClientRect().top + y0,
+            factor: SECTION_FACTORS[id] ?? DEFAULT_FACTOR,
+          };
+        })
+        .filter((z): z is { top: number; factor: number } => z !== null)
+        .sort((a, b) => a.top - b.top);
+    }
+
+    function targetDensity(sc: number) {
+      const center = sc + h / 2;
+      let f = 1;
+      for (const z of zones) {
+        if (center >= z.top) f = z.factor;
+        else break;
+      }
+      return f;
+    }
 
     function drawGrid(offset: number) {
       const spacing = 80;
@@ -131,8 +184,12 @@ export function BackgroundScene() {
       scroll.smooth += (scroll.y - scroll.smooth) * 0.08;
       const sc = scroll.smooth;
 
-      // strongest depth in the hero, calmer once scrolled into the content
-      canvas!.style.opacity = String(0.5 + 0.5 * Math.max(0, 1 - sc / 1300));
+      // ease the field density toward the current section's target
+      density += (targetDensity(sc) - density) * 0.06;
+      canvas!.style.opacity = density.toFixed(3);
+
+      // near-off (contact): skip all heavy drawing work this frame
+      if (density < 0.06) return;
 
       // --- light beams (cinematic glow) ---
       ctx!.globalCompositeOperation = "screen";
@@ -259,14 +316,25 @@ export function BackgroundScene() {
       mouse.active = false;
     }
     function onVisibility() {
-      running = !document.hidden;
+      running = !document.hidden && intersecting;
       if (running && !reduce) {
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(loop);
       }
     }
 
+    // pause the render loop whenever the canvas leaves the viewport
+    let intersecting = true;
+    const io = new IntersectionObserver(([entry]) => {
+      intersecting = entry.isIntersecting;
+      onVisibility();
+    });
+    io.observe(canvas);
+
     resize();
+    measureZones();
+    // re-measure once everything (fonts, images) has settled the layout
+    window.addEventListener("load", measureZones, { once: true });
 
     // Always paint at least one full frame immediately so the field is
     // present even before the rAF loop produces its first tick (and on
@@ -282,6 +350,8 @@ export function BackgroundScene() {
 
     return () => {
       cancelAnimationFrame(raf);
+      io.disconnect();
+      window.removeEventListener("load", measureZones);
       window.removeEventListener("resize", resize);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);

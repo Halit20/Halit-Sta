@@ -33,7 +33,7 @@ export function Vision() {
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           {/* left — headline + copy */}
-          <div>
+          <div className="headline-shade">
             <span className="eyebrow">
               <span className="h-px w-6 bg-accent/70" />
               Vision

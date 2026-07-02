@@ -108,16 +108,20 @@ body {
       0 0 40px -18px rgba(56, 189, 248, 0.5);
   }
 
+  /* Gradient-clipped text needs breathing room: the bottom padding keeps
+     descenders (g, y, p) inside the painted background box, and the final
+     stop stays light enough to stay legible on the dark field. */
   .text-gradient {
     background: linear-gradient(
       180deg,
       #ffffff 0%,
-      #d4d4d4 55%,
-      #6b7280 100%
+      #d9d9d9 55%,
+      #94a3b8 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    padding-bottom: 0.14em;
   }
 
   .text-accent-gradient {
@@ -125,6 +129,26 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    padding-bottom: 0.14em;
+  }
+
+  /* Subtle radial darkening behind hero/headline text zones so background
+     particles never break reading contrast. Sits above the canvas, below text. */
+  .headline-shade {
+    position: relative;
+  }
+  .headline-shade::before {
+    content: "";
+    position: absolute;
+    inset: -2rem -2.5rem;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 2.5rem;
+    background: radial-gradient(
+      65% 70% at 45% 45%,
+      rgba(3, 3, 3, 0.72),
+      transparent 78%
+    );
   }
 
   .divider-line {

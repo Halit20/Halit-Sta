@@ -36,12 +36,14 @@ export function AnimatedText({
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className="mr-[0.28em] inline-block overflow-hidden py-[0.06em]"
+          // extra bottom padding keeps gradient-clipped descenders visible;
+          // the negative margin cancels it out of the line rhythm
+          className="mr-[0.28em] -mb-[0.18em] inline-block overflow-hidden pb-[0.18em] pt-[0.06em]"
         >
           <motion.span
             className={`inline-block ${wordClassName}`}
             variants={{
-              hidden: { y: "115%" },
+              hidden: { y: "135%" },
               show: { y: "0%", transition: { duration: 0.85, ease: EASE } },
             }}
           >
