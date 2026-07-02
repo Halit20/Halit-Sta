@@ -9,14 +9,9 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           {/* brand */}
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/12 bg-ink-800 font-display text-sm font-bold text-mist-100">
-                HS
-              </span>
-              <span className="font-display text-base font-semibold text-mist-100">
-                Halit Statovci
-              </span>
-            </div>
+            <span className="font-display text-base font-semibold text-mist-100">
+              Halit Statovci
+            </span>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-mist-500">
               Full-Cycle AI Engineer & Digital Solutions Builder. Websites,
               workflows, media, and systems — built to work together.
