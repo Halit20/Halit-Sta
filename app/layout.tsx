@@ -51,6 +51,11 @@ export const metadata: Metadata = {
     images: ["/img/halit.jpeg"],
   },
   robots: { index: true, follow: true },
+  icons: {
+    // Relative path so the favicon also resolves when index.html is
+    // opened directly from the filesystem (file://).
+    icon: [{ url: "./icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export const viewport: Viewport = {

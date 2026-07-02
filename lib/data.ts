@@ -5,8 +5,11 @@ export const PROFILE = {
   title: "Full-Cycle AI Engineer & Digital Solutions Builder",
   location: "Kosovo",
   availability: "Available for selected projects · Kosovo / Remote",
-  // Brand-safe placeholder (not the LGS company inbox).
-  email: "hello@halitstatovci.com",
+  email: "halitsta@gmail.com",
+  linkedin: "https://www.linkedin.com/in/halit-statovci-89bb90198/",
+  instagram: "https://www.instagram.com/dyshjanatyre/",
+  instagramHandle: "@dyshjanatyre",
+  youtube: "https://www.youtube.com/channel/UCVDq-YjzYcyfLS0-XMNrl9w",
   heroLead: "I build the full digital side of a business —",
   heroEmphasis: "from idea to launch.",
   heroSupport:
@@ -85,6 +88,8 @@ export type Service = {
   description: string;
   includes: string[];
   bestFor: string;
+  /** optional factual credibility line rendered under the description */
+  note?: string;
   icon: IconName;
 };
 
@@ -111,6 +116,7 @@ export const SERVICES: Service[] = [
       "Custom platforms",
     ],
     bestFor: "Businesses that have outgrown a template and need a real platform.",
+    note: "Includes experience building for the German market (Rohrreinigung-Peter), backed by academic exposure in Germany through Erasmus+ in Ludwigshafen.",
     icon: "web",
   },
   {
@@ -195,10 +201,23 @@ export type Project = {
   /** short, full-text card line — never truncated */
   tagline: string;
   role: string;
-  built: string;
+  /** concrete lines describing what was built — rendered in full, never truncated */
+  built: string[];
   result: string;
+  /** factual meta line — domain, location, or event date */
+  meta?: string;
   tags: string[];
-  hue: string; // accent hue for abstract visual
+  hue: string; // accent hue driving the browser-mockup visual
+  /** which stylized mini-screen the card mockup renders */
+  screen:
+    | "marketplace"
+    | "dashboard"
+    | "resort"
+    | "brand"
+    | "menu"
+    | "service"
+    | "festival"
+    | "video";
 };
 
 export const PROJECTS: Project[] = [
@@ -207,14 +226,19 @@ export const PROJECTS: Project[] = [
     title: "LGS Marketplace",
     category: "Marketplace / Web Platform",
     tagline:
-      "A multi-seller marketplace — from listing flows to admin review, built deployment-ready.",
-    role: "Full-stack development & deployment",
-    built:
-      "Listing creation flows, category structure, and a seller experience for managing products, with admin-side review logic and a clear listing/pricing structure. Architected and packaged so it ships straight to production.",
+      "A multi-seller marketplace — listing flows, seller tools, and admin review, built deployment-ready.",
+    role: "Web platform / marketplace execution support",
+    built: [
+      "Listing creation flows and the category structure behind them.",
+      "Seller interface for managing products and pricing.",
+      "Admin-side review logic plus UI improvements across the platform.",
+      "API and database checks, packaged into a deployment-ready structure.",
+    ],
     result:
       "A scalable marketplace foundation the business can keep adding sellers and categories to without re-architecting.",
-    tags: ["React", "Laravel", "MySQL", "Infrastructure"],
-    hue: "199",
+    tags: ["React", "TypeScript", "Laravel", "MySQL", "Marketplace", "Deployment"],
+    hue: "212",
+    screen: "marketplace",
   },
   {
     id: "lgs-dash",
@@ -223,26 +247,35 @@ export const PROJECTS: Project[] = [
     tagline:
       "Refining a SaaS dashboard into a consistent, on-brand product interface.",
     role: "UI engineering & design system",
-    built:
-      "Dashboard UI refinement, dark/light mode polish, and a pass on component consistency — aligning spacing, states, and patterns to the brand so the whole SaaS interface feels like one product.",
+    built: [
+      "Dashboard UI refinement with dark/light mode support.",
+      "Component consistency pass — spacing, states, and patterns aligned.",
+      "Brand application across the product, with sidebar and topbar polish.",
+    ],
     result:
       "A cleaner, more trustworthy interface that's easier to extend as new dashboard modules are added.",
-    tags: ["React", "TypeScript", "Design System", "Dark/Light"],
-    hue: "210",
+    tags: ["Laravel", "React/Inertia", "SaaS", "Design System"],
+    hue: "199",
+    screen: "dashboard",
   },
   {
     id: "batllava",
     title: "Batllava Premium Resort",
-    category: "Hospitality / Social Media / Web Presence",
+    category: "Hospitality / Social Media",
     tagline:
-      "Content direction and social presentation for a premium lakeside resort brand.",
+      "Content direction and social presentation for a premium lakeside resort.",
     role: "Content direction & social media",
-    built:
-      "Hospitality content direction, social media presentation, and visual storytelling — shaping how the resort communicates atmosphere, location, and experience across its channels.",
+    built: [
+      "Direction for posts, stories, and reels across the resort's channels.",
+      "Captions and hospitality communication in the brand's voice.",
+      "Villa and event presentation — atmosphere, location, experience.",
+    ],
     result:
       "A more premium, coherent brand presence that matches the positioning of the resort itself.",
-    tags: ["Branding", "Social Media", "Content", "Video"],
-    hue: "32",
+    meta: "Batllavë, Podujevë · batllavaresort.com",
+    tags: ["Hospitality", "Social Media", "Branding"],
+    hue: "38",
+    screen: "resort",
   },
   {
     id: "trimi-dekor",
@@ -251,40 +284,52 @@ export const PROJECTS: Project[] = [
     tagline:
       "Premium identity and website direction for a construction & decoration business.",
     role: "Brand positioning & web presentation",
-    built:
-      "Construction and décor brand positioning with clear service structure, a premium identity direction, and website presentation built around credibility and trust.",
+    built: [
+      "Premium identity direction for a construction/decoration business — facades, Knauf, plastering, painting.",
+      "Website direction built around credibility and a clear service structure.",
+      "Business cards and a brand system that holds together in print and on screen.",
+    ],
     result:
       "A serious, professional presence that helps the business win higher-value, trust-driven clients.",
     tags: ["Branding", "Web Design", "Identity"],
-    hue: "24",
+    hue: "28",
+    screen: "brand",
   },
   {
     id: "gerdoc-pizza",
     title: "Gerdoc Pizza",
     category: "Restaurant / Ordering Experience",
     tagline:
-      "A restaurant website built around the menu and a clear path to order.",
+      "A menu-first restaurant site with a direct path from craving to order.",
     role: "Web design & conversion",
-    built:
-      "A restaurant website with clean product and menu presentation plus a direct ordering/contact flow — structured so a hungry local visitor reaches an order in as few steps as possible.",
+    built: [
+      "A menu-first restaurant website with clean product presentation.",
+      "Ordering/contact modal with WhatsApp and Viber options.",
+      "Location feature so local visitors find the restaurant fast.",
+    ],
     result:
       "A focused local presence that turns visits into calls and orders.",
-    tags: ["Web Design", "Menu UX", "Local Conversion"],
+    meta: "gerdocpizza.com",
+    tags: ["Restaurant", "Menu UX", "Local Conversion"],
     hue: "8",
+    screen: "menu",
   },
   {
     id: "rohrreinigung-peter",
     title: "Rohrreinigung-Peter",
     category: "German Service Website / Lead Generation",
-    tagline:
-      "A German drainage-service site engineered for regional leads.",
+    tagline: "A German drainage-service site engineered for regional leads.",
     role: "Service web & lead generation",
-    built:
-      "A German-language service website with regional targeting, a clear service structure, and contact forms positioned for conversion — built so local searches turn into enquiries.",
+    built: [
+      "German-language drainage-service website with a clear service structure.",
+      "Regional pages: Stuttgart, Böblingen, Calw, Esslingen, Ludwigsburg, Rems-Murr, Tübingen.",
+      "PHP contact forms positioned for conversion, plus a location popup.",
+    ],
     result:
-      "A lead-focused site that presents the service clearly and routes visitors straight to contact.",
-    tags: ["Web Design", "Local SEO", "Forms", "Lead Gen"],
+      "A lead-focused site that presents the service clearly and routes regional searches straight to contact.",
+    tags: ["Web Design", "Local SEO", "PHP", "German Market"],
     hue: "205",
+    screen: "service",
   },
   {
     id: "shqip-horizon",
@@ -293,12 +338,17 @@ export const PROJECTS: Project[] = [
     tagline:
       "A high-energy festival landing page with countdown and event structure.",
     role: "Landing page design & build",
-    built:
-      "An event landing page with a countdown, clear event structure, and an energetic visual treatment — fully responsive so it performs on the phones most attendees actually use.",
+    built: [
+      "High-energy festival landing page with a live countdown.",
+      "Clear event structure — lineup, schedule, and key details.",
+      "Mobile-first CSS so it performs on the phones attendees actually use.",
+    ],
     result:
       "A focused page that builds anticipation and points everyone to the key event details.",
-    tags: ["Landing Page", "Countdown", "Responsive", "Branding"],
+    meta: "24–26 July 2025",
+    tags: ["Landing Page", "Countdown", "Responsive"],
     hue: "280",
+    screen: "festival",
   },
   {
     id: "dyshja",
@@ -306,13 +356,18 @@ export const PROJECTS: Project[] = [
     category: "Creative Media / Outdoor Content",
     tagline:
       "An outdoor media brand — drone, filming, editing, and storytelling, end to end.",
-    role: "Creator · filming, drone & editing",
-    built:
-      "An original outdoor media project: drone and on-the-ground filming, cinematic editing, thumbnail design, and storytelling — produced and published across social platforms.",
+    role: "Creator — filming, drone & editing",
+    built: [
+      "An outdoor media brand run end-to-end: planning, shoots, publishing.",
+      "Ground and drone filming across hikes, camps, and adventures.",
+      "Cinematic editing, thumbnail design, and storytelling per episode.",
+    ],
     result:
-      "A growing content brand that doubles as a live portfolio of the media work Halit offers to clients.",
+      "A growing content brand that doubles as a live portfolio of the media work I offer to clients.",
+    meta: "youtube.com · @dyshjanatyre",
     tags: ["Drone", "Filming", "Editing", "Storytelling"],
-    hue: "150",
+    hue: "152",
+    screen: "video",
   },
 ];
 
@@ -364,10 +419,10 @@ export const EXPERIENCE = [
     desc: "Direct client work for local and international businesses — designing and building websites, shaping brand identities, producing social content, and setting up the hosting and domains behind them. Often the only person on the project, from first call to launch.",
   },
   {
-    org: "Dyshja n'Natyrë",
+    org: "Creator Thread — MegaSHQIP → Dyshja n'Natyrë",
     role: "Creative Media · Drone · Storytelling",
-    period: "Creator project",
-    desc: "My own outdoor media brand — planning, filming (ground and drone), editing, and publishing hiking, camping, and adventure content. It's where I sharpen the storytelling and editing eye I bring to client media work.",
+    period: "Ongoing",
+    desc: "The media thread runs the longest: I was one of the first Albanian-community YouTubers with MegaSHQIP in the gaming era, and today that instinct lives in Dyshja n'Natyrë — planning, filming (ground and drone), editing, and publishing outdoor content. It's where I sharpen the storytelling and editing eye I bring to client media work.",
   },
 ];
 
@@ -484,6 +539,12 @@ export type CreativeBlock = {
   meta: string; // viewfinder format tag
   title: string;
   text: string;
+  /** optional second paragraph — factual credibility line */
+  note?: string;
+  /** optional real external links (channel, socials) */
+  links?: { label: string; href: string }[];
+  /** optional real YouTube video, rendered as a click-to-load embed */
+  video?: { id: string; title: string };
   tags: string[];
 };
 
@@ -496,7 +557,18 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     code: "REC 00:00",
     meta: "4K · 24fps",
     title: "Cinematic storytelling, end to end.",
-    text: "Halit's creative side combines cinematic storytelling, outdoor exploration, drone visuals, photography, editing, and social media content — the same eye for attention that shapes every brand he builds.",
+    text: "My creative side combines cinematic storytelling, outdoor exploration, drone visuals, photography, editing, and social media content — the same eye for attention that shapes every brand I build.",
+    note: "Dyshja n'Natyrë is an active outdoor media brand (Haliti & Aldini) with brand-supported content — supported by @outdoor.meals.",
+    links: [
+      {
+        label: "YouTube — Dyshja n'Natyrë",
+        href: "https://www.youtube.com/channel/UCVDq-YjzYcyfLS0-XMNrl9w",
+      },
+      {
+        label: "Instagram — @dyshjanatyre",
+        href: "https://www.instagram.com/dyshjanatyre/",
+      },
+    ],
     tags: ["Storytelling", "Editing", "Outdoor", "Social"],
   },
   {
@@ -507,6 +579,10 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     meta: "4K · 25fps",
     title: "Video editing & short-form.",
     text: "Video editing, reels, short-form content, commercial visuals, and storytelling — cut for pace, clarity, and retention across every platform.",
+    video: {
+      id: "gieV7bKg3vQ",
+      title: "Një Natë Camping në Liqenin e Batllavës në -10°C!",
+    },
     tags: ["Editing", "Commercial", "Short-form", "Color"],
   },
   {
@@ -516,7 +592,11 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     code: "ALT 120m",
     meta: "D-LOG · 4K",
     title: "Aerial & cinematic perspectives.",
-    text: "Aerial visuals, landscape shots, movement, and cinematic perspectives — DJI Mini 2 and DJI Avata 2 style content that adds scale and motion to any story.",
+    text: "Aerial visuals, landscape shots, movement, and cinematic perspectives — DJI Mini 2 and DJI Avata 2 content that adds scale and motion to any story.",
+    video: {
+      id: "e4_xvSPuUg4",
+      title: "3 Ditë në Ranën e Hedhun",
+    },
     tags: ["Aerial", "Landscape", "FPV", "Movement"],
   },
   {

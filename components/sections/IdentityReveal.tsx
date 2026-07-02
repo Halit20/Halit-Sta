@@ -44,8 +44,8 @@ export function IdentityReveal() {
             </h2>
             <p className="mt-6 max-w-md leading-relaxed text-mist-400">
               Most businesses stitch together a developer, a designer, an
-              editor, and an ops person. Halit covers the full digital layer —
-              and makes the parts work together.
+              editor, and an ops person. I cover the full digital layer —
+              and make the parts work together.
             </p>
 
             {/* live pillar scene (desktop) */}

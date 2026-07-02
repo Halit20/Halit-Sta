@@ -44,6 +44,11 @@ export function Services() {
                 <p className="mt-3 text-[0.92rem] leading-relaxed text-mist-400">
                   {service.description}
                 </p>
+                {service.note && (
+                  <p className="mt-3 border-l-2 border-accent/40 pl-3 text-[0.8rem] leading-relaxed text-mist-500">
+                    {service.note}
+                  </p>
+                )}
 
                 {/* deliverables */}
                 <ul className="mt-6 flex flex-wrap gap-2 pt-5 [border-top:1px_solid_rgba(255,255,255,0.06)]">
