@@ -45,7 +45,7 @@ export function Vision() {
             </h2>
 
             <ScrubText
-              text="I'm growing Halit Statovci into a focused digital solutions studio — one place where businesses in Kosovo and beyond get engineering, design, AI, media, and infrastructure under a single standard, instead of stitching together five vendors who never talk to each other."
+              text="I'm growing Halit Sta into a focused digital solutions studio — one place where businesses in Kosovo and beyond get engineering, design, AI, media, and infrastructure under a single standard, instead of stitching together five vendors who never talk to each other."
               className="mt-7 max-w-xl text-lg leading-relaxed text-mist-400"
             />
 

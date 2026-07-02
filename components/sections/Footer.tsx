@@ -2,8 +2,12 @@ import { NAV_LINKS, PROFILE } from "@/lib/data";
 
 const SOCIALS = [
   { label: "LinkedIn", href: PROFILE.linkedin },
+  { label: "GitHub", href: PROFILE.github },
   { label: `Instagram ${PROFILE.instagramHandle}`, href: PROFILE.instagram },
+  { label: "Facebook", href: PROFILE.facebook },
+  { label: "X", href: PROFILE.x },
   { label: "YouTube — Dyshja n'Natyrë", href: PROFILE.youtube },
+  { label: "Twitch", href: PROFILE.twitch },
 ];
 
 export function Footer() {
@@ -14,7 +18,7 @@ export function Footer() {
           {/* brand */}
           <div>
             <span className="font-display text-base font-semibold text-mist-100">
-              Halit Statovci
+              Halit Sta
             </span>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-mist-500">
               Full-Cycle AI Engineer & Digital Solutions Builder. Websites,
@@ -80,7 +84,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-white/6 pt-6 sm:flex-row sm:items-center">
           <p className="text-xs text-mist-600">
-            © {new Date().getFullYear()} Halit Statovci. All rights reserved.
+            © {new Date().getFullYear()} Halit Sta. All rights reserved.
           </p>
           <p className="text-xs text-mist-600">
             Designed & engineered from idea to launch — {PROFILE.location}.

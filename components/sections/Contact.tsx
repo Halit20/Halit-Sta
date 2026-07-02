@@ -42,9 +42,23 @@ const CHANNELS = [
     wide: false,
   },
   {
+    label: "GitHub",
+    value: "Halit20",
+    href: PROFILE.github,
+    external: true,
+    wide: false,
+  },
+  {
     label: "Instagram",
     value: PROFILE.instagramHandle,
     href: PROFILE.instagram,
+    external: true,
+    wide: false,
+  },
+  {
+    label: "X",
+    value: "@HalitSta",
+    href: PROFILE.x,
     external: true,
     wide: false,
   },
@@ -138,8 +152,8 @@ export function Contact() {
           <div>
             <SectionHeading
               eyebrow="Start a Project"
-              title="Let's build something that moves your business forward."
-              subtitle="Website, system, automation, brand, content, or a full digital setup — tell me what you're trying to do and I'll tell you the smartest way to build it."
+              title="Let's build something that actually moves your business forward."
+              subtitle="Whether you need a website, system, automation, brand identity, visual content, or a complete digital setup — the goal is to build it properly from the beginning."
             />
 
             <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/5">

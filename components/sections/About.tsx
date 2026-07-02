@@ -68,11 +68,11 @@ export function About() {
             className="surface mx-auto mt-5 max-w-[380px] p-6"
           >
             <p className="font-display text-[1.05rem] italic leading-relaxed text-mist-200">
-              “I build the digital layer a business needs — from the first idea
-              to the final launch.”
+              “I build the digital layer a business needs — from idea to
+              launch.”
             </p>
             <footer className="mt-3 text-xs uppercase tracking-[0.2em] text-mist-500">
-              — Halit Statovci
+              — Halit Sta
             </footer>
           </motion.blockquote>
         </div>

@@ -1,19 +1,25 @@
 /* Central content source for the Halit Statovci brand site. */
 
 export const PROFILE = {
-  name: "Halit Statovci",
+  name: "Halit Sta",
+  fullName: "Halit Statovci",
   title: "Full-Cycle AI Engineer & Digital Solutions Builder",
   location: "Kosovo",
   availability: "Available for selected projects · Kosovo / Remote",
   email: "halitsta@gmail.com",
   linkedin: "https://www.linkedin.com/in/halit-statovci-89bb90198/",
-  instagram: "https://www.instagram.com/dyshjanatyre/",
-  instagramHandle: "@dyshjanatyre",
+  instagram: "https://www.instagram.com/halitsta/",
+  instagramHandle: "@halitsta",
+  facebook: "https://www.facebook.com/littyy.statovci/",
+  github: "https://github.com/Halit20",
+  x: "https://x.com/HalitSta",
+  twitch: "https://www.twitch.tv/megashqip",
   youtube: "https://www.youtube.com/channel/UCVDq-YjzYcyfLS0-XMNrl9w",
-  heroLead: "I build the full digital side of a business —",
-  heroEmphasis: "from idea to launch.",
+  youtubeSecond: "https://www.youtube.com/channel/UCXAlJP1t18cHm66XGZt9x4A",
+  heroLead: "I build digital systems, brands, and AI-powered workflows —",
+  heroEmphasis: "for modern businesses.",
   heroSupport:
-    "Websites, platforms, AI workflows, branding, media, and the infrastructure to run them — designed, built, and shipped by one operator instead of five vendors.",
+    "I build digital systems, brands, and AI-powered workflows for modern businesses — websites, platforms, automations, media, and the infrastructure to run them, from first idea to final launch.",
   labels: ["Web Systems", "AI Workflows", "Branding", "Media", "Infrastructure"],
 };
 
@@ -263,19 +269,38 @@ export const PROJECTS: Project[] = [
     title: "Batllava Premium Resort",
     category: "Hospitality / Social Media",
     tagline:
-      "Content direction and social presentation for a premium lakeside resort.",
-    role: "Content direction & social media",
+      "Full digital content workflow for a premium lakeside resort — social media, visuals, and website.",
+    role: "Social media, content & website management",
     built: [
-      "Direction for posts, stories, and reels across the resort's channels.",
-      "Captions and hospitality communication in the brand's voice.",
-      "Villa and event presentation — atmosphere, location, experience.",
+      "Daily posts, stories, and reels across Instagram, TikTok, and Facebook.",
+      "Visual material captured with camera, drone, and action camera — Sony ZV-E10, DJI Mini 5 Pro, DJI Action 5 Pro.",
+      "Website management plus villa and event presentation — atmosphere, location, experience.",
     ],
     result:
       "A more premium, coherent brand presence that matches the positioning of the resort itself.",
-    meta: "Batllavë, Podujevë · batllavaresort.com",
-    tags: ["Hospitality", "Social Media", "Branding"],
+    meta: "Batllava Lake · batllavaresort.com",
+    tags: ["Hospitality", "Social Media", "Website Management", "Video", "Drone"],
     hue: "38",
     screen: "resort",
+  },
+  {
+    id: "noircorp-inventory",
+    title: "NoirCorp Inventory System",
+    category: "Inventory / Full-Stack System",
+    tagline:
+      "One of my earliest full-stack projects — an inventory system still in daily use across four countries.",
+    role: "Full-stack developer — front-end & back-end",
+    built: [
+      "Inventory stock management system built front-to-back for real operational use.",
+      "Product tracking, quantity views, and stock operations for the workers who run it daily.",
+      "Multi-location support covering operations in Kosovo, Albania, Macedonia, and the USA.",
+    ],
+    result:
+      "An early project that proved itself in production — still used across Kosovo, Albania, Macedonia, and the USA.",
+    meta: "Kosovo · Albania · Macedonia · USA",
+    tags: ["Full-Stack", "Inventory", "Front-End", "Back-End", "Business System"],
+    hue: "262",
+    screen: "dashboard",
   },
   {
     id: "trimi-dekor",
@@ -401,28 +426,40 @@ export const PROCESS_STEPS = [
 
 export const EXPERIENCE = [
   {
-    org: "Light Gears Solutions / Lele Pro",
-    role: "Full-Cycle AI Engineering · Web Systems · Infrastructure",
+    org: "LGS",
+    role: "Full-Cycle AI Engineering & IT Manager",
     period: "Current",
-    desc: "I work across the full product lifecycle — building marketplace and SaaS platforms in React and Laravel, refining dashboard interfaces and design systems, wiring in AI-assisted workflows, and handling deployment on Linux/Docker/Nginx so what I build actually ships and stays live.",
+    desc: "At LGS I work on implementing artificial intelligence into the platforms we develop, automating and simplifying workflows, and building the systems and websites behind them — marketplace and SaaS platforms in React and Laravel, dashboard interfaces and design systems, plus deployment on Linux/Docker/Nginx so what I build actually ships and stays live.",
   },
   {
     org: "Ministry of Defence of Kosovo",
     role: "IT Experience · Technical Support · Systems",
     period: "Institutional",
-    desc: "Hands-on IT inside a large institutional environment: diagnosing hardware and software issues, troubleshooting networks, working with servers, and supporting a sizeable base of users — where reliability and clear process mattered more than shortcuts.",
+    desc: "Six months of hands-on IT inside a serious institutional environment — technical support, systems, and troubleshooting, where reliability and clear process mattered more than shortcuts.",
   },
   {
-    org: "Freelance & Client Projects",
+    org: "Universum International College",
+    role: "IT Intern",
+    period: "University",
+    desc: "During my studies — as part of my 100% scholarship — I worked as an IT intern at the college itself: technical support, systems monitoring, technical reporting, and user support. Practical experience built in parallel with the degree, not after it.",
+  },
+  {
+    org: "NoirCorp",
+    role: "Web Developer",
+    period: "Early career",
+    desc: "One of my first major full-stack experiences: I developed a front-end and back-end inventory stock management system for real operations — a system still used today across Kosovo, Albania, Macedonia, and the USA.",
+  },
+  {
+    org: "Freelance / Self-employed",
     role: "Digital Solutions · Web · Branding · Content",
     period: "Ongoing",
-    desc: "Direct client work for local and international businesses — designing and building websites, shaping brand identities, producing social content, and setting up the hosting and domains behind them. Often the only person on the project, from first call to launch.",
+    desc: "Multidisciplinary digital execution for local and international businesses — designing and building websites, shaping brand identities, producing social content, automating workflows, and setting up the hosting and domains behind them. Often the only person on the project, from first call to launch.",
   },
   {
-    org: "Creator Thread — MegaSHQIP → Dyshja n'Natyrë",
-    role: "Creative Media · Drone · Storytelling",
+    org: "Dyshja n'Natyrë",
+    role: "Creative Media & Outdoor Storytelling",
     period: "Ongoing",
-    desc: "The media thread runs the longest: I was one of the first Albanian-community YouTubers with MegaSHQIP in the gaming era, and today that instinct lives in Dyshja n'Natyrë — planning, filming (ground and drone), editing, and publishing outdoor content. It's where I sharpen the storytelling and editing eye I bring to client media work.",
+    desc: "The creative thread runs the longest — from early Albanian-community YouTube with MegaSHQIP to today's Dyshja n'Natyrë: planning, filming (ground and drone), editing, thumbnails, titles, and outdoor storytelling with a cinematic approach. Both a passion project and the place I sharpen the media eye I bring to client work.",
   },
 ];
 
@@ -462,8 +499,10 @@ export const SKILL_GROUPS = [
     items: [
       "ChatGPT",
       "Claude",
+      "Claude Code",
       "Codex",
       "AI-assisted development",
+      "AI implementation into platforms",
       "Prompt systems",
       "Workflow automation",
       "Technical documentation",
@@ -476,12 +515,16 @@ export const SKILL_GROUPS = [
       "Canva",
       "CapCut",
       "Sony ZV-E10",
-      "DJI Mini 2",
-      "DJI Avata 2",
-      "iPhone 16",
+      "DJI Mini 5 Pro",
+      "DJI Action 5 Pro",
       "Drone content",
       "Video editing",
+      "Thumbnails & titles",
     ],
+  },
+  {
+    category: "Languages",
+    items: ["Albanian — Native", "English — C1", "German — A1"],
   },
 ];
 
@@ -489,27 +532,27 @@ export const EDUCATION = [
   {
     title: "B.Sc. Computer Science & Engineering",
     org: "Universum International College",
-    note: "The engineering foundation behind the systems I build — algorithms, software design, and how real platforms are structured.",
+    note: "The foundation of my technical path and the beginning of my deeper work in software, systems, and digital products.",
   },
   {
-    title: "100% Merit Scholarship",
-    org: "Awarded for academic performance",
-    note: "Full-tuition merit scholarship earned through results, not application — recognition of consistent top performance.",
+    title: "100% Scholarship",
+    org: "Earned through testing and selection",
+    note: "A full scholarship connected with practical work and academic performance — I studied and worked in IT at the college at the same time.",
   },
   {
     title: "Erasmus+ — Germany",
-    org: "International exchange program",
-    note: "Selected for the EU Erasmus+ program in Germany: cross-border academic and technical experience in a different engineering culture.",
+    org: "Ludwigshafen University of Business and Society",
+    note: "Six months of Business Management in Germany — one of the most important personal and academic experiences of my life. I met people from around the world, represented Kosovo in international environments, and experienced business education, culture, and travel across Germany and Europe.",
   },
   {
-    title: "Institutional IT Experience",
-    org: "Ministry of Defence of Kosovo",
-    note: "Real systems and support work inside a serious institutional environment — the kind of setting where uptime and process are non-negotiable.",
+    title: "High School — Economy, Banking & Insurance",
+    org: "Business foundation",
+    note: "An early understanding of business, finance, and organizational thinking — the commercial instinct behind the technical work.",
   },
   {
-    title: "Shipped Client & Product Work",
-    org: "Web · SaaS · Branding · Media · Infrastructure",
-    note: "A portfolio of work that's live and maintained — not coursework. Designed, built, deployed, and kept running.",
+    title: "Student Union & Leadership",
+    org: "University involvement",
+    note: "Coordination and organization experience through the student union during university — working with people, not just systems.",
   },
 ];
 
@@ -592,7 +635,7 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     code: "ALT 120m",
     meta: "D-LOG · 4K",
     title: "Aerial & cinematic perspectives.",
-    text: "Aerial visuals, landscape shots, movement, and cinematic perspectives — DJI Mini 2 and DJI Avata 2 content that adds scale and motion to any story.",
+    text: "Aerial visuals, landscape shots, movement, and cinematic perspectives — flown with the DJI Mini 5 Pro to add scale and motion to any story.",
     video: {
       id: "e4_xvSPuUg4",
       title: "3 Ditë në Ranën e Hedhun",
@@ -626,8 +669,8 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     code: "KIT 05",
     meta: "READY",
     title: "The creator toolkit.",
-    text: "Sony ZV-E10, DJI Mini 2, DJI Avata 2, iPhone 16, and a tuned editing workflow — a compact, capable kit that goes from idea to published quickly.",
-    tags: ["Sony ZV-E10", "DJI Mini 2", "DJI Avata 2", "iPhone 16"],
+    text: "Sony ZV-E10, DJI Mini 5 Pro, DJI Action 5 Pro Adventure Combo, and a tuned editing workflow — a compact, capable kit that goes from idea to published quickly.",
+    tags: ["Sony ZV-E10", "DJI Mini 5 Pro", "DJI Action 5 Pro"],
   },
   {
     id: "media-contact",

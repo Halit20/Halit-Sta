@@ -49,7 +49,7 @@ export function Hero() {
 
           <h1 className="font-display font-bold tracking-tightest text-mist-100">
             <span className="block overflow-hidden pb-[0.12em] text-[2.9rem] leading-[1.05] sm:text-6xl lg:text-[4.4rem]">
-              <AnimatedText text="Halit Statovci" immediate delay={0.45} />
+              <AnimatedText text="Halit Sta" immediate delay={0.45} />
             </span>
             <motion.span
               initial={{ opacity: 0, y: 14 }}
@@ -78,8 +78,8 @@ export function Hero() {
             transition={{ duration: 0.8, ease: EASE, delay: 1.05 }}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
-            <MagneticButton href="#work" className="btn-primary">
-              View My Work
+            <MagneticButton href="#contact" className="btn-primary">
+              Start a Project
               <svg
                 className="h-4 w-4"
                 viewBox="0 0 24 24"
@@ -90,8 +90,8 @@ export function Hero() {
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </MagneticButton>
-            <MagneticButton href="#contact" className="btn-ghost">
-              Start a Project
+            <MagneticButton href="#work" className="btn-ghost">
+              View My Work
             </MagneticButton>
           </motion.div>
 

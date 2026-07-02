@@ -34,11 +34,11 @@ export function Header() {
             <a
               href="#home"
               className="flex items-center"
-              aria-label="Halit Statovci — home"
+              aria-label="Halit Sta — home"
             >
               <span className="flex flex-col leading-none">
                 <span className="font-display text-[0.95rem] font-semibold tracking-tight text-mist-100">
-                  Halit Statovci
+                  Halit Sta
                 </span>
                 <span className="text-[0.62rem] uppercase tracking-[0.25em] text-mist-500">
                   Digital Solutions

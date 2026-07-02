@@ -26,6 +26,10 @@ const META: Record<string, { icon: IconName; blurb: string }> = {
     icon: "media",
     blurb: "The gear and software behind the video, photo, and drone work.",
   },
+  Languages: {
+    icon: "consulting",
+    blurb: "The languages I work and communicate in.",
+  },
 };
 
 export function Skills() {
@@ -34,7 +38,7 @@ export function Skills() {
       <SectionHeading
         eyebrow="Skills & Tools"
         title="A full-cycle toolkit for modern digital work."
-        subtitle="Four sides of the same skill set — code, infrastructure, AI, and creative production — so a project never has to leave my hands to move forward."
+        subtitle="One skill set, several sides — code, infrastructure, AI, creative production, and the languages to work internationally — so a project never has to leave my hands to move forward."
       />
 
       <Reveal
