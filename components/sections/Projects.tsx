@@ -17,8 +17,15 @@ function DetailRow({ label, children }: { label: string; children: React.ReactNo
       <p className="mb-1.5 text-[0.66rem] uppercase tracking-[0.2em] text-accent/70">
         {label}
       </p>
-      <p className="text-[0.92rem] leading-relaxed text-mist-300">{children}</p>
+      <div className="text-[0.92rem] leading-relaxed text-mist-300">{children}</div>
     </div>
+  );
+}
+
+/** real domain for the fake address bar when verified, else the project name */
+function chromeLabel(project: Project) {
+  return (
+    project.meta?.match(/[a-z0-9-]+\.[a-z]{2,}[^\s·]*/i)?.[0] ?? project.title
   );
 }
 
@@ -60,7 +67,8 @@ export function Projects() {
           >
             <ProjectVisual
               hue={project.hue}
-              title={project.title}
+              screen={project.screen}
+              label={chromeLabel(project)}
               className="aspect-[16/10] w-full"
             />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[58%] -translate-y-full bg-gradient-to-b from-white/8 to-transparent transition-transform duration-700 group-hover:translate-y-0" />
@@ -76,22 +84,15 @@ export function Projects() {
                 {project.tagline}
               </p>
 
-              <div className="mt-4 flex items-center gap-2 text-[0.72rem] text-mist-500">
-                <svg
-                  className="h-3.5 w-3.5 text-accent/70"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <circle cx="12" cy="8" r="3.2" />
-                  <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
-                </svg>
-                {project.role}
+              <div className="mt-4 flex items-start gap-2 text-[0.78rem] text-mist-400">
+                <span className="mt-[2px] shrink-0 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-accent/70">
+                  Role
+                </span>
+                <span className="leading-snug">{project.role}</span>
               </div>
 
-              <div className="mt-auto flex flex-wrap items-center gap-2 pt-5">
-                {project.tags.slice(0, 3).map((t) => (
+              <div className="mt-auto flex flex-wrap gap-2 pt-5">
+                {project.tags.map((t) => (
                   <span
                     key={t}
                     className="rounded-full border border-white/8 px-2.5 py-1 text-[0.68rem] text-mist-400"
@@ -99,8 +100,11 @@ export function Projects() {
                     {t}
                   </span>
                 ))}
-                <span className="ml-auto flex items-center gap-1 text-[0.72rem] font-medium text-mist-200 transition-colors group-hover:text-accent">
-                  View case study
+              </div>
+
+              <div className="mt-4 flex justify-end border-t border-white/8 pt-4">
+                <span className="flex items-center gap-1 text-[0.75rem] font-medium text-mist-200 transition-colors group-hover:text-accent">
+                  View Case Study
                   <svg
                     className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
                     viewBox="0 0 24 24"
@@ -149,7 +153,8 @@ export function Projects() {
               <motion.div variants={fadeUp} className="relative">
                 <ProjectVisual
                   hue={active.hue}
-                  title={active.title}
+                  screen={active.screen}
+                  label={chromeLabel(active)}
                   className="aspect-[16/7] w-full"
                 />
                 <button
@@ -185,11 +190,28 @@ export function Projects() {
                 <motion.p variants={fadeUp} className="mt-3 leading-relaxed text-mist-400">
                   {active.tagline}
                 </motion.p>
+                {active.meta && (
+                  <motion.p
+                    variants={fadeUp}
+                    className="mt-2 font-mono text-[0.72rem] tracking-wide text-mist-500"
+                  >
+                    {active.meta}
+                  </motion.p>
+                )}
 
                 <motion.div variants={fadeUp} className="mt-6">
                   <DetailRow label="Role">{active.role}</DetailRow>
-                  <DetailRow label="What I built">{active.built}</DetailRow>
-                  <DetailRow label="Purpose">{active.result}</DetailRow>
+                  <DetailRow label="What I built">
+                    <ul className="space-y-2">
+                      {active.built.map((line) => (
+                        <li key={line} className="flex items-start gap-2.5">
+                          <span className="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-accent/70" />
+                          {line}
+                        </li>
+                      ))}
+                    </ul>
+                  </DetailRow>
+                  <DetailRow label="Purpose / Result">{active.result}</DetailRow>
                 </motion.div>
 
                 <motion.div variants={fadeUp} className="mt-6 flex flex-wrap gap-2">
