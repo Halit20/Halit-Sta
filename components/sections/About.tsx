@@ -50,7 +50,7 @@ export function About() {
           >
             <Image
               src={halitPortrait}
-              alt="Halit Statovci"
+              alt="Halit Statovci working portrait — Full-Cycle AI Engineer based in Kosovo"
               fill
               placeholder="blur"
               sizes="(max-width: 1024px) 80vw, 380px"
@@ -94,6 +94,12 @@ export function About() {
               I&apos;m Halit — a Kosovo-based engineer who builds the full digital
               side of a business. Software, AI workflows, branding, media, and the
               infrastructure underneath: I&apos;m comfortable across all of it.
+            </motion.p>
+            <motion.p variants={blurIn}>
+              I&apos;ve been building for the internet since the early Albanian
+              YouTube days — as one of the first Albanian-community YouTubers
+              with MegaSHQIP in the gaming era — first content and audiences,
+              then the systems behind them.
             </motion.p>
             <motion.p variants={blurIn}>
               I didn&apos;t come up through a single lane. I&apos;ve worked in

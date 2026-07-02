@@ -27,7 +27,7 @@ export function IdentityReveal() {
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           {/* sticky headline + live visual */}
-          <div className="lg:sticky lg:top-28 lg:h-fit">
+          <div className="headline-shade lg:sticky lg:top-28 lg:h-fit">
             <motion.span
               className="eyebrow mb-6"
               initial={{ opacity: 0 }}
@@ -44,8 +44,8 @@ export function IdentityReveal() {
             </h2>
             <p className="mt-6 max-w-md leading-relaxed text-mist-400">
               Most businesses stitch together a developer, a designer, an
-              editor, and an ops person. Halit covers the full digital layer —
-              and makes the parts work together.
+              editor, and an ops person. I cover the full digital layer —
+              and make the parts work together.
             </p>
 
             {/* live pillar scene (desktop) */}

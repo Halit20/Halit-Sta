@@ -28,7 +28,10 @@ export function Hero() {
     >
       <div className="shell relative z-10 grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         {/* Left — copy */}
-        <motion.div style={{ y: yText, opacity }} className="order-2 lg:order-1">
+        <motion.div
+          style={{ y: yText, opacity }}
+          className="headline-shade order-2 lg:order-1"
+        >
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -45,14 +48,14 @@ export function Hero() {
           </motion.div>
 
           <h1 className="font-display font-bold tracking-tightest text-mist-100">
-            <span className="block overflow-hidden pb-[0.08em] text-[2.9rem] leading-[1.02] sm:text-6xl lg:text-[4.4rem]">
+            <span className="block overflow-hidden pb-[0.12em] text-[2.9rem] leading-[1.05] sm:text-6xl lg:text-[4.4rem]">
               <AnimatedText text="Halit Statovci" immediate delay={0.45} />
             </span>
             <motion.span
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.8 }}
-              className="mt-4 block text-[1.2rem] font-medium leading-snug text-mist-200 sm:text-[1.4rem] lg:text-[1.6rem]"
+              className="mt-5 block text-[1.2rem] font-medium leading-[1.4] text-mist-200 sm:text-[1.4rem] lg:text-[1.6rem]"
             >
               <span className="text-accent-gradient animate-gradient-pan">Full-Cycle AI Engineer</span>
               <span className="text-mist-500"> &amp; </span>

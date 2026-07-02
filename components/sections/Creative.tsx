@@ -7,6 +7,7 @@ import {
   CreativeControlNav,
   ControlIcon,
 } from "@/components/sections/CreativeControlNav";
+import { LiteYouTube } from "@/components/ui/LiteYouTube";
 import { CREATIVE_BLOCKS, type CreativeBlock } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 
@@ -73,6 +74,43 @@ function Block({ block, index }: { block: CreativeBlock; index: number }) {
         <p className="mt-5 max-w-2xl text-[0.95rem] leading-relaxed text-mist-400">
           {block.text}
         </p>
+
+        {block.note && (
+          <p className="mt-3 max-w-2xl border-l-2 border-accent/40 pl-3 text-[0.85rem] leading-relaxed text-mist-400">
+            {block.note}
+          </p>
+        )}
+
+        {block.video && (
+          <div className="mt-6">
+            <LiteYouTube id={block.video.id} title={block.video.title} />
+          </div>
+        )}
+
+        {block.links && (
+          <div className="mt-5 flex flex-wrap gap-3">
+            {block.links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[0.78rem] text-mist-200 transition-colors hover:border-accent/50 hover:text-accent"
+              >
+                {l.label}
+                <svg
+                  className="h-3 w-3"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M7 17 17 7M9 7h8v8" />
+                </svg>
+              </a>
+            ))}
+          </div>
+        )}
 
         <div className="mt-6 flex flex-wrap gap-2">
           {block.tags.map((t) => (

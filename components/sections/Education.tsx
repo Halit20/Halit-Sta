@@ -33,7 +33,7 @@ export function Education() {
         className="mx-auto"
       />
 
-      <div ref={railRef} className="relative mx-auto mt-16 max-w-3xl">
+      <div ref={railRef} className="relative mx-auto mt-12 max-w-3xl">
         {/* scroll-drawn spine */}
         <div className="absolute left-5 top-0 h-full w-px bg-white/8 sm:left-1/2" />
         <motion.div
@@ -41,7 +41,7 @@ export function Education() {
           className="absolute left-5 top-0 h-full w-px origin-top bg-gradient-to-b from-accent via-accent/60 to-transparent sm:left-1/2"
         />
 
-        <ol className="flex flex-col gap-12">
+        <ol className="flex flex-col gap-7">
           {EDUCATION.map((e, i) => {
             const right = i % 2 === 1;
             return (

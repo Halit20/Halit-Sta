@@ -2,18 +2,26 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 const SITE_URL = "https://halitstatovci.com";
+const TITLE =
+  "Halit Statovci — Full-Cycle AI Engineer & Digital Solutions Builder | Kosovo";
+const DESCRIPTION =
+  "Halit Statovci is an AI engineer in Kosovo building web systems, AI workflows, branding, media, and infrastructure — the full digital layer, idea to launch.";
+
+const LINKEDIN_URL = "https://www.linkedin.com/in/halit-statovci-89bb90198/";
+const YOUTUBE_URL = "https://www.youtube.com/channel/UCVDq-YjzYcyfLS0-XMNrl9w";
+const INSTAGRAM_URL = "https://www.instagram.com/dyshjanatyre/";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default:
-      "Halit Statovci | Full-Cycle AI Engineer & Digital Solutions Builder",
+    default: TITLE,
     template: "%s | Halit Statovci",
   },
-  description:
-    "Halit Statovci builds websites, systems, AI workflows, branding, digital media, and infrastructure for businesses that want stronger digital execution.",
+  description: DESCRIPTION,
+  alternates: { canonical: SITE_URL },
   keywords: [
     "Halit Statovci",
+    "Halit Sta",
     "AI Engineer",
     "Digital Solutions",
     "Web Development",
@@ -28,29 +36,30 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    title:
-      "Halit Statovci | Full-Cycle AI Engineer & Digital Solutions Builder",
-    description:
-      "Websites, systems, AI workflows, branding, digital media, and infrastructure — built from strategy to launch.",
+    title: TITLE,
+    description: DESCRIPTION,
     siteName: "Halit Statovci",
     images: [
       {
         url: "/img/halit.jpeg",
         width: 1200,
         height: 1200,
-        alt: "Halit Statovci",
+        alt: "Portrait of Halit Statovci, Full-Cycle AI Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Halit Statovci | Full-Cycle AI Engineer & Digital Solutions Builder",
-    description:
-      "Websites, systems, AI workflows, branding, digital media, and infrastructure — built from strategy to launch.",
+    title: TITLE,
+    description: DESCRIPTION,
     images: ["/img/halit.jpeg"],
   },
   robots: { index: true, follow: true },
+  icons: {
+    // Relative path so the favicon also resolves when index.html is
+    // opened directly from the filesystem (file://).
+    icon: [{ url: "./icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export const viewport: Viewport = {
@@ -66,22 +75,45 @@ export default function RootLayout({
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Halit Statovci",
-    jobTitle: "Full-Cycle AI Engineer & Digital Solutions Builder",
-    url: SITE_URL,
-    image: `${SITE_URL}/img/halit.jpeg`,
-    address: { "@type": "PostalAddress", addressCountry: "Kosovo" },
-    knowsAbout: [
-      "Web Development",
-      "AI Workflows",
-      "Automation",
-      "Branding",
-      "Digital Media",
-      "Infrastructure",
-      "Deployment",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": `${SITE_URL}/#person`,
+        name: "Halit Statovci",
+        alternateName: "Halit Sta",
+        jobTitle: "Full-Cycle AI Engineer & Digital Solutions Builder",
+        url: SITE_URL,
+        image: `${SITE_URL}/img/halit.jpeg`,
+        sameAs: [LINKEDIN_URL, YOUTUBE_URL, INSTAGRAM_URL],
+        address: { "@type": "PostalAddress", addressCountry: "Kosovo" },
+        knowsAbout: [
+          "Web Development",
+          "AI Workflows",
+          "Automation",
+          "Branding",
+          "Digital Media",
+          "Infrastructure",
+          "Deployment",
+        ],
+        alumniOf: "Universum International College",
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": `${SITE_URL}/#service`,
+        name: "Halit Statovci — Digital Solutions",
+        url: SITE_URL,
+        founder: { "@id": `${SITE_URL}/#person` },
+        areaServed: ["Kosovo", "Germany", "Remote"],
+        serviceType: [
+          "Websites & Web Platforms",
+          "AI & Automation",
+          "Branding & Design",
+          "Video, Photo & Drone Content",
+          "Infrastructure & Deployment",
+          "Digital Consulting",
+        ],
+      },
     ],
-    alumniOf: "Universum International College",
   };
 
   return (

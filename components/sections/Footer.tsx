@@ -1,6 +1,10 @@
 import { NAV_LINKS, PROFILE } from "@/lib/data";
 
-const SOCIALS = ["LinkedIn", "Instagram", "GitHub", "YouTube"];
+const SOCIALS = [
+  { label: "LinkedIn", href: PROFILE.linkedin },
+  { label: `Instagram ${PROFILE.instagramHandle}`, href: PROFILE.instagram },
+  { label: "YouTube — Dyshja n'Natyrë", href: PROFILE.youtube },
+];
 
 export function Footer() {
   return (
@@ -59,12 +63,14 @@ export function Footer() {
                 </a>
               </li>
               {SOCIALS.map((s) => (
-                <li key={s}>
+                <li key={s.label}>
                   <a
-                    href="#contact"
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm text-mist-400 transition-colors hover:text-mist-100"
                   >
-                    {s}
+                    {s.label}
                   </a>
                 </li>
               ))}

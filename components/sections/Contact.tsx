@@ -17,32 +17,36 @@ const SERVICE_OPTIONS = [
   "Digital Consulting",
 ];
 
-const BUDGETS = ["< €1k", "€1k – €5k", "€5k – €15k", "€15k+", "Not sure yet"];
+const BUDGETS = ["€1k – €3k", "€3k – €5k", "€5k+", "Under €1k", "Not sure yet"];
+
+/**
+ * TODO: form endpoint — set this to your Formspree/EmailJS endpoint
+ * (e.g. "https://formspree.io/f/xxxxxxxx") and the form posts to it as-is.
+ * While empty, submissions fall back to a direct-email prompt.
+ */
+const FORM_ENDPOINT = "";
 
 const CHANNELS = [
   {
     label: "Email",
     value: PROFILE.email,
     href: `mailto:${PROFILE.email}`,
-    note: "",
-  },
-  {
-    label: "WhatsApp",
-    value: "Available on request",
-    href: "#contact",
-    note: "placeholder",
+    external: false,
+    wide: true,
   },
   {
     label: "LinkedIn",
     value: "Halit Statovci",
-    href: "#contact",
-    note: "placeholder",
+    href: PROFILE.linkedin,
+    external: true,
+    wide: false,
   },
   {
     label: "Instagram",
-    value: "@dyshja.natyre",
-    href: "#contact",
-    note: "placeholder",
+    value: PROFILE.instagramHandle,
+    href: PROFILE.instagram,
+    external: true,
+    wide: false,
   },
 ];
 
@@ -52,6 +56,8 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function Contact() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
   const [service, setService] = useState(SERVICE_OPTIONS[0]);
   const [errors, setErrors] = useState<Errors>({});
   const formRef = useRef<HTMLFormElement>(null);
@@ -83,11 +89,34 @@ export function Contact() {
     return next;
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const next = validate(e.currentTarget);
+    const form = e.currentTarget;
+    const next = validate(form);
     setErrors(next);
-    if (Object.keys(next).length === 0) setSent(true);
+    if (Object.keys(next).length > 0) return;
+
+    if (!FORM_ENDPOINT) {
+      // endpoint not connected yet — show the direct-email fallback
+      setSent(true);
+      return;
+    }
+
+    setSending(true);
+    setSendError(false);
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      if (!res.ok) throw new Error(`Form endpoint returned ${res.status}`);
+      setSent(true);
+    } catch {
+      setSendError(true);
+    } finally {
+      setSending(false);
+    }
   }
 
   function clearError(field: keyof Errors) {
@@ -118,15 +147,15 @@ export function Contact() {
                 <a
                   key={c.label}
                   href={c.href}
-                  className="group bg-ink-900/60 p-5 transition-colors hover:bg-ink-800"
+                  {...(c.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className={`group bg-ink-900/60 p-5 transition-colors hover:bg-ink-800 ${
+                    c.wide ? "col-span-2" : ""
+                  }`}
                 >
-                  <p className="flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.2em] text-mist-500">
+                  <p className="text-[0.68rem] uppercase tracking-[0.2em] text-mist-500">
                     {c.label}
-                    {c.note === "placeholder" && (
-                      <span className="rounded-full border border-white/10 px-1.5 py-px text-[0.55rem] normal-case tracking-normal text-mist-600">
-                        soon
-                      </span>
-                    )}
                   </p>
                   <p className="mt-1.5 text-sm text-mist-200 transition-colors group-hover:text-accent">
                     {c.value}
@@ -134,10 +163,6 @@ export function Contact() {
                 </a>
               ))}
             </div>
-            <p className="mt-4 text-xs leading-relaxed text-mist-600">
-              Social and messaging links are placeholders until launch — email
-              is the fastest way to reach me right now.
-            </p>
           </div>
 
           {/* form panel */}
@@ -174,11 +199,17 @@ export function Contact() {
                   </svg>
                 </span>
                 <h3 className="mt-6 font-display text-2xl font-semibold text-mist-100">
-                  Looks good — almost there
+                  {FORM_ENDPOINT ? "Message sent" : "Details look good"}
                 </h3>
                 <p className="mt-3 max-w-sm text-sm leading-relaxed text-mist-400">
-                  This form is prepared for email/CRM integration. For now, the
-                  fastest way to reach me is a direct email to{" "}
+                  {FORM_ENDPOINT ? (
+                    <>I&apos;ll get back to you shortly. Prefer direct email?</>
+                  ) : (
+                    <>
+                      The form endpoint isn&apos;t connected yet — the fastest
+                      way to reach me is a direct email to
+                    </>
+                  )}{" "}
                   <a
                     href={`mailto:${PROFILE.email}`}
                     className="text-accent underline-offset-2 hover:underline"
@@ -273,8 +304,21 @@ export function Contact() {
                   />
                 </Field>
 
+                {sendError && (
+                  <p className="text-sm leading-relaxed text-red-400">
+                    Sending failed — please try again, or email me directly at{" "}
+                    <a
+                      href={`mailto:${PROFILE.email}`}
+                      className="underline underline-offset-2"
+                    >
+                      {PROFILE.email}
+                    </a>
+                    .
+                  </p>
+                )}
+
                 <MagneticButton className="btn-primary mt-1 w-full">
-                  Start a Project
+                  {sending ? "Sending…" : "Start a Project"}
                   <svg
                     className="h-4 w-4"
                     viewBox="0 0 24 24"
