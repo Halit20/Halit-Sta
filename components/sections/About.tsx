@@ -50,7 +50,7 @@ export function About() {
           >
             <Image
               src={halitPortrait}
-              alt="Halit Statovci"
+              alt="Halit Statovci working portrait — Full-Cycle AI Engineer based in Kosovo"
               fill
               placeholder="blur"
               sizes="(max-width: 1024px) 80vw, 380px"

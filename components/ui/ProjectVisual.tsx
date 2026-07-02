@@ -56,7 +56,7 @@ export function ProjectVisual({
             <span className="h-1.5 w-1.5 rounded-full bg-[#f5bd4f]/80" />
             <span className="h-1.5 w-1.5 rounded-full bg-[#57c454]/80" />
           </span>
-          <span className="mx-auto flex max-w-[70%] items-center gap-1 truncate rounded-md bg-white/[0.05] px-2 py-0.5 font-mono text-[0.5rem] tracking-wide text-white/45">
+          <span className="mx-auto flex max-w-[70%] items-center gap-1 overflow-hidden whitespace-nowrap rounded-md bg-white/[0.05] px-2 py-0.5 font-mono text-[0.5rem] tracking-wide text-white/45">
             <svg
               className="h-1.5 w-1.5 shrink-0"
               viewBox="0 0 24 24"
