@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const SITE_URL = "https://halitstatovci.com";
+const SITE_URL = "https://halitsta.com";
 const TITLE =
   "Halit Statovci — Full-Cycle AI Engineer & Digital Solutions Builder | Kosovo";
 const DESCRIPTION =

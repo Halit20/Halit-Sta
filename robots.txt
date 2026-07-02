@@ -1,4 +1,4 @@
 User-Agent: *
 Allow: /
 
-Sitemap: https://halitstatovci.com/sitemap.xml
+Sitemap: https://halitsta.com/sitemap.xml
