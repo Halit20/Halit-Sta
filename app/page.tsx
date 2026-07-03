@@ -12,6 +12,9 @@ import { Experience } from "@/components/sections/Experience";
 import { Skills } from "@/components/sections/Skills";
 import { Education } from "@/components/sections/Education";
 import { Creative } from "@/components/sections/Creative";
+import { SocialMedia } from "@/components/sections/SocialMedia";
+import { DyshjaNatyre } from "@/components/sections/DyshjaNatyre";
+import { CreatorRoots } from "@/components/sections/CreatorRoots";
 import { Vision } from "@/components/sections/Vision";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
@@ -38,6 +41,9 @@ export default function Home() {
           <Skills />
           <Education />
           <Creative />
+          <SocialMedia />
+          <DyshjaNatyre />
+          <CreatorRoots />
           <Vision />
           <Contact />
         </main>

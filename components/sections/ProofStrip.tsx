@@ -3,15 +3,15 @@
 import { motion } from "framer-motion";
 import {
   IDENTITY_PILLARS,
-  PROJECTS,
   PROOF_POINTS,
   SERVICES,
 } from "@/lib/data";
+import { CASE_STUDIES } from "@/lib/projects";
 import { fadeUp, staggerParent, VIEWPORT_ONCE, EASE } from "@/lib/motion";
 import { CountUp } from "@/components/ui/CountUp";
 
 const STATS = [
-  { value: PROJECTS.length, suffix: "+", label: "Shipped projects" },
+  { value: CASE_STUDIES.length, suffix: "+", label: "Shipped projects" },
   { value: SERVICES.length, suffix: "", label: "Service areas" },
   { value: IDENTITY_PILLARS.length, suffix: "", label: "Disciplines, one operator" },
 ];

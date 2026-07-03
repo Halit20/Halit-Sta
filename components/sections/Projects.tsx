@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
-import { Reveal } from "@/components/ui/Reveal";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { PROJECTS, type Project } from "@/lib/data";
+import {
+  CASE_STUDIES,
+  PROJECT_FILTERS,
+  type CaseStudy,
+  type ProjectFilter,
+} from "@/lib/projects";
 import { EASE, fadeUp, staggerParent } from "@/lib/motion";
 
 function DetailRow({ label, children }: { label: string; children: React.ReactNode }) {
@@ -22,15 +26,60 @@ function DetailRow({ label, children }: { label: string; children: React.ReactNo
   );
 }
 
-/** real domain for the fake address bar when verified, else the project name */
-function chromeLabel(project: Project) {
+/** thumbnail (real screenshot) or the stylized fallback visual */
+function ProjectThumb({
+  project,
+  className,
+}: {
+  project: CaseStudy;
+  className: string;
+}) {
+  if (project.thumbnail) {
+    return (
+      <div className={`relative overflow-hidden bg-ink-900 ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`./${project.thumbnail}`}
+          alt={`${project.title} — website screenshot`}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        {/* cinematic grade so thumbnails sit in the dark theme */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-transparent to-ink-950/20" />
+        {project.protected && (
+          <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 border border-accent/30 bg-ink-950/80 px-2.5 py-1 text-[0.6rem] uppercase tracking-[0.18em] text-accent backdrop-blur">
+            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="5" y="11" width="14" height="9" rx="1.5" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+            Protected system
+          </span>
+        )}
+      </div>
+    );
+  }
   return (
-    project.meta?.match(/[a-z0-9-]+\.[a-z]{2,}[^\s·]*/i)?.[0] ?? project.title
+    <ProjectVisual
+      hue={project.hue ?? "212"}
+      screen={project.screen ?? "dashboard"}
+      label={project.urlLabel ?? project.title}
+      className={className}
+    />
   );
 }
 
 export function Projects() {
-  const [active, setActive] = useState<Project | null>(null);
+  const [active, setActive] = useState<CaseStudy | null>(null);
+  const [filter, setFilter] = useState<ProjectFilter | "all">("all");
+
+  const visible = useMemo(
+    () =>
+      filter === "all"
+        ? CASE_STUDIES
+        : CASE_STUDIES.filter((p) => p.filters.includes(filter)),
+    [filter]
+  );
 
   // close on Escape + lock scroll while modal is open
   useEffect(() => {
@@ -49,78 +98,106 @@ export function Projects() {
     <Section id="work" divider tone="calm">
       <SectionHeading
         eyebrow="Selected Work"
-        title="Real projects — platforms, brands, content, and the *infrastructure* behind them."
-        subtitle="A cross-section of client and personal work. Open any project to see the role I played, what I built, and the purpose it served."
+        title="Full-stack development & *systems.*"
+        subtitle="Real websites, platforms, booking flows, dashboards, inventory tools, and business systems — built for restaurants, education, service companies, hospitality, events, and operations."
       />
 
-      <Reveal
-        stagger={0.07}
-        className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+      {/* filter tabs */}
+      <div className="mt-10 flex flex-wrap gap-2" role="tablist" aria-label="Project filters">
+        {PROJECT_FILTERS.map((f) => {
+          const isActive = filter === f.key;
+          return (
+            <button
+              key={f.key}
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setFilter(f.key)}
+              className={`border px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${
+                isActive
+                  ? "border-accent/60 bg-accent/10 text-mist-100"
+                  : "border-white/10 text-mist-400 hover:border-white/25 hover:text-mist-200"
+              }`}
+            >
+              {f.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <motion.div
+        key={filter}
+        variants={staggerParent(0.05)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
       >
-        {PROJECTS.map((project) => (
+        {visible.map((project) => (
           <TiltCard key={project.id} max={4} className="h-full">
-          <motion.button
-            variants={fadeUp}
-            onClick={() => setActive(project)}
-            aria-label={`View case study: ${project.title}`}
-            className="group surface surface-hover relative flex h-full flex-col overflow-hidden text-left"
-          >
-            <ProjectVisual
-              hue={project.hue}
-              screen={project.screen}
-              label={chromeLabel(project)}
-              className="aspect-[16/10] w-full"
-            />
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-[58%] -translate-y-full bg-gradient-to-b from-white/8 to-transparent transition-transform duration-700 group-hover:translate-y-0" />
+            <motion.button
+              variants={fadeUp}
+              onClick={() => setActive(project)}
+              aria-label={`View case study: ${project.title}`}
+              className="group surface surface-hover relative flex h-full w-full flex-col overflow-hidden text-left"
+            >
+              <ProjectThumb project={project} className="aspect-[16/10] w-full" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-[58%] -translate-y-full bg-gradient-to-b from-white/8 to-transparent transition-transform duration-700 group-hover:translate-y-0" />
 
-            <div className="flex flex-1 flex-col p-6">
-              <span className="text-[0.68rem] uppercase tracking-[0.18em] text-accent/80">
-                {project.category}
-              </span>
-              <h3 className="mt-2 font-display text-lg font-semibold text-mist-100">
-                {project.title}
-              </h3>
-              <p className="mt-2 text-[0.88rem] leading-relaxed text-mist-400">
-                {project.tagline}
-              </p>
-
-              <div className="mt-4 flex items-start gap-2 text-[0.78rem] text-mist-400">
-                <span className="mt-[2px] shrink-0 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-accent/70">
-                  Role
+              <div className="flex flex-1 flex-col p-6">
+                <span className="text-[0.68rem] uppercase tracking-[0.18em] text-accent/80">
+                  {project.category}
                 </span>
-                <span className="leading-snug">{project.role}</span>
-              </div>
+                <h3 className="mt-2 font-display text-lg font-semibold text-mist-100">
+                  {project.title}
+                </h3>
+                <p className="mt-2 text-[0.88rem] leading-relaxed text-mist-400">
+                  {project.summary}
+                </p>
 
-              <div className="mt-auto flex flex-wrap gap-2 pt-5">
-                {project.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-white/8 px-2.5 py-1 text-[0.68rem] text-mist-400"
-                  >
-                    {t}
+                <div className="mt-4 flex items-start gap-2 text-[0.78rem] text-mist-400">
+                  <span className="mt-[2px] shrink-0 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-accent/70">
+                    Role
                   </span>
-                ))}
-              </div>
+                  <span className="leading-snug">{project.role}</span>
+                </div>
 
-              <div className="mt-4 flex justify-end border-t border-white/8 pt-4">
-                <span className="flex items-center gap-1 text-[0.75rem] font-medium text-mist-200 transition-colors group-hover:text-accent">
-                  View Case Study
-                  <svg
-                    className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
-                </span>
+                <div className="mt-auto flex flex-wrap gap-2 pt-5">
+                  {project.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="border border-white/8 px-2.5 py-1 text-[0.68rem] text-mist-400"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-4 flex items-center justify-between border-t border-white/8 pt-4">
+                  {project.url ? (
+                    <span className="font-mono text-[0.66rem] tracking-wide text-mist-500">
+                      {project.urlLabel}
+                    </span>
+                  ) : (
+                    <span />
+                  )}
+                  <span className="flex items-center gap-1 text-[0.75rem] font-medium text-mist-200 transition-colors group-hover:text-accent">
+                    View Case Study
+                    <svg
+                      className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                </div>
               </div>
-            </div>
-          </motion.button>
+            </motion.button>
           </TiltCard>
         ))}
-      </Reveal>
+      </motion.div>
 
       {/* Case-study modal */}
       <AnimatePresence>
@@ -150,88 +227,13 @@ export function Projects() {
                 initial="hidden"
                 animate="show"
               >
-              <motion.div variants={fadeUp} className="relative">
-                <ProjectVisual
-                  hue={active.hue}
-                  screen={active.screen}
-                  label={chromeLabel(active)}
-                  className="aspect-[16/7] w-full"
-                />
-                <button
-                  onClick={() => setActive(null)}
-                  aria-label="Close case study"
-                  className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-ink-950/60 text-mist-300 backdrop-blur transition-colors hover:text-mist-100"
-                >
-                  <svg
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M6 6l12 12M18 6 6 18" />
-                  </svg>
-                </button>
-              </motion.div>
-
-              <div className="p-7 sm:p-8">
-                <motion.span
-                  variants={fadeUp}
-                  className="text-[0.72rem] uppercase tracking-[0.18em] text-accent/80"
-                >
-                  {active.category}
-                </motion.span>
-                <motion.h3
-                  variants={fadeUp}
-                  className="mt-2 font-display text-2xl font-semibold text-mist-100"
-                >
-                  {active.title}
-                </motion.h3>
-                <motion.p variants={fadeUp} className="mt-3 leading-relaxed text-mist-400">
-                  {active.tagline}
-                </motion.p>
-                {active.meta && (
-                  <motion.p
-                    variants={fadeUp}
-                    className="mt-2 font-mono text-[0.72rem] tracking-wide text-mist-500"
-                  >
-                    {active.meta}
-                  </motion.p>
-                )}
-
-                <motion.div variants={fadeUp} className="mt-6">
-                  <DetailRow label="Role">{active.role}</DetailRow>
-                  <DetailRow label="What I built">
-                    <ul className="space-y-2">
-                      {active.built.map((line) => (
-                        <li key={line} className="flex items-start gap-2.5">
-                          <span className="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-accent/70" />
-                          {line}
-                        </li>
-                      ))}
-                    </ul>
-                  </DetailRow>
-                  <DetailRow label="Purpose / Result">{active.result}</DetailRow>
-                </motion.div>
-
-                <motion.div variants={fadeUp} className="mt-6 flex flex-wrap gap-2">
-                  {active.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs text-mist-300"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </motion.div>
-
-                <motion.div variants={fadeUp}>
-                  <MagneticButton
-                    href="#contact"
+                <motion.div variants={fadeUp} className="relative">
+                  <ProjectThumb project={active} className="aspect-[16/8] w-full" />
+                  <button
                     onClick={() => setActive(null)}
-                    className="btn-primary mt-7 !py-2.5 text-sm"
+                    aria-label="Close case study"
+                    className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-ink-950/60 text-mist-300 backdrop-blur transition-colors hover:text-mist-100"
                   >
-                    Start a project like this
                     <svg
                       className="h-4 w-4"
                       viewBox="0 0 24 24"
@@ -239,11 +241,109 @@ export function Projects() {
                       stroke="currentColor"
                       strokeWidth="2"
                     >
-                      <path d="M5 12h14M13 6l6 6-6 6" />
+                      <path d="M6 6l12 12M18 6 6 18" />
                     </svg>
-                  </MagneticButton>
+                  </button>
                 </motion.div>
-              </div>
+
+                <div className="p-7 sm:p-8">
+                  <motion.span
+                    variants={fadeUp}
+                    className="text-[0.72rem] uppercase tracking-[0.18em] text-accent/80"
+                  >
+                    {active.category}
+                  </motion.span>
+                  <motion.h3
+                    variants={fadeUp}
+                    className="mt-2 font-display text-2xl font-semibold text-mist-100"
+                  >
+                    {active.title}
+                  </motion.h3>
+                  <motion.p variants={fadeUp} className="mt-3 leading-relaxed text-mist-400">
+                    {active.summary}
+                  </motion.p>
+                  {active.urlLabel && (
+                    <motion.p
+                      variants={fadeUp}
+                      className="mt-2 font-mono text-[0.72rem] tracking-wide text-mist-500"
+                    >
+                      {active.urlLabel}
+                    </motion.p>
+                  )}
+
+                  <motion.div variants={fadeUp} className="mt-6">
+                    <DetailRow label="My Role">{active.role}</DetailRow>
+                    <DetailRow label="What Was Built">
+                      <ul className="space-y-2">
+                        {active.built.map((line) => (
+                          <li key={line} className="flex items-start gap-2.5">
+                            <span className="mt-[0.55em] h-1 w-1 shrink-0 bg-accent/70" />
+                            {line}
+                          </li>
+                        ))}
+                      </ul>
+                    </DetailRow>
+                    <DetailRow label="Business Purpose">{active.purpose}</DetailRow>
+                    {active.protected && (
+                      <DetailRow label="Access">
+                        Login-protected system — only the public login screen is
+                        shown. No private data is exposed.
+                      </DetailRow>
+                    )}
+                  </motion.div>
+
+                  <motion.div variants={fadeUp} className="mt-6 flex flex-wrap gap-2">
+                    {active.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="border border-white/10 bg-white/[0.02] px-3 py-1 text-xs text-mist-300"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </motion.div>
+
+                  <motion.div
+                    variants={fadeUp}
+                    className="mt-7 flex flex-wrap items-center gap-3"
+                  >
+                    {active.url && (
+                      <a
+                        href={active.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary !py-2.5 text-sm"
+                      >
+                        Visit Website
+                        <svg
+                          className="h-4 w-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path d="M7 17 17 7M9 7h8v8" />
+                        </svg>
+                      </a>
+                    )}
+                    <MagneticButton
+                      href="#contact"
+                      onClick={() => setActive(null)}
+                      className={`${active.url ? "btn-ghost" : "btn-primary"} !py-2.5 text-sm`}
+                    >
+                      Start a project like this
+                      <svg
+                        className="h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M5 12h14M13 6l6 6-6 6" />
+                      </svg>
+                    </MagneticButton>
+                  </motion.div>
+                </div>
               </motion.div>
             </motion.div>
           </motion.div>
