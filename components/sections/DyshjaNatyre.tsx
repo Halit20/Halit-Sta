@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { AnimatedText } from "@/components/ui/AnimatedText";
@@ -15,7 +16,11 @@ import {
 } from "@/lib/dyshja";
 import { EASE, fadeUp } from "@/lib/motion";
 
+/** latest episodes always visible; the rest expand on demand */
+const INITIAL_VIDEOS = 6;
+
 export function DyshjaNatyre() {
+  const [showAll, setShowAll] = useState(false);
   return (
     <Section id="dyshja" divider tone="warm">
       {/* 1 — cinematic intro */}
@@ -201,12 +206,57 @@ export function DyshjaNatyre() {
           stagger={0.05}
           className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {DYSHJA_VIDEOS.map((v) => (
+          {DYSHJA_VIDEOS.slice(0, INITIAL_VIDEOS).map((v) => (
             <motion.div key={v.id} variants={fadeUp}>
               <LiteYouTube id={v.id} title={v.title} />
             </motion.div>
           ))}
         </Reveal>
+
+        {/* older episodes expand below the latest six */}
+        <AnimatePresence initial={false}>
+          {showAll && (
+            <motion.div
+              key="more-episodes"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="overflow-hidden"
+            >
+              <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {DYSHJA_VIDEOS.slice(INITIAL_VIDEOS).map((v) => (
+                  <LiteYouTube key={v.id} id={v.id} title={v.title} />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {DYSHJA_VIDEOS.length > INITIAL_VIDEOS && (
+          <div className="mt-7 flex justify-center">
+            <button
+              onClick={() => setShowAll((v) => !v)}
+              aria-expanded={showAll}
+              className="btn-ghost"
+            >
+              {showAll
+                ? "Show latest episodes only"
+                : `Show all ${DYSHJA_VIDEOS.length} episodes`}
+              <svg
+                className={`h-3.5 w-3.5 transition-transform duration-300 ${
+                  showAll ? "rotate-180" : ""
+                }`}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 6 — socials + CTA */}
