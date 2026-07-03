@@ -37,7 +37,7 @@ export function Skills() {
     <Section id="skills" divider tone="calm">
       <SectionHeading
         eyebrow="Skills & Tools"
-        title="A full-cycle toolkit for modern digital work."
+        title="A full-cycle *toolkit* for modern digital work."
         subtitle="One skill set, several sides — code, infrastructure, AI, creative production, and the languages to work internationally — so a project never has to leave my hands to move forward."
       />
 

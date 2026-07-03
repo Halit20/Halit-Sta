@@ -34,7 +34,7 @@ export function IdentityReveal() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <span className="h-px w-6 bg-accent/70" />
+              <span className="h-1.5 w-1.5 bg-accent" />
               The full picture
             </motion.span>
             <h2 className="text-balance text-3xl leading-[1.08] sm:text-4xl lg:text-[2.7rem]">

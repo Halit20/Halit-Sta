@@ -14,7 +14,7 @@ export function Services() {
     <Section id="services" tone="calm">
       <SectionHeading
         eyebrow="Services"
-        title="The full digital side of a business — built from strategy to launch."
+        title="The full digital side of a business — built from *strategy to launch.*"
         subtitle="Engineering, design, AI, media, and infrastructure, handled together so the parts actually work as one system instead of six disconnected vendors."
       />
 

@@ -25,7 +25,7 @@ export function Process() {
     <Section id="process" divider tone="calm">
       <SectionHeading
         eyebrow="How I Work"
-        title="From idea to launch — structured, creative, and technical."
+        title="From *idea to launch* — structured, creative, and technical."
         subtitle="A clear path that keeps strategy, design, engineering and deployment moving as one — so nothing falls between disciplines."
       />
 
@@ -52,8 +52,8 @@ export function Process() {
                 <div className="flex items-center gap-4 md:block">
                   <motion.span
                     whileInView={{
-                      borderColor: "rgba(56,189,248,0.6)",
-                      color: "#38bdf8",
+                      borderColor: "rgba(214,165,68,0.6)",
+                      color: "#d6a544",
                     }}
                     viewport={{ once: true, margin: "-35% 0px" }}
                     transition={{ duration: 0.4, delay: 0.1 }}
@@ -88,7 +88,7 @@ export function Process() {
               className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full blur-3xl"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(56,189,248,0.18), transparent 70%)",
+                  "radial-gradient(circle, rgba(214,165,68,0.18), transparent 70%)",
               }}
             />
             {/* panel header */}
@@ -97,7 +97,7 @@ export function Process() {
                 Project pipeline
               </span>
               <span className="flex items-center gap-1.5 text-[0.62rem] uppercase tracking-widest text-mist-500">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(214,165,68,0.8)]" />
                 live
               </span>
             </div>

@@ -4,11 +4,11 @@
 
 :root {
   --bg: #030303;
-  --accent: #38bdf8;
-  --accent2: #8b5cf6;
+  --accent: #d6a544;
+  --accent2: #9a7434;
   --shell-px: clamp(1.25rem, 5vw, 3rem);
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Sora", "Inter", system-ui, sans-serif;
+  --font-display: "Archivo", "Inter", system-ui, sans-serif;
 }
 
 * {
@@ -43,7 +43,7 @@ body {
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.25);
+  background: rgba(214, 165, 68, 0.3);
   color: #f5f5f5;
 }
 
@@ -103,11 +103,11 @@ body {
   }
   .surface-hover:hover {
     transform: translateY(-4px);
-    border-color: rgba(56, 189, 248, 0.28);
+    border-color: rgba(214, 165, 68, 0.32);
     box-shadow:
       0 30px 60px -30px rgba(0, 0, 0, 0.9),
-      0 0 40px -18px rgba(56, 189, 248, 0.45),
-      0 0 60px -24px rgba(139, 92, 246, 0.35);
+      0 0 40px -18px rgba(214, 165, 68, 0.4),
+      0 0 60px -24px rgba(154, 116, 52, 0.3);
   }
 
   /* Gradient-clipped text needs breathing room: the bottom padding keeps
@@ -129,9 +129,9 @@ body {
   .text-accent-gradient {
     background: linear-gradient(
       110deg,
-      #7dd3fc 0%,
-      #38bdf8 40%,
-      #8b5cf6 100%
+      #f2dfae 0%,
+      #d6a544 45%,
+      #9a7434 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -168,20 +168,21 @@ body {
     );
   }
 
+  /* sharp rectangular buttons — uppercase, letter-spaced, no radius */
   .btn {
-    @apply relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 will-change-transform;
+    @apply relative inline-flex items-center justify-center gap-2.5 rounded-none px-7 py-[0.95rem] text-[0.76rem] font-semibold uppercase tracking-[0.16em] transition-all duration-300 will-change-transform;
   }
   .btn-primary {
     @apply btn bg-mist-100 text-ink-950 hover:bg-white;
-    box-shadow: 0 10px 40px -12px rgba(245, 245, 245, 0.4);
+    box-shadow: 0 10px 40px -12px rgba(245, 245, 245, 0.35);
   }
   .btn-primary:hover {
     box-shadow:
-      0 14px 50px -10px rgba(56, 189, 248, 0.5),
-      0 6px 60px -14px rgba(139, 92, 246, 0.45);
+      0 14px 50px -10px rgba(214, 165, 68, 0.45),
+      0 6px 60px -14px rgba(154, 116, 52, 0.4);
   }
   .btn-ghost {
-    @apply btn border border-white/10 text-mist-300 hover:border-white/30 hover:text-mist-100;
+    @apply btn border border-white/10 text-mist-300 hover:border-accent/40 hover:text-mist-100;
   }
 
   .field-wrap {
@@ -193,7 +194,7 @@ body {
     inset-inline: 0;
     bottom: 0;
     height: 1.5px;
-    background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+    background: linear-gradient(90deg, #d6a544, #9a7434);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
@@ -273,6 +274,39 @@ body {
       #000 88%,
       transparent
     );
+  }
+
+  /* Italic display accent — the "second voice" of every headline */
+  .accent-italic {
+    @apply font-display italic text-accent;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* Chromatic-aberration glitch on key italic phrases (reference: RGB split).
+     Two color-fringed shadows breathe apart briefly on a long loop. */
+  .text-glitch {
+    animation: glitchSplit 7s steps(1) infinite;
+  }
+  @keyframes glitchSplit {
+    0%, 91%, 100% {
+      text-shadow: none;
+    }
+    92%, 95% {
+      text-shadow:
+        2px 0 rgba(255, 70, 90, 0.55),
+        -2px 0 rgba(90, 120, 255, 0.55);
+    }
+    93%, 96% {
+      text-shadow:
+        -2.5px 0 rgba(255, 70, 90, 0.45),
+        2.5px 0 rgba(90, 120, 255, 0.45);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .text-glitch {
+      animation: none;
+    }
   }
 
   /* SVG line-icons redraw themselves when the parent .group is hovered */

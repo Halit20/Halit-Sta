@@ -33,7 +33,7 @@ export function SectionHeading({
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: EASE }}
       >
-        <span className="h-px w-6 bg-accent/70" />
+        <span className="h-1.5 w-1.5 bg-accent" />
         {eyebrow}
       </motion.span>
 

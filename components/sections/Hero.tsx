@@ -36,13 +36,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
-            className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5"
+            className="mb-7 inline-flex items-center gap-3 border border-white/10 bg-white/[0.03] px-4 py-2"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-            </span>
-            <span className="text-xs tracking-wide text-mist-300">
+            <span className="h-1.5 w-1.5 bg-accent" />
+            <span className="text-[0.68rem] uppercase tracking-[0.22em] text-mist-300">
               {PROFILE.availability}
             </span>
           </motion.div>
@@ -57,7 +54,7 @@ export function Hero() {
               transition={{ duration: 0.7, ease: EASE, delay: 0.8 }}
               className="mt-5 block text-[1.2rem] font-medium leading-[1.4] text-mist-200 sm:text-[1.4rem] lg:text-[1.6rem]"
             >
-              <span className="text-accent-gradient animate-gradient-pan">Full-Cycle AI Engineer</span>
+              <span className="accent-italic text-glitch">Full-Cycle AI Engineer</span>
               <span className="text-mist-500"> &amp; </span>
               <span className="text-mist-200">Digital Solutions Builder</span>
             </motion.span>
@@ -111,7 +108,7 @@ export function Hero() {
                 }}
                 className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-mist-500"
               >
-                <span className="h-1 w-1 rounded-full bg-accent/80" />
+                <span className="h-1 w-1 bg-accent/80" />
                 {label}
               </motion.li>
             ))}
@@ -149,13 +146,13 @@ export function Hero() {
                 />
                 {/* graphite duotone deepen */}
                 <div className="absolute inset-0 bg-gradient-to-br from-ink-950/30 via-transparent to-ink-950/60 mix-blend-multiply" />
-                {/* cool cyan key wash */}
+                {/* warm gold key wash */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-accent/15 via-transparent to-transparent mix-blend-soft-light" />
                 {/* mask edges into the scene (left + bottom) */}
                 <div className="absolute inset-0 bg-gradient-to-r from-ink-950/70 via-transparent to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/15 to-transparent" />
-                {/* rim light: bright top edge + cyan right rim + lifted contrast */}
-                <div className="absolute inset-0 rounded-[1.6rem] shadow-[inset_0_1.5px_0_rgba(255,255,255,0.18),inset_-26px_0_55px_-38px_rgba(125,211,252,0.65),inset_0_-1px_0_rgba(0,0,0,0.5)]" />
+                {/* rim light: bright top edge + gold right rim + lifted contrast */}
+                <div className="absolute inset-0 rounded-[1.6rem] shadow-[inset_0_1.5px_0_rgba(255,255,255,0.18),inset_-26px_0_55px_-38px_rgba(234,201,126,0.6),inset_0_-1px_0_rgba(0,0,0,0.5)]" />
                 {/* one-time shine sweep */}
                 <motion.div
                   aria-hidden

@@ -19,7 +19,7 @@ export function Experience() {
     <Section id="experience" divider tone="warm">
       <SectionHeading
         eyebrow="Experience"
-        title="A track record across systems, institutions, and creative work."
+        title="A track record across systems, institutions, and *creative work.*"
         subtitle="Hands-on experience that spans product engineering, institutional IT, client delivery, and original media."
       />
 
@@ -47,7 +47,7 @@ export function Experience() {
                 <span className="absolute h-4 w-4 animate-pulse-slow rounded-full bg-accent/30" />
                 <motion.span
                   whileInView={{
-                    boxShadow: "0 0 18px 2px rgba(56,189,248,0.45)",
+                    boxShadow: "0 0 18px 2px rgba(214,165,68,0.45)",
                   }}
                   viewport={{ once: true, margin: "-30% 0px" }}
                   className="relative h-2 w-2 rounded-full bg-accent ring-4 ring-ink-950"

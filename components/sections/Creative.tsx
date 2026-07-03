@@ -154,7 +154,7 @@ export function Creative() {
     <Section id="media" divider tone="control">
       <SectionHeading
         eyebrow="Beyond Work"
-        title="The creative side."
+        title="The *creative* side."
         subtitle="Technology gives structure. Creativity gives it attention. That combination is what makes a digital presence memorable."
       />
 

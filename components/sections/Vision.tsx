@@ -22,7 +22,7 @@ export function Vision() {
           className="absolute left-1/2 top-1/2 h-[40vh] w-[70vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 blur-[120px]"
           style={{
             background:
-              "radial-gradient(circle, rgba(56,189,248,0.16), transparent 70%)",
+              "radial-gradient(circle, rgba(214,165,68,0.16), transparent 70%)",
           }}
         />
         <div className="grid-overlay absolute inset-0 opacity-40 [mask-image:radial-gradient(80%_60%_at_50%_50%,#000,transparent)]" />
@@ -35,13 +35,13 @@ export function Vision() {
           {/* left — headline + copy */}
           <div className="headline-shade">
             <span className="eyebrow">
-              <span className="h-px w-6 bg-accent/70" />
+              <span className="h-1.5 w-1.5 bg-accent" />
               Vision
             </span>
             <h2 className="mt-6 max-w-2xl pb-[0.1em] font-display text-4xl font-bold leading-[1.06] tracking-tightest sm:text-5xl lg:text-[3.4rem]">
-              <span className="text-gradient">
-                Building the digital layer for modern businesses.
-              </span>
+              <span className="text-gradient">Building the </span>
+              <span className="accent-italic text-glitch">digital layer</span>
+              <span className="text-gradient"> for modern businesses.</span>
             </h2>
 
             <ScrubText
@@ -83,7 +83,7 @@ export function Vision() {
               className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full blur-3xl"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(56,189,248,0.2), transparent 70%)",
+                  "radial-gradient(circle, rgba(214,165,68,0.2), transparent 70%)",
               }}
             />
             <span className="text-[0.66rem] uppercase tracking-[0.2em] text-accent/80">

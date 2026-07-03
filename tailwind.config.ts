@@ -27,18 +27,19 @@ const config: Config = {
           200: "#E5E5E5",
           100: "#F5F5F5",
         },
+        // champagne gold — signature accent of the black/gold identity
         accent: {
-          DEFAULT: "#38BDF8",
-          soft: "#7dd3fc",
-          deep: "#0ea5e9",
-          glow: "rgba(56, 189, 248, 0.55)",
+          DEFAULT: "#D6A544",
+          soft: "#EAC97E",
+          deep: "#A87C2C",
+          glow: "rgba(214, 165, 68, 0.55)",
         },
-        // dusk violet — the atmosphere color of the 3D terrain
+        // deep bronze — the low warm tone of the atmosphere
         accent2: {
-          DEFAULT: "#8B5CF6",
-          soft: "#A78BFA",
-          deep: "#7C3AED",
-          glow: "rgba(139, 92, 246, 0.5)",
+          DEFAULT: "#9A7434",
+          soft: "#C09A58",
+          deep: "#7C5A22",
+          glow: "rgba(154, 116, 52, 0.5)",
         },
       },
       fontFamily: {
@@ -53,7 +54,7 @@ const config: Config = {
       },
       boxShadow: {
         glow: "0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px -20px rgba(0,0,0,0.8)",
-        "glow-accent": "0 0 40px -10px rgba(56,189,248,0.4)",
+        "glow-accent": "0 0 40px -10px rgba(214,165,68,0.4)",
       },
       backgroundImage: {
         "grid-fade":

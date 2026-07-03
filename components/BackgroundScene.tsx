@@ -3,39 +3,72 @@
 import { useEffect, useRef } from "react";
 
 /**
- * BackgroundScene — "flight over the digital terrain".
+ * BackgroundScene — "the digital silk field".
  *
- * A real-time 3D WebGL scene: a wireframe topographic landscape flowing
- * beneath the page, seen from drone altitude. The terrain is displaced by
- * fbm noise in the vertex shader and rendered as glowing contour wires +
- * ridge beacons, fading into cyan→violet atmospheric fog.
+ * A cinematic real-time WebGL atmosphere: domain-warped volumetric light
+ * fields ("silk" ribbons of data) drifting through graphite darkness, with a
+ * 3D particle field the camera travels through as the page scrolls.
  *
  * Zero dependencies (raw WebGL1) — works in the static / file:// export.
  *
- * Reactivity:
- *   - constant forward "flight" along the valley (time-scrolled noise)
- *   - mouse parallax tilts the camera (pitch/yaw, smoothed)
- *   - scroll shifts the fog hue toward violet and dims the scene
+ * Composition (back to front):
+ *   1. warm obsidian base
+ *   2. far nebula body   — slow domain-warped fbm, deep bronze
+ *   3. mid silk ribbons  — brighter warped bands, gold core / bronze edge
+ *   4. neural filaments  — thin seams where the two warp fields agree
+ *   5. obsidian sphere   — dark planet with a gold fresnel rim + orbital
+ *      ring behind the hero, fading out as the page scrolls
+ *   6. particle field    — glowing motes + rare bright nodes in true depth
+ *
+ * Scroll reactivity:
+ *   - each atmosphere layer translates at a different rate (parallax)
+ *   - particles advance in z: the camera flies forward through the field
+ *   - a "mood" curve retunes intensity + hue per page region:
+ *     hero full, mid sections calmer, creative section gets a champagne
+ *     cinematic lift, contact/footer fades near-dark
  *
  * Performance:
- *   - DPR clamped (1.75 desktop / 1.5 coarse-pointer)
- *   - grid density halved on coarse-pointer devices
+ *   - atmosphere is rendered at half resolution into an FBO and
+ *     upscaled with linear filtering (soft cinematic look, big GPU win)
+ *   - fbm octaves + particle count reduced on coarse-pointer devices
+ *   - DPR clamped; blit pass dithers to kill gradient banding
  *   - pauses when the tab is hidden; context-loss safe
  *   - prefers-reduced-motion → a single static frame
  */
 
-const VERT = /* glsl */ `
+/* ------------------------------------------------------------------ */
+/* shaders (ASCII only; varying precision must match across stages)   */
+/* ------------------------------------------------------------------ */
+
+const VERT_QUAD = /* glsl */ `
 precision highp float;
-attribute vec2 aPos;            // x in [-1,1], y (depth) in [0,1]
+attribute vec2 aPos;
+varying mediump vec2 vUv;
+void main() {
+  vUv = aPos * 0.5 + 0.5;
+  gl_Position = vec4(aPos, 0.0, 1.0);
+}
+`;
+
+// Shared prelude: fp32 fragments where the hardware has them (sin-based
+// hashing overflows fp16 mediump once time-scrolled coordinates grow).
+const FRAG_PRELUDE = /* glsl */ `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+`;
+
+// OCT is injected per device (4 mobile / 5 desktop) before compiling.
+const FRAG_ATMOS = /* glsl */ `
+varying mediump vec2 vUv;
 uniform float uTime;
+uniform mediump float uScroll;
+uniform mediump float uMood;
+uniform mediump float uHue;
+uniform vec2  uTilt;
 uniform float uAspect;
-uniform vec2  uTilt;            // smoothed mouse (-1..1, -1..1)
-uniform mediump float uScroll;  // 0..1 page progress
-uniform mediump float uMode;    // 0 = wires, 1 = beacons
-uniform float uDpr;
-varying mediump float vH;       // terrain height 0..1
-varying mediump float vZ;       // camera-space distance
-varying mediump float vSeed;    // per-vertex hash for beacons
 
 float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -53,115 +86,188 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
   float v = 0.0;
   float a = 0.5;
-  for (int i = 0; i < 4; i++) {
+  mat2 r = mat2(0.8, -0.6, 0.6, 0.8);
+  for (int i = 0; i < OCT; i++) {
     v += a * noise(p);
-    p = p * 2.03 + vec2(11.7, 5.3);
+    p = r * p * 2.02 + vec2(9.7, 3.1);
     a *= 0.5;
   }
   return v;
 }
 
 void main() {
-  float span  = 15.0;
-  float depth = 27.0;
-  vec3 pos = vec3(aPos.x * span, 0.0, -aPos.y * depth);
+  vec2 p = vec2((vUv.x - 0.5) * uAspect, vUv.y - 0.5);
+  float t = uTime * 0.030;
+  float travel = uScroll * 2.6;
 
-  // noise field scrolls toward the camera: perpetual forward flight
-  vec2 q = vec2(
-    pos.x * 0.16 + sin(uTime * 0.05) * 0.6,
-    (pos.z - uTime * 1.7) * 0.16
-  );
-  float h = fbm(q);
+  // far layer: slow drift, weak scroll parallax
+  vec2 pf = p * 1.25 + vec2(t * 0.40 + uTilt.x * 0.020,
+                            -travel * 0.30 + uTilt.y * 0.015);
 
-  // carve a valley down the middle so the flight path stays open
-  float valley = smoothstep(0.06, 0.62, abs(aPos.x));
-  h *= mix(0.34, 1.0, valley);
-  pos.y = h * 3.8 - 2.1;
+  // iq-style domain warp: fbm fed with fbm
+  vec2 w1 = vec2(fbm(pf + vec2(0.0, t)),
+                 fbm(pf + vec2(5.2, 1.3)));
+  vec2 w2 = vec2(fbm(pf + 2.2 * w1 + vec2(1.7, 9.2) + vec2(0.0, -travel * 0.18)),
+                 fbm(pf + 2.2 * w1 + vec2(8.3, 2.8) - vec2(0.0, t * 0.6)));
+  float f = fbm(pf + 2.0 * w2);
 
-  vH = h;
-  vSeed = hash(aPos * 91.7);
+  // mid layer: finer field, stronger scroll parallax
+  vec2 pm = p * 2.1 + vec2(-t * 0.6, -travel * 0.85);
+  float g = fbm(pm + 1.8 * w2);
 
-  // camera above the valley, pitched down; mouse adds parallax
-  vec3 pcam = pos - vec3(0.0, 0.0, 2.2);
-  float pitch = -0.16 + uTilt.y * 0.045 + uScroll * 0.06;
-  float yaw   = uTilt.x * 0.07;
-  float cp = cos(pitch); float sp = sin(pitch);
-  pcam.yz = mat2(cp, -sp, sp, cp) * pcam.yz;
-  float cy = cos(yaw); float sy = sin(yaw);
-  pcam.xz = mat2(cy, -sy, sy, cy) * pcam.xz;
+  vec3 base   = vec3(0.016, 0.013, 0.009);
+  vec3 gold   = vec3(0.839, 0.647, 0.267);   // #d6a544
+  vec3 champ  = vec3(0.918, 0.788, 0.494);   // cinematic tilt target
+  vec3 bronze = vec3(0.604, 0.455, 0.204);   // #9a7434
+  vec3 accA   = mix(gold, champ, uHue);
 
-  float zz = -pcam.z;          // distance in front of the camera (always > 0)
-  vZ = zz;
+  // 2 — deep nebula body
+  float body = smoothstep(0.30, 0.85, f);
+  vec3 col = base + body * body * mix(bronze, accA, w1.y) * 0.13;
 
-  float f = 1.55;              // focal length
-  gl_Position = vec4(pcam.x * f / uAspect, pcam.y * f, 0.0, zz);
-  gl_PointSize = uMode > 0.5 ? (26.0 / zz) * uDpr : 1.0;
+  // 3 — silk ribbon: a soft band carved out of the mid field
+  float band = smoothstep(0.42, 0.55, g) * smoothstep(0.72, 0.55, g);
+  col += band * mix(accA, bronze, w2.x) * (0.15 + 0.24 * body);
+
+  // 4 — neural filaments: thin seams where the two warped fields agree
+  float fil = smoothstep(0.055, 0.0, abs(f - g)) * body;
+  col += fil * mix(accA, vec3(1.0, 0.95, 0.85), 0.35) * 0.10;
+
+  // breathing light core in the upper field (strongest in the hero)
+  float glow = exp(-3.2 * length(p - vec2(0.12, 0.16)));
+  glow *= 0.80 + 0.20 * sin(uTime * 0.35);
+  col += glow * mix(accA, bronze, 0.35) * 0.09 * uMood;
+
+  // 5 — the obsidian sphere: dark planet, gold rim, hero only
+  float sVis = 1.0 - smoothstep(0.04, 0.20, uScroll);
+  if (sVis > 0.001) {
+    vec2 sc = p - vec2(0.0, 0.05) - uTilt * 0.025;
+    float r = 0.34;
+    float d = length(sc);
+    float inside = smoothstep(r + 0.003, r - 0.003, d);
+
+    // lambert-lit ball with drifting warm reflections + fresnel rim
+    vec3 n = vec3(sc / r, 0.0);
+    n.z = sqrt(max(0.0, 1.0 - dot(n.xy, n.xy)));
+    vec3 L = normalize(vec3(0.55, 0.40, 0.72));
+    float diff = max(dot(n, L), 0.0);
+    float refl = fbm(n.xy * 2.6 + vec2(t * 2.0, 0.0));
+    float spec = pow(max(dot(reflect(-L, n), vec3(0.0, 0.0, 1.0)), 0.0), 28.0);
+    float rim  = pow(1.0 - n.z, 3.5);
+
+    vec3 sphereCol = vec3(0.014, 0.012, 0.009)
+      + pow(diff, 2.4) * (0.10 + 0.22 * refl * refl) * gold
+      + spec * vec3(0.95, 0.80, 0.48) * 0.45
+      + rim * gold * (0.30 + 0.25 * refl);
+
+    col = mix(col, sphereCol, inside * sVis);
+
+    // soft gold halo hugging the limb
+    float halo = exp(-16.0 * max(d - r, 0.0)) * (1.0 - inside);
+    col += halo * gold * 0.08 * sVis;
+
+    // tilted orbital ring, hidden where it passes behind the sphere
+    float ca = cos(-0.22);
+    float sa = sin(-0.22);
+    vec2 q = mat2(ca, -sa, sa, ca) * sc;
+    q.y *= 3.4;
+    float ring = smoothstep(0.0045, 0.0, abs(length(q) - r * 1.5));
+    ring *= 1.0 - inside * step(q.y, 0.0);
+    col += ring * gold * 0.28 * sVis;
+  }
+
+  // gentle edge vignette inside the scene itself
+  col *= 1.0 - 0.35 * dot(p, p);
+
+  // mood: dim toward the foot of the page but never fully dead
+  col *= 0.30 + 0.70 * uMood;
+
+  gl_FragColor = vec4(col, 1.0);
 }
 `;
 
-const FRAG = /* glsl */ `
-precision mediump float;
-uniform mediump float uScroll;
-uniform mediump float uMode;
-varying mediump float vH;
-varying mediump float vZ;
-varying mediump float vSeed;
+const FRAG_BLIT = /* glsl */ `
+varying mediump vec2 vUv;
+uniform sampler2D uTex;
+uniform float uTime;
+
+float hash(vec2 p) {
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+}
 
 void main() {
-  // dusk palette: cyan ridges near, violet atmosphere far
-  vec3 cyan   = vec3(0.220, 0.741, 0.973);   // #38bdf8
-  vec3 violet = vec3(0.545, 0.361, 0.965);   // #8b5cf6
-  vec3 white  = vec3(0.92, 0.96, 1.0);
-
-  float far  = smoothstep(2.0, 26.0, vZ);
-  vec3 col = mix(cyan, violet, clamp(far * 1.15 + uScroll * 0.35, 0.0, 1.0));
-  // ridge highlights whiten near the crest
-  col = mix(col, white, smoothstep(0.72, 0.98, vH) * 0.55);
-
-  // atmospheric falloff: bright near, dissolving into fog far away
-  float fog = 1.0 - smoothstep(5.0, 26.0, vZ);
-  float alpha = (0.16 + vH * 0.62) * fog;
-
-  if (uMode > 0.5) {
-    // beacons: sparse glowing points on high ridges only
-    vec2 c = gl_PointCoord - 0.5;
-    float d = length(c);
-    float dot_ = smoothstep(0.5, 0.05, d);
-    float keep = step(0.965, vSeed) * smoothstep(0.55, 0.8, vH);
-    alpha = dot_ * keep * fog * 1.4;
-    col = mix(col, white, 0.5);
-  }
-
-  gl_FragColor = vec4(col * alpha, alpha);
+  vec3 col = texture2D(uTex, vUv).rgb;
+  // ordered-noise dither kills banding in the dark gradients
+  col += (hash(vUv * 1024.0 + uTime) - 0.5) * (1.6 / 255.0);
+  gl_FragColor = vec4(col, 1.0);
 }
 `;
 
-function buildGrid(cols: number, rows: number) {
-  const verts = new Float32Array((cols + 1) * (rows + 1) * 2);
-  let v = 0;
-  for (let r = 0; r <= rows; r++) {
-    for (let c = 0; c <= cols; c++) {
-      verts[v++] = (c / cols) * 2 - 1; // x  -1..1
-      verts[v++] = r / rows; //           depth 0..1
-    }
-  }
-  // wire segments along both axes
-  const segs = rows * (cols + 1) + cols * (rows + 1);
-  const idx = new Uint16Array(segs * 2);
-  let i = 0;
-  const at = (c: number, r: number) => r * (cols + 1) + c;
-  for (let r = 0; r <= rows; r++)
-    for (let c = 0; c < cols; c++) {
-      idx[i++] = at(c, r);
-      idx[i++] = at(c + 1, r);
-    }
-  for (let c = 0; c <= cols; c++)
-    for (let r = 0; r < rows; r++) {
-      idx[i++] = at(c, r);
-      idx[i++] = at(c, r + 1);
-    }
-  return { verts, idx };
+const VERT_PART = /* glsl */ `
+precision highp float;
+attribute vec4 aSeed;           // xyz in [0,1), w = per-particle hash
+uniform float uTime;
+uniform mediump float uScroll;
+uniform mediump float uMood;
+uniform float uDpr;
+uniform float uAspect;
+uniform vec2  uTilt;
+varying mediump float vA;
+varying mediump float vSel;
+
+void main() {
+  float s = aSeed.w;
+
+  // the camera flies forward: scroll advances every particle in z
+  float z = fract(aSeed.z + uScroll * 0.55 + uTime * 0.004 * (0.5 + s));
+
+  vec2 xy = aSeed.xy * 2.0 - 1.0;
+  xy += 0.05 * vec2(sin(uTime * (0.05 + 0.10 * s) + s * 40.0),
+                    cos(uTime * (0.04 + 0.09 * s) + s * 70.0));
+
+  float depth = mix(6.0, 0.6, z);     // z=0 far, z=1 at the camera
+  float persp = 1.6 / depth;
+  vec2 scr = xy * persp * 2.2;
+  scr += uTilt * 0.05 * persp;        // mouse parallax, stronger up close
+  scr.x /= uAspect;
+
+  float fadeNear = smoothstep(1.0, 0.85, z);
+  float fadeFar  = smoothstep(0.0, 0.18, z);
+  vA = fadeNear * fadeFar * (0.25 + 0.75 * uMood);
+  vSel = s;
+
+  float node = step(0.94, s);         // rare bright "network nodes"
+  gl_Position = vec4(scr, 0.0, 1.0);
+  gl_PointSize = (2.0 + persp * (3.0 + node * 6.0)) * uDpr;
 }
+`;
+
+const FRAG_PART = /* glsl */ `
+precision mediump float;
+varying mediump float vA;
+varying mediump float vSel;
+
+void main() {
+  vec2 c = gl_PointCoord - 0.5;
+  float d = length(c);
+  float m = smoothstep(0.5, 0.08, d);
+  float core = smoothstep(0.16, 0.02, d);
+
+  vec3 gold   = vec3(0.839, 0.647, 0.267);
+  vec3 bronze = vec3(0.604, 0.455, 0.204);
+  vec3 white  = vec3(1.0, 0.97, 0.90);
+
+  vec3 col = mix(gold, bronze, step(0.5, fract(vSel * 7.3)));
+  col = mix(col, white, core * 0.8);
+
+  float a = m * vA * (0.35 + 0.65 * step(0.94, vSel));
+  gl_FragColor = vec4(col * a, a);
+}
+`;
+
+/* ------------------------------------------------------------------ */
+/* helpers                                                            */
+/* ------------------------------------------------------------------ */
 
 function compile(gl: WebGLRenderingContext, type: number, src: string) {
   const sh = gl.createShader(type);
@@ -176,6 +282,51 @@ function compile(gl: WebGLRenderingContext, type: number, src: string) {
   return sh;
 }
 
+function link(gl: WebGLRenderingContext, vsSrc: string, fsSrc: string) {
+  const vs = compile(gl, gl.VERTEX_SHADER, vsSrc);
+  const fs = compile(gl, gl.FRAGMENT_SHADER, fsSrc);
+  if (!vs || !fs) return null;
+  const prog = gl.createProgram();
+  if (!prog) return null;
+  // every program keeps its sole attribute at location 0
+  gl.bindAttribLocation(prog, 0, vsSrc.indexOf("aSeed") >= 0 ? "aSeed" : "aPos");
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+    console.warn("BackgroundScene link:", gl.getProgramInfoLog(prog));
+    return null;
+  }
+  gl.deleteShader(vs);
+  gl.deleteShader(fs);
+  return prog;
+}
+
+/** intensity curve across the page: hero 1 → mid calm → creative lift → footer dark */
+function moodAt(s: number) {
+  const ss = (a: number, b: number, x: number) => {
+    const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+    return t * t * (3 - 2 * t);
+  };
+  let v = 1.0 - ss(0.06, 0.32, s) * 0.45;
+  v += ss(0.58, 0.7, s) * (1 - ss(0.78, 0.9, s)) * 0.22;
+  v *= 1.0 - ss(0.82, 0.98, s) * 0.62;
+  return v;
+}
+
+/** hue tilt: gold/bronze at the top, champagne cinematic around the media section */
+function hueAt(s: number) {
+  const ss = (a: number, b: number, x: number) => {
+    const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+    return t * t * (3 - 2 * t);
+  };
+  return ss(0.55, 0.7, s) * (1 - ss(0.8, 0.92, s));
+}
+
+/* ------------------------------------------------------------------ */
+/* component                                                          */
+/* ------------------------------------------------------------------ */
+
 export function BackgroundScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -188,61 +339,91 @@ export function BackgroundScene() {
     ).matches;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 1.75);
+    const fboScale = coarse ? 0.4 : 0.5;
 
     const gl = canvas.getContext("webgl", {
       alpha: false,
-      antialias: true,
+      antialias: false,
       depth: false,
       stencil: false,
       powerPreference: "high-performance",
     }) as WebGLRenderingContext | null;
     if (!gl) return; // CSS aura layers remain as the graceful fallback
 
-    /* ---- program ---- */
-    const vs = compile(gl, gl.VERTEX_SHADER, VERT);
-    const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
-    if (!vs || !fs) return;
-    const prog = gl.createProgram();
-    if (!prog) return;
-    gl.attachShader(prog, vs);
-    gl.attachShader(prog, fs);
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-      console.warn("BackgroundScene link:", gl.getProgramInfoLog(prog));
-      return;
-    }
-    gl.useProgram(prog);
+    /* ---- programs ---- */
+    const atmosSrc =
+      FRAG_PRELUDE + FRAG_ATMOS.replace(/OCT/g, coarse ? "4" : "5");
+    const progAtmos = link(gl, VERT_QUAD, atmosSrc);
+    const progBlit = link(gl, VERT_QUAD, FRAG_PRELUDE + FRAG_BLIT);
+    const progPart = link(gl, VERT_PART, FRAG_PART);
+    if (!progAtmos || !progBlit || !progPart) return;
+
+    const U = (p: WebGLProgram, n: string) => gl.getUniformLocation(p, n);
+    const ua = {
+      time: U(progAtmos, "uTime"),
+      scroll: U(progAtmos, "uScroll"),
+      mood: U(progAtmos, "uMood"),
+      hue: U(progAtmos, "uHue"),
+      tilt: U(progAtmos, "uTilt"),
+      aspect: U(progAtmos, "uAspect"),
+    };
+    const ub = { tex: U(progBlit, "uTex"), time: U(progBlit, "uTime") };
+    const up = {
+      time: U(progPart, "uTime"),
+      scroll: U(progPart, "uScroll"),
+      mood: U(progPart, "uMood"),
+      dpr: U(progPart, "uDpr"),
+      aspect: U(progPart, "uAspect"),
+      tilt: U(progPart, "uTilt"),
+    };
 
     /* ---- geometry ---- */
-    const cols = coarse ? 90 : 150;
-    const rows = coarse ? 55 : 90;
-    const { verts, idx } = buildGrid(cols, rows);
-    const vbo = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
-    gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
-    const ibo = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
+    // fullscreen triangle
+    const triBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, triBuf);
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([-1, -1, 3, -1, -1, 3]),
+      gl.STATIC_DRAW
+    );
 
-    const aPos = gl.getAttribLocation(prog, "aPos");
-    gl.enableVertexAttribArray(aPos);
-    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+    // particle seeds
+    const COUNT = coarse ? 240 : 520;
+    const seeds = new Float32Array(COUNT * 4);
+    let sv = 1234.567;
+    const rnd = () => (sv = (sv * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < COUNT * 4; i++) seeds[i] = rnd();
+    const partBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, partBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, seeds, gl.STATIC_DRAW);
 
-    const U = (n: string) => gl.getUniformLocation(prog, n);
-    const uTime = U("uTime");
-    const uAspect = U("uAspect");
-    const uTilt = U("uTilt");
-    const uScroll = U("uScroll");
-    const uMode = U("uMode");
-    const uDpr = U("uDpr");
-    gl.uniform1f(uDpr, dpr);
+    gl.enableVertexAttribArray(0);
+
+    /* ---- half-res FBO for the atmosphere ---- */
+    const fbo = gl.createFramebuffer();
+    const tex = gl.createTexture();
+    let fw = 1;
+    let fh = 1;
+    function sizeFbo(w: number, h: number) {
+      fw = Math.max(1, Math.floor(w * fboScale));
+      fh = Math.max(1, Math.floor(h * fboScale));
+      gl!.bindTexture(gl!.TEXTURE_2D, tex);
+      gl!.texImage2D(
+        gl!.TEXTURE_2D, 0, gl!.RGBA, fw, fh, 0,
+        gl!.RGBA, gl!.UNSIGNED_BYTE, null
+      );
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MIN_FILTER, gl!.LINEAR);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MAG_FILTER, gl!.LINEAR);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_S, gl!.CLAMP_TO_EDGE);
+      gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_T, gl!.CLAMP_TO_EDGE);
+      gl!.bindFramebuffer(gl!.FRAMEBUFFER, fbo);
+      gl!.framebufferTexture2D(
+        gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT0, gl!.TEXTURE_2D, tex, 0
+      );
+      gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
+    }
 
     /* ---- state ---- */
-    gl.disable(gl.DEPTH_TEST);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.ONE, gl.ONE); // additive glow (colors premultiplied in shader)
-    gl.clearColor(0.012, 0.012, 0.012, 1); // ink-950
-
     let raf = 0;
     let running = true;
     let lost = false;
@@ -257,39 +438,59 @@ export function BackgroundScene() {
       canvas!.height = Math.floor(h * dpr);
       canvas!.style.width = `${w}px`;
       canvas!.style.height = `${h}px`;
-      gl!.viewport(0, 0, canvas!.width, canvas!.height);
-      gl!.uniform1f(uAspect, w / h);
+      sizeFbo(canvas!.width, canvas!.height);
     }
 
     function frame(now: number) {
-      const t = (now - start) / 1000;
+      const t = reduce ? 40.0 : (now - start) / 1000;
 
-      // smooth mouse + scroll
       tilt.x += (tilt.tx - tilt.x) * 0.04;
       tilt.y += (tilt.ty - tilt.y) * 0.04;
       scroll.sp += (scroll.p - scroll.sp) * 0.07;
 
-      // dim the field as content takes over, near-off by the contact section
       const sp = scroll.sp;
-      const dim =
-        sp < 0.06
-          ? 1
-          : sp < 0.45
-            ? 1 - ((sp - 0.06) / 0.39) * 0.5
-            : Math.max(0.16, 0.5 - ((sp - 0.45) / 0.45) * 0.34);
-      canvas!.style.opacity = dim.toFixed(3);
+      const mood = moodAt(sp);
+      const hue = hueAt(sp);
+      const aspect = canvas!.width / Math.max(1, canvas!.height);
 
-      gl!.uniform1f(uTime, reduce ? 14.0 : t);
-      gl!.uniform2f(uTilt, tilt.x, tilt.y);
-      gl!.uniform1f(uScroll, scroll.sp);
+      // pass 1 — atmosphere into the half-res FBO
+      gl!.disable(gl!.BLEND);
+      gl!.bindFramebuffer(gl!.FRAMEBUFFER, fbo);
+      gl!.viewport(0, 0, fw, fh);
+      gl!.useProgram(progAtmos);
+      gl!.uniform1f(ua.time, t);
+      gl!.uniform1f(ua.scroll, sp);
+      gl!.uniform1f(ua.mood, mood);
+      gl!.uniform1f(ua.hue, hue);
+      gl!.uniform2f(ua.tilt, tilt.x, tilt.y);
+      gl!.uniform1f(ua.aspect, aspect);
+      gl!.bindBuffer(gl!.ARRAY_BUFFER, triBuf);
+      gl!.vertexAttribPointer(0, 2, gl!.FLOAT, false, 0, 0);
+      gl!.drawArrays(gl!.TRIANGLES, 0, 3);
 
-      gl!.clear(gl!.COLOR_BUFFER_BIT);
-      // pass 1 — contour wires
-      gl!.uniform1f(uMode, 0);
-      gl!.drawElements(gl!.LINES, idx.length, gl!.UNSIGNED_SHORT, 0);
-      // pass 2 — ridge beacons
-      gl!.uniform1f(uMode, 1);
-      gl!.drawArrays(gl!.POINTS, 0, verts.length / 2);
+      // pass 2 — upscale to screen with dithering
+      gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
+      gl!.viewport(0, 0, canvas!.width, canvas!.height);
+      gl!.useProgram(progBlit);
+      gl!.activeTexture(gl!.TEXTURE0);
+      gl!.bindTexture(gl!.TEXTURE_2D, tex);
+      gl!.uniform1i(ub.tex, 0);
+      gl!.uniform1f(ub.time, t);
+      gl!.drawArrays(gl!.TRIANGLES, 0, 3);
+
+      // pass 3 — additive particle field
+      gl!.enable(gl!.BLEND);
+      gl!.blendFunc(gl!.ONE, gl!.ONE);
+      gl!.useProgram(progPart);
+      gl!.uniform1f(up.time, t);
+      gl!.uniform1f(up.scroll, sp);
+      gl!.uniform1f(up.mood, mood);
+      gl!.uniform1f(up.dpr, dpr);
+      gl!.uniform1f(up.aspect, aspect);
+      gl!.uniform2f(up.tilt, tilt.x, tilt.y);
+      gl!.bindBuffer(gl!.ARRAY_BUFFER, partBuf);
+      gl!.vertexAttribPointer(0, 4, gl!.FLOAT, false, 0, 0);
+      gl!.drawArrays(gl!.POINTS, 0, COUNT);
     }
 
     function loop(now: number) {
@@ -301,6 +502,12 @@ export function BackgroundScene() {
     function onScroll() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       scroll.p = max > 0 ? window.scrollY / max : 0;
+      // reduced motion: no animation loop, but keep the single static
+      // frame in sync with the scroll position (sphere fade, parallax)
+      if (reduce && !lost) {
+        scroll.sp = scroll.p;
+        frame(performance.now());
+      }
     }
     function onMove(e: PointerEvent) {
       tilt.tx = (e.clientX / window.innerWidth) * 2 - 1;
@@ -325,6 +532,7 @@ export function BackgroundScene() {
 
     resize();
     onScroll();
+    scroll.sp = scroll.p;
     frame(performance.now()); // always paint one frame immediately
     if (!reduce) raf = requestAnimationFrame(loop);
 
@@ -343,11 +551,13 @@ export function BackgroundScene() {
       document.removeEventListener("visibilitychange", onVisibility);
       canvas.removeEventListener("webglcontextlost", onLost);
       canvas.removeEventListener("webglcontextrestored", onRestored);
-      gl.deleteBuffer(vbo);
-      gl.deleteBuffer(ibo);
-      gl.deleteProgram(prog);
-      gl.deleteShader(vs);
-      gl.deleteShader(fs);
+      gl.deleteBuffer(triBuf);
+      gl.deleteBuffer(partBuf);
+      gl.deleteFramebuffer(fbo);
+      gl.deleteTexture(tex);
+      gl.deleteProgram(progAtmos);
+      gl.deleteProgram(progBlit);
+      gl.deleteProgram(progPart);
     };
   }, []);
 
@@ -355,29 +565,29 @@ export function BackgroundScene() {
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       {/* deep base */}
       <div className="absolute inset-0 bg-ink-950" />
-      {/* the live 3D terrain */}
+      {/* the live silk field */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-      {/* horizon glow where the terrain dissolves into atmosphere */}
+      {/* soft volumetric core where the silk gathers */}
       <div
-        className="absolute left-1/2 top-[26%] h-[38vh] w-[130vw] -translate-x-1/2 rounded-[100%] blur-[110px]"
+        className="absolute left-1/2 top-[22%] h-[44vh] w-[120vw] -translate-x-1/2 rounded-[100%] blur-[120px]"
         style={{
           background:
-            "radial-gradient(50% 55% at 50% 50%, rgba(56,189,248,0.10), rgba(139,92,246,0.06) 55%, transparent 75%)",
+            "radial-gradient(50% 55% at 50% 50%, rgba(214,165,68,0.07), rgba(154,116,52,0.045) 55%, transparent 75%)",
         }}
       />
-      {/* dusk auras */}
+      {/* golden auras */}
       <div
         className="absolute left-[-10%] top-[-14%] h-[55vh] w-[65vw] rounded-full blur-[140px]"
         style={{
           background:
-            "radial-gradient(circle, rgba(56,189,248,0.10), transparent 70%)",
+            "radial-gradient(circle, rgba(214,165,68,0.08), transparent 70%)",
         }}
       />
       <div
         className="absolute bottom-[-22%] right-[-14%] h-[60vh] w-[62vw] rounded-full blur-[150px]"
         style={{
           background:
-            "radial-gradient(circle, rgba(139,92,246,0.09), transparent 70%)",
+            "radial-gradient(circle, rgba(154,116,52,0.07), transparent 70%)",
         }}
       />
       {/* fine film grain + top vignette to keep text crisp */}

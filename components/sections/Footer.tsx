@@ -18,17 +18,20 @@ export function Footer() {
           {/* brand */}
           <div>
             <span className="font-display text-base font-semibold text-mist-100">
-              Halit Sta
+              Halit Sta<span className="text-accent">.</span>
             </span>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-mist-500">
-              Full-Cycle AI Engineer & Digital Solutions Builder. Websites,
-              workflows, media, and systems — built to work together.
-            </p>
-            <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.02] px-3 py-1.5 text-xs text-mist-400">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            <p className="mt-4 max-w-sm font-display text-2xl font-bold leading-snug text-mist-100">
+              Full-Cycle AI Engineer.{" "}
+              <span className="accent-italic text-glitch">
+                Digital Solutions Builder.
               </span>
+            </p>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-mist-500">
+              Websites, workflows, media, and systems — built to work
+              together.
+            </p>
+            <p className="mt-5 inline-flex items-center gap-2.5 border border-white/10 bg-white/[0.02] px-3.5 py-2 text-[0.68rem] uppercase tracking-[0.18em] text-mist-400">
+              <span className="h-1.5 w-1.5 bg-accent" />
               Available for selected projects · Kosovo / Remote
             </p>
           </div>
@@ -43,7 +46,7 @@ export function Footer() {
                 <li key={l.href}>
                   <a
                     href={l.href}
-                    className="text-sm text-mist-400 transition-colors hover:text-mist-100"
+                    className="text-[0.78rem] uppercase tracking-[0.1em] text-mist-400 transition-colors hover:text-mist-100"
                   >
                     {l.label}
                   </a>
@@ -61,7 +64,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${PROFILE.email}`}
-                  className="text-sm text-mist-400 transition-colors hover:text-accent"
+                  className="text-[0.78rem] uppercase tracking-[0.1em] text-mist-400 transition-colors hover:text-accent"
                 >
                   {PROFILE.email}
                 </a>
@@ -72,7 +75,7 @@ export function Footer() {
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-mist-400 transition-colors hover:text-mist-100"
+                    className="text-[0.78rem] uppercase tracking-[0.1em] text-mist-400 transition-colors hover:text-mist-100"
                   >
                     {s.label}
                   </a>

@@ -152,7 +152,7 @@ export function Contact() {
           <div>
             <SectionHeading
               eyebrow="Start a Project"
-              title="Let's build something that actually moves your business forward."
+              title="Let's build something that actually *moves your business forward.*"
               subtitle="Whether you need a website, system, automation, brand identity, visual content, or a complete digital setup — the goal is to build it properly from the beginning."
             />
 
@@ -191,7 +191,7 @@ export function Contact() {
               className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full opacity-40 blur-3xl"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(56,189,248,0.3), transparent 70%)",
+                  "radial-gradient(circle, rgba(214,165,68,0.3), transparent 70%)",
               }}
             />
 

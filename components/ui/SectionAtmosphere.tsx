@@ -12,7 +12,7 @@ const LAYERS: Record<Tone, React.ReactNode> = {
       className="absolute inset-0"
       style={{
         background:
-          "radial-gradient(70% 50% at 50% -10%, rgba(56,189,248,0.05), transparent 70%)",
+          "radial-gradient(70% 50% at 50% -10%, rgba(214,165,68,0.05), transparent 70%)",
       }}
     />
   ),
@@ -23,7 +23,7 @@ const LAYERS: Record<Tone, React.ReactNode> = {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 50% at 12% 0%, rgba(56,189,248,0.08), transparent 65%)",
+            "radial-gradient(60% 50% at 12% 0%, rgba(214,165,68,0.08), transparent 65%)",
         }}
       />
       <div
@@ -42,7 +42,7 @@ const LAYERS: Record<Tone, React.ReactNode> = {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 60% at 70% 45%, rgba(56,189,248,0.10), transparent 65%)",
+            "radial-gradient(60% 60% at 70% 45%, rgba(214,165,68,0.10), transparent 65%)",
         }}
       />
       <div

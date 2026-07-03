@@ -81,7 +81,7 @@ export function About() {
         <div>
           <SectionHeading
             eyebrow="About"
-            title="The builder behind the brand."
+            title="The builder *behind the brand.*"
           />
           <motion.div
             initial="hidden"

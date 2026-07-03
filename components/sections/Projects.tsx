@@ -49,7 +49,7 @@ export function Projects() {
     <Section id="work" divider tone="calm">
       <SectionHeading
         eyebrow="Selected Work"
-        title="Real projects — platforms, brands, content, and the infrastructure behind them."
+        title="Real projects — platforms, brands, content, and the *infrastructure* behind them."
         subtitle="A cross-section of client and personal work. Open any project to see the role I played, what I built, and the purpose it served."
       />
 

@@ -28,7 +28,7 @@ export function Education() {
     <Section id="education" divider tone="warm">
       <SectionHeading
         eyebrow="Education & Achievements"
-        title="Academic foundation, real recognition, applied experience."
+        title="Academic foundation, real recognition, *applied experience.*"
         align="center"
         className="mx-auto"
       />

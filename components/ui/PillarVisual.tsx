@@ -25,7 +25,7 @@ export function PillarVisual({ id }: { id: PillarId }) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(80% 80% at 30% 20%, rgba(56,189,248,0.08), transparent 70%)",
+            "radial-gradient(80% 80% at 30% 20%, rgba(214,165,68,0.08), transparent 70%)",
         }}
       />
       {scenes[id]}
@@ -52,7 +52,7 @@ function AiScene({ animate }: { animate: boolean }) {
           key={i}
           x1={AI_NODES[a][0]} y1={AI_NODES[a][1]}
           x2={AI_NODES[b][0]} y2={AI_NODES[b][1]}
-          stroke="rgba(56,189,248,0.35)" strokeWidth="1"
+          stroke="rgba(214,165,68,0.35)" strokeWidth="1"
           animate={animate ? { opacity: [0.15, 0.6, 0.15] } : undefined}
           transition={{ ...LOOP, delay: i * 0.25 }}
         />
@@ -60,7 +60,7 @@ function AiScene({ animate }: { animate: boolean }) {
       {AI_NODES.map(([x, y], i) => (
         <motion.circle
           key={i} cx={x} cy={y} r={i % 3 === 0 ? 5 : 3.5}
-          fill="rgba(125,211,252,0.9)"
+          fill="rgba(234,201,126,0.9)"
           animate={animate ? { scale: [1, 1.35, 1], opacity: [0.6, 1, 0.6] } : undefined}
           transition={{ ...LOOP, duration: 3, delay: i * 0.3 }}
           style={{ transformOrigin: `${x}px ${y}px` }}
@@ -81,12 +81,12 @@ function WebScene({ animate }: { animate: boolean }) {
       <rect x="50" y="40" width="300" height="220" rx="10" fill="rgba(8,8,8,0.6)" stroke="rgba(255,255,255,0.15)" />
       <line x1="50" y1="72" x2="350" y2="72" stroke="rgba(255,255,255,0.12)" />
       {[70, 88, 106].map((cx, i) => (
-        <circle key={i} cx={cx} cy="56" r="4" fill={i === 0 ? "rgba(56,189,248,0.8)" : "rgba(255,255,255,0.2)"} />
+        <circle key={i} cx={cx} cy="56" r="4" fill={i === 0 ? "rgba(214,165,68,0.8)" : "rgba(255,255,255,0.2)"} />
       ))}
       {bars.map((b, i) => (
         <motion.rect
           key={i} x={b.x ?? 80} y={b.y} height="12" rx="4" width={b.w}
-          fill={i === 3 ? "rgba(56,189,248,0.55)" : "rgba(255,255,255,0.10)"}
+          fill={i === 3 ? "rgba(214,165,68,0.55)" : "rgba(255,255,255,0.10)"}
           animate={animate ? { opacity: [0, 1, 1, 0], scaleX: [0.4, 1, 1, 0.4] } : undefined}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: i * 0.35 }}
           style={{ transformOrigin: `${b.x ?? 80}px ${b.y}px` }}
