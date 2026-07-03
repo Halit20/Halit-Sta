@@ -39,7 +39,10 @@ body {
   font-feature-settings: "ss01", "cv01", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* clip, not hidden: hidden turns body into a scroll container and
+     breaks position:sticky (the Dyshja trail rail relies on it) */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {

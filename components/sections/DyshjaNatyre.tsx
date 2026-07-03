@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { AnimatedText } from "@/components/ui/AnimatedText";
 import { LiteYouTube } from "@/components/ui/LiteYouTube";
-import { DyshjaTrailNav } from "@/components/sections/DyshjaTrailNav";
+import {
+  DyshjaTrailNav,
+  DyshjaTrailRail,
+} from "@/components/sections/DyshjaTrailNav";
 import {
   DYSHJA,
   DYSHJA_PLANNING,
@@ -22,6 +25,7 @@ const INITIAL_VIDEOS = 6;
 
 export function DyshjaNatyre() {
   const [showAll, setShowAll] = useState(false);
+  const trailRef = useRef<HTMLDivElement>(null);
   return (
     <Section id="dyshja" divider tone="warm">
       {/* 1 — cinematic intro */}
@@ -52,13 +56,22 @@ export function DyshjaNatyre() {
         </motion.p>
       </div>
 
-      {/* expedition trail navigation */}
-      <DyshjaTrailNav />
+      {/* expedition trail — horizontal map on smaller screens */}
+      <div className="lg:hidden">
+        <DyshjaTrailNav />
+      </div>
 
+      <div className="lg:mt-16 lg:grid lg:grid-cols-[230px_1fr] lg:gap-12">
+        {/* vertical trail — the hiker walks it as you scroll (desktop) */}
+        <div className="hidden lg:block">
+          <DyshjaTrailRail targetRef={trailRef} />
+        </div>
+
+        <div ref={trailRef}>
       {/* 2 — story + what we create */}
       <div
         id="dyshja-basecamp"
-        className="mt-16 grid scroll-mt-28 grid-cols-1 gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14"
+        className="mt-16 grid scroll-mt-28 grid-cols-1 gap-10 lg:mt-0 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14"
       >
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -326,6 +339,8 @@ export function DyshjaNatyre() {
           </a>
         </div>
       </motion.div>
+        </div>
+      </div>
     </Section>
   );
 }

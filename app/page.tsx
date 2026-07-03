@@ -21,7 +21,8 @@ import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-ink-950 text-mist-300">
+    // overflow-x-clip (not hidden) so position:sticky keeps working inside
+    <div className="relative min-h-screen overflow-x-clip bg-ink-950 text-mist-300">
       {/* Animated digital atmosphere — fixed, full-screen, behind everything */}
       <BackgroundScene />
 
