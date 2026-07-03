@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
@@ -16,12 +15,7 @@ import {
 } from "@/lib/dyshja";
 import { EASE, fadeUp } from "@/lib/motion";
 
-const INITIAL_VIDEOS = 6;
-
 export function DyshjaNatyre() {
-  const [showAll, setShowAll] = useState(false);
-  const videos = showAll ? DYSHJA_VIDEOS : DYSHJA_VIDEOS.slice(0, INITIAL_VIDEOS);
-
   return (
     <Section id="dyshja" divider tone="warm">
       {/* 1 — cinematic intro */}
@@ -207,24 +201,12 @@ export function DyshjaNatyre() {
           stagger={0.05}
           className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {videos.map((v) => (
+          {DYSHJA_VIDEOS.map((v) => (
             <motion.div key={v.id} variants={fadeUp}>
               <LiteYouTube id={v.id} title={v.title} />
             </motion.div>
           ))}
         </Reveal>
-        {DYSHJA_VIDEOS.length > INITIAL_VIDEOS && (
-          <div className="mt-7 flex justify-center">
-            <button
-              onClick={() => setShowAll((v) => !v)}
-              className="btn-ghost"
-            >
-              {showAll
-                ? "Show fewer episodes"
-                : `Show all ${DYSHJA_VIDEOS.length} episodes`}
-            </button>
-          </div>
-        )}
       </div>
 
       {/* 6 — socials + CTA */}
