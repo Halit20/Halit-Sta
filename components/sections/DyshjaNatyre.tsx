@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { AnimatedText } from "@/components/ui/AnimatedText";
 import { LiteYouTube } from "@/components/ui/LiteYouTube";
+import { DyshjaTrailNav } from "@/components/sections/DyshjaTrailNav";
 import {
   DYSHJA,
   DYSHJA_PLANNING,
@@ -51,8 +52,14 @@ export function DyshjaNatyre() {
         </motion.p>
       </div>
 
+      {/* expedition trail navigation */}
+      <DyshjaTrailNav />
+
       {/* 2 — story + what we create */}
-      <div className="mt-16 grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
+      <div
+        id="dyshja-basecamp"
+        className="mt-16 grid scroll-mt-28 grid-cols-1 gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14"
+      >
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -100,7 +107,7 @@ export function DyshjaNatyre() {
       </div>
 
       {/* 3 — production workflow */}
-      <div className="mt-16">
+      <div id="dyshja-route" className="mt-16 scroll-mt-28">
         <p className="text-[0.7rem] uppercase tracking-[0.28em] text-accent/80">
           Production workflow
         </p>
@@ -146,7 +153,10 @@ export function DyshjaNatyre() {
       </div>
 
       {/* 4 — gear + edit stack */}
-      <div className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div
+        id="dyshja-pack"
+        className="mt-14 grid scroll-mt-28 grid-cols-1 gap-5 lg:grid-cols-2"
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -193,7 +203,7 @@ export function DyshjaNatyre() {
       </div>
 
       {/* 5 — video grid */}
-      <div className="mt-16">
+      <div id="dyshja-episodes" className="mt-16 scroll-mt-28">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <p className="text-[0.7rem] uppercase tracking-[0.28em] text-accent/80">
             Episodes
@@ -261,11 +271,12 @@ export function DyshjaNatyre() {
 
       {/* 6 — socials + CTA */}
       <motion.div
+        id="dyshja-summit"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: EASE }}
-        className="mt-16 flex flex-col items-center gap-7 border-t border-white/8 pt-12 text-center"
+        className="mt-16 flex scroll-mt-28 flex-col items-center gap-7 border-t border-white/8 pt-12 text-center"
       >
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           {[
