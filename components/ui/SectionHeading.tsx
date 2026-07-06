@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { EASE } from "@/lib/motion";
+import { clipReveal, EASE } from "@/lib/motion";
 import { AnimatedText } from "@/components/ui/AnimatedText";
 
 type Props = {
@@ -50,10 +50,10 @@ export function SectionHeading({
           className={`text-[0.98rem] leading-relaxed text-mist-400 ${
             centered ? "max-w-2xl" : "max-w-xl"
           }`}
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={clipReveal}
+          initial="hidden"
+          whileInView="show"
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.12 }}
         >
           {subtitle}
         </motion.p>

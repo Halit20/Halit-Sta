@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
+import { MediaReveal } from "@/components/ui/MediaReveal";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import {
@@ -140,7 +141,9 @@ export function Projects() {
               aria-label={`View case study: ${project.title}`}
               className="group surface surface-hover relative flex h-full w-full flex-col overflow-hidden text-left"
             >
-              <ProjectThumb project={project} className="aspect-[16/10] w-full" />
+              <MediaReveal>
+                <ProjectThumb project={project} className="aspect-[16/10] w-full" />
+              </MediaReveal>
               <div className="pointer-events-none absolute inset-x-0 top-0 h-[58%] -translate-y-full bg-gradient-to-b from-white/8 to-transparent transition-transform duration-700 group-hover:translate-y-0" />
 
               <div className="flex flex-1 flex-col p-6">

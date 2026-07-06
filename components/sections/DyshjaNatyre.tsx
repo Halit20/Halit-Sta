@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { AnimatedText } from "@/components/ui/AnimatedText";
 import { LiteYouTube } from "@/components/ui/LiteYouTube";
+import { MediaReveal } from "@/components/ui/MediaReveal";
 import {
   DyshjaTrailNav,
   DyshjaTrailRail,
@@ -229,9 +230,11 @@ export function DyshjaNatyre() {
           stagger={0.05}
           className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {DYSHJA_VIDEOS.slice(0, INITIAL_VIDEOS).map((v) => (
+          {DYSHJA_VIDEOS.slice(0, INITIAL_VIDEOS).map((v, i) => (
             <motion.div key={v.id} variants={fadeUp}>
-              <LiteYouTube id={v.id} title={v.title} />
+              <MediaReveal delay={i * 0.06}>
+                <LiteYouTube id={v.id} title={v.title} />
+              </MediaReveal>
             </motion.div>
           ))}
         </Reveal>
@@ -249,7 +252,9 @@ export function DyshjaNatyre() {
             >
               <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {DYSHJA_VIDEOS.slice(INITIAL_VIDEOS).map((v) => (
-                  <LiteYouTube key={v.id} id={v.id} title={v.title} />
+                  <MediaReveal key={v.id}>
+                    <LiteYouTube id={v.id} title={v.title} />
+                  </MediaReveal>
                 ))}
               </div>
             </motion.div>
