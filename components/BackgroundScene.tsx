@@ -16,9 +16,7 @@ import { useEffect, useRef } from "react";
  *   2. far nebula body   — slow domain-warped fbm, deep bronze
  *   3. mid silk ribbons  — brighter warped bands, gold core / bronze edge
  *   4. neural filaments  — thin seams where the two warp fields agree
- *   5. obsidian sphere   — dark planet with a gold fresnel rim + orbital
- *      ring behind the hero, fading out as the page scrolls
- *   6. particle field    — glowing motes + rare bright nodes in true depth
+ *   5. particle field    — glowing motes + rare bright nodes in true depth
  *
  * Scroll reactivity:
  *   - each atmosphere layer translates at a different rate (parallax)
@@ -137,44 +135,6 @@ void main() {
   float glow = exp(-3.2 * length(p - vec2(0.12, 0.16)));
   glow *= 0.80 + 0.20 * sin(uTime * 0.35);
   col += glow * mix(accA, bronze, 0.35) * 0.09 * uMood;
-
-  // 5 — the obsidian sphere: dark planet, gold rim, hero only
-  float sVis = 1.0 - smoothstep(0.04, 0.20, uScroll);
-  if (sVis > 0.001) {
-    vec2 sc = p - vec2(0.0, 0.05) - uTilt * 0.025;
-    float r = 0.34;
-    float d = length(sc);
-    float inside = smoothstep(r + 0.003, r - 0.003, d);
-
-    // lambert-lit ball with drifting warm reflections + fresnel rim
-    vec3 n = vec3(sc / r, 0.0);
-    n.z = sqrt(max(0.0, 1.0 - dot(n.xy, n.xy)));
-    vec3 L = normalize(vec3(0.55, 0.40, 0.72));
-    float diff = max(dot(n, L), 0.0);
-    float refl = fbm(n.xy * 2.6 + vec2(t * 2.0, 0.0));
-    float spec = pow(max(dot(reflect(-L, n), vec3(0.0, 0.0, 1.0)), 0.0), 28.0);
-    float rim  = pow(1.0 - n.z, 3.5);
-
-    vec3 sphereCol = vec3(0.014, 0.012, 0.009)
-      + pow(diff, 2.4) * (0.10 + 0.22 * refl * refl) * gold
-      + spec * vec3(0.95, 0.80, 0.48) * 0.45
-      + rim * gold * (0.30 + 0.25 * refl);
-
-    col = mix(col, sphereCol, inside * sVis);
-
-    // soft gold halo hugging the limb
-    float halo = exp(-16.0 * max(d - r, 0.0)) * (1.0 - inside);
-    col += halo * gold * 0.08 * sVis;
-
-    // tilted orbital ring, hidden where it passes behind the sphere
-    float ca = cos(-0.22);
-    float sa = sin(-0.22);
-    vec2 q = mat2(ca, -sa, sa, ca) * sc;
-    q.y *= 3.4;
-    float ring = smoothstep(0.0045, 0.0, abs(length(q) - r * 1.5));
-    ring *= 1.0 - inside * step(q.y, 0.0);
-    col += ring * gold * 0.28 * sVis;
-  }
 
   // gentle edge vignette inside the scene itself
   col *= 1.0 - 0.35 * dot(p, p);
