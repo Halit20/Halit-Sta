@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ProjectVisual } from "@/components/ui/ProjectVisual";
+import { ProjectThumb } from "@/components/ui/ProjectThumb";
 import { MediaReveal } from "@/components/ui/MediaReveal";
+import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import {
@@ -24,49 +25,6 @@ function DetailRow({ label, children }: { label: string; children: React.ReactNo
       </p>
       <div className="text-[0.92rem] leading-relaxed text-mist-300">{children}</div>
     </div>
-  );
-}
-
-/** thumbnail (real screenshot) or the stylized fallback visual */
-function ProjectThumb({
-  project,
-  className,
-}: {
-  project: CaseStudy;
-  className: string;
-}) {
-  if (project.thumbnail) {
-    return (
-      <div className={`relative overflow-hidden bg-ink-900 ${className}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={`./${project.thumbnail}`}
-          alt={`${project.title} — website screenshot`}
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
-        />
-        {/* cinematic grade so thumbnails sit in the dark theme */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-transparent to-ink-950/20" />
-        {project.protected && (
-          <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 border border-accent/30 bg-ink-950/80 px-2.5 py-1 text-[0.6rem] uppercase tracking-[0.18em] text-accent backdrop-blur">
-            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="5" y="11" width="14" height="9" rx="1.5" />
-              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-            </svg>
-            Protected system
-          </span>
-        )}
-      </div>
-    );
-  }
-  return (
-    <ProjectVisual
-      hue={project.hue ?? "212"}
-      screen={project.screen ?? "dashboard"}
-      label={project.urlLabel ?? project.title}
-      className={className}
-    />
   );
 }
 
@@ -103,8 +61,15 @@ export function Projects() {
         subtitle="Real websites, platforms, booking flows, dashboards, inventory tools, and business systems — built for restaurants, education, service companies, hospitality, events, and operations."
       />
 
+      {/* pinned flagship showcase — desktop only; the grid below covers mobile */}
+      <ProjectShowcase projects={CASE_STUDIES.slice(0, 5)} onOpen={setActive} />
+
+      <p className="mt-16 text-[0.68rem] uppercase tracking-[0.2em] text-mist-500 lg:mt-8">
+        All projects
+      </p>
+
       {/* filter tabs */}
-      <div className="mt-10 flex flex-wrap gap-2" role="tablist" aria-label="Project filters">
+      <div className="mt-4 flex flex-wrap gap-2" role="tablist" aria-label="Project filters">
         {PROJECT_FILTERS.map((f) => {
           const isActive = filter === f.key;
           return (
