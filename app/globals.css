@@ -15,8 +15,8 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Lenis owns smooth scrolling; native smooth would fight it. */
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 88px;
 }
 

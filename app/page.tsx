@@ -1,4 +1,5 @@
 import { BackgroundScene } from "@/components/BackgroundScene";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
@@ -27,6 +28,7 @@ export default function Home() {
       <BackgroundScene />
 
       {/* All content sits above the background */}
+      <SmoothScroll>
       <div className="relative z-10">
         <ScrollProgress />
         <Header />
@@ -50,6 +52,7 @@ export default function Home() {
         </main>
         <Footer />
       </div>
+      </SmoothScroll>
     </div>
   );
 }

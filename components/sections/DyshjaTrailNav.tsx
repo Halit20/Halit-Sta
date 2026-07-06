@@ -4,6 +4,7 @@ import { useEffect, useState, type RefObject } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { EASE } from "@/lib/motion";
 import { useAmbientMotion } from "@/lib/hooks";
+import { scrollToId } from "@/lib/scroll";
 
 /**
  * DyshjaTrailNav — an expedition trail map as navigation.
@@ -192,10 +193,7 @@ function useTrailSpy() {
   function go(e: React.MouseEvent, id: string) {
     e.preventDefault();
     setActive(id);
-    document.getElementById(id)?.scrollIntoView({
-      behavior: reduce ? "auto" : "smooth",
-      block: "start",
-    });
+    scrollToId(id);
   }
 
   return { active, reduce, go };

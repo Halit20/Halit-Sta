@@ -7,6 +7,7 @@ import { SectionAtmosphere } from "@/components/ui/SectionAtmosphere";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { PROFILE } from "@/lib/data";
 import { EASE } from "@/lib/motion";
+import { scrollToId } from "@/lib/scroll";
 
 const SERVICE_OPTIONS = [
   "Website / Web Platform",
@@ -82,9 +83,7 @@ export function Contact() {
       setService("Video / Photo / Drone");
       setSent(false);
       requestAnimationFrame(() => {
-        document
-          .getElementById("contact")
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        scrollToId("contact");
       });
     }
     window.addEventListener("creative:book", onBook);

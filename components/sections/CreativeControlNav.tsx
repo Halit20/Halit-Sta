@@ -9,6 +9,7 @@ import {
 import { CREATIVE_BLOCKS, type CreativeIcon } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 import { useAmbientMotion } from "@/lib/hooks";
+import { scrollToId } from "@/lib/scroll";
 
 /* ---------- icon set (camera / drone / creator gear) ---------- */
 const ICONS: Record<CreativeIcon, React.ReactNode> = {
@@ -153,10 +154,7 @@ export function CreativeControlNav() {
   function go(e: React.MouseEvent, id: string) {
     e.preventDefault();
     setActive(id);
-    document.getElementById(id)?.scrollIntoView({
-      behavior: reduce ? "auto" : "smooth",
-      block: "start",
-    });
+    scrollToId(id);
   }
 
   return (
