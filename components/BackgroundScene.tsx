@@ -16,7 +16,9 @@ import { useEffect, useRef } from "react";
  *   2. far nebula body   — slow domain-warped fbm, deep bronze
  *   3. mid silk ribbons  — brighter warped bands, gold core / bronze edge
  *   4. neural filaments  — thin seams where the two warp fields agree
- *   5. particle field    — glowing motes + rare bright nodes in true depth
+ *   5. golden particle sea — a 3D wave-field of gold points rolling in
+ *      perspective behind the hero (lusion/unseen-style), fading on scroll
+ *   6. particle field    — glowing motes + rare bright nodes in true depth
  *
  * Scroll reactivity:
  *   - each atmosphere layer translates at a different rate (parallax)
@@ -225,6 +227,77 @@ void main() {
 }
 `;
 
+const VERT_WAVE = /* glsl */ `
+precision highp float;
+attribute vec2 aGrid;           // (u,v) in [0,1)
+uniform float uTime;
+uniform mediump float uScroll;
+uniform float uDpr;
+uniform float uAspect;
+uniform vec2  uTilt;
+varying mediump float vA;
+varying mediump float vH;       // 0..1 crest height for coloring
+
+void main() {
+  // world grid: x across the view, z into the distance (denser up close)
+  float x = (aGrid.x * 2.0 - 1.0) * 8.5;
+  float z = mix(1.4, 17.0, aGrid.y * aGrid.y);
+  float t = uTime;
+
+  // layered travelling waves — a calm golden swell, not a storm
+  float h = 0.0;
+  h += sin(x * 0.55 + t * 0.60) * 0.45;
+  h += sin(x * 1.35 - t * 0.42 + z * 0.60) * 0.25;
+  h += sin(z * 0.80 - t * 0.85) * 0.35;
+  h += sin((x + z) * 0.35 + t * 0.50) * 0.30;
+  h += sin(x * 2.70 + z * 1.90 + t * 1.50) * 0.08;
+  vH = h * 0.35 + 0.5;
+
+  float y = h * (0.85 + 0.15 * uTilt.y) - 2.15;   // sea sits below the camera
+
+  // simple perspective projection, horizon just above screen center
+  float f = 1.9;
+  vec2 scr;
+  scr.x = (x / z) * f / uAspect;
+  scr.y = (y / z) * f + 0.18;
+  scr += uTilt * vec2(0.035, 0.025);              // mouse parallax
+
+  // hero only: gone by 20% page scroll (same envelope the sphere used)
+  float sVis = 1.0 - smoothstep(0.04, 0.20, uScroll);
+  float fadeFar  = smoothstep(17.0, 6.0, z);
+  float fadeNear = smoothstep(1.4, 2.4, z);
+  float fadeEdge = 1.0 - smoothstep(0.75, 1.05, abs(scr.x));
+  vA = sVis * fadeNear * (0.22 + 0.78 * fadeFar) * fadeEdge;
+
+  gl_Position = vec4(scr, 0.0, 1.0);
+  gl_PointSize = clamp((1.6 + 13.0 / z) * uDpr, 1.5, 10.0 * uDpr);
+}
+`;
+
+const FRAG_WAVE = /* glsl */ `
+precision mediump float;
+varying mediump float vA;
+varying mediump float vH;
+
+void main() {
+  vec2 c = gl_PointCoord - 0.5;
+  float d = length(c);
+  float m = smoothstep(0.5, 0.10, d);
+  float core = smoothstep(0.20, 0.04, d);
+
+  vec3 gold  = vec3(0.839, 0.647, 0.267);
+  vec3 deep  = vec3(0.34, 0.24, 0.10);
+  vec3 white = vec3(1.0, 0.96, 0.86);
+
+  // troughs sink into bronze shadow, crests catch white-gold light
+  vec3 col = mix(deep, gold, vH);
+  col = mix(col, white, (smoothstep(0.72, 1.0, vH) * 0.6 + core * 0.25));
+
+  float a = m * vA * (0.72 + 0.55 * smoothstep(0.6, 1.0, vH));
+  gl_FragColor = vec4(col * a, a);
+}
+`;
+
 /* ------------------------------------------------------------------ */
 /* helpers                                                            */
 /* ------------------------------------------------------------------ */
@@ -249,7 +322,10 @@ function link(gl: WebGLRenderingContext, vsSrc: string, fsSrc: string) {
   const prog = gl.createProgram();
   if (!prog) return null;
   // every program keeps its sole attribute at location 0
-  gl.bindAttribLocation(prog, 0, vsSrc.indexOf("aSeed") >= 0 ? "aSeed" : "aPos");
+  const attr =
+    vsSrc.indexOf("aSeed") >= 0 ? "aSeed" :
+    vsSrc.indexOf("aGrid") >= 0 ? "aGrid" : "aPos";
+  gl.bindAttribLocation(prog, 0, attr);
   gl.attachShader(prog, vs);
   gl.attachShader(prog, fs);
   gl.linkProgram(prog);
@@ -316,7 +392,8 @@ export function BackgroundScene() {
     const progAtmos = link(gl, VERT_QUAD, atmosSrc);
     const progBlit = link(gl, VERT_QUAD, FRAG_PRELUDE + FRAG_BLIT);
     const progPart = link(gl, VERT_PART, FRAG_PART);
-    if (!progAtmos || !progBlit || !progPart) return;
+    const progWave = link(gl, VERT_WAVE, FRAG_WAVE);
+    if (!progAtmos || !progBlit || !progPart || !progWave) return;
 
     const U = (p: WebGLProgram, n: string) => gl.getUniformLocation(p, n);
     const ua = {
@@ -335,6 +412,13 @@ export function BackgroundScene() {
       dpr: U(progPart, "uDpr"),
       aspect: U(progPart, "uAspect"),
       tilt: U(progPart, "uTilt"),
+    };
+    const uw = {
+      time: U(progWave, "uTime"),
+      scroll: U(progWave, "uScroll"),
+      dpr: U(progWave, "uDpr"),
+      aspect: U(progWave, "uAspect"),
+      tilt: U(progWave, "uTilt"),
     };
 
     /* ---- geometry ---- */
@@ -356,6 +440,22 @@ export function BackgroundScene() {
     const partBuf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, partBuf);
     gl.bufferData(gl.ARRAY_BUFFER, seeds, gl.STATIC_DRAW);
+
+    // wave grid: (u,v) points of the golden sea
+    const WX = coarse ? 64 : 112;
+    const WZ = coarse ? 36 : 64;
+    const WCOUNT = WX * WZ;
+    const grid = new Float32Array(WCOUNT * 2);
+    for (let j = 0; j < WZ; j++) {
+      for (let i = 0; i < WX; i++) {
+        const k = (j * WX + i) * 2;
+        grid[k] = (i + 0.5) / WX;
+        grid[k + 1] = (j + 0.5) / WZ;
+      }
+    }
+    const waveBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, waveBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, grid, gl.STATIC_DRAW);
 
     gl.enableVertexAttribArray(0);
 
@@ -438,9 +538,22 @@ export function BackgroundScene() {
       gl!.uniform1f(ub.time, t);
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);
 
-      // pass 3 — additive particle field
+      // pass 3 — golden particle sea (hero only; skip once faded out)
       gl!.enable(gl!.BLEND);
       gl!.blendFunc(gl!.ONE, gl!.ONE);
+      if (sp < 0.2) {
+        gl!.useProgram(progWave);
+        gl!.uniform1f(uw.time, t);
+        gl!.uniform1f(uw.scroll, sp);
+        gl!.uniform1f(uw.dpr, dpr);
+        gl!.uniform1f(uw.aspect, aspect);
+        gl!.uniform2f(uw.tilt, tilt.x, tilt.y);
+        gl!.bindBuffer(gl!.ARRAY_BUFFER, waveBuf);
+        gl!.vertexAttribPointer(0, 2, gl!.FLOAT, false, 0, 0);
+        gl!.drawArrays(gl!.POINTS, 0, WCOUNT);
+      }
+
+      // pass 4 — additive particle field
       gl!.useProgram(progPart);
       gl!.uniform1f(up.time, t);
       gl!.uniform1f(up.scroll, sp);
