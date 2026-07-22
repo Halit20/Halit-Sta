@@ -25,9 +25,21 @@ function Corners() {
   );
 }
 
+/* Semantic status tone per card: red REC only on recording-type cards,
+   gold camera status for overview/photography, neutral for gear/contact. */
+const REC_IDS = new Set(["media-videos", "media-drone", "media-reels"]);
+const GOLD_IDS = new Set(["media-overview", "media-photography"]);
+
 function Block({ block, index }: { block: CreativeBlock; index: number }) {
   const isContact = block.id === "media-contact";
   const hue = 150 + index * 16;
+  const rec = REC_IDS.has(block.id);
+  const gold = GOLD_IDS.has(block.id);
+  // gear count comes from the real equipment list, never hardcoded
+  const code =
+    block.id === "media-gear"
+      ? `KIT ${String(block.tags.length).padStart(2, "0")}`
+      : block.code;
 
   return (
     <motion.div
@@ -36,7 +48,7 @@ function Block({ block, index }: { block: CreativeBlock; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-15% 0px -10% 0px" }}
       transition={{ duration: 0.75, ease: EASE }}
-      className="group surface relative scroll-mt-28 overflow-hidden p-7 sm:p-9"
+      className="group surface relative flex h-full flex-col overflow-hidden p-7 scroll-mt-28 sm:p-9"
     >
       {/* atmospheric wash */}
       <div
@@ -47,12 +59,24 @@ function Block({ block, index }: { block: CreativeBlock; index: number }) {
       />
       <Corners />
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-1 flex-col">
         {/* viewfinder status line */}
         <div className="mb-6 flex items-center justify-between font-mono text-[0.62rem] uppercase tracking-[0.18em]">
-          <span className="flex items-center gap-2 text-red-400/90">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
-            {block.code}
+          <span
+            className={`flex items-center gap-2 ${
+              rec ? "text-red-400/90" : gold ? "text-accent/80" : "text-mist-400"
+            }`}
+          >
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${
+                rec
+                  ? "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  : gold
+                    ? "bg-accent shadow-[0_0_8px_rgba(214,165,68,0.7)]"
+                    : "bg-mist-500/70"
+              }`}
+            />
+            {code}
           </span>
           <span className="text-mist-500">{block.meta}</span>
         </div>
@@ -87,6 +111,58 @@ function Block({ block, index }: { block: CreativeBlock; index: number }) {
           </div>
         )}
 
+        {/* framed still preview — real photograph, no play button */}
+        {block.photo && (
+          <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-ink-950">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={block.photo.src}
+              alt={block.photo.alt}
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <span className="absolute inset-0 bg-gradient-to-t from-ink-950/60 via-transparent to-ink-950/30" />
+            {/* subtle focus marker */}
+            <span
+              aria-hidden="true"
+              className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/40"
+            />
+            <span className="absolute left-4 top-4 flex items-center gap-1.5 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-accent/80">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(214,165,68,0.7)]" />
+              Still
+            </span>
+            <span className="absolute right-4 top-4 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-mist-400">
+              RAW · 24MP
+            </span>
+          </div>
+        )}
+
+        {/* framed 9:16 preview — muted, loop, reduced-motion aware */}
+        {block.reel && (
+          <div className="mt-6 flex justify-center">
+            <div className="relative aspect-[9/16] h-[380px] overflow-hidden rounded-xl border border-white/10 bg-ink-950">
+              <video
+                src={block.reel.src}
+                poster={block.reel.poster}
+                muted
+                loop
+                playsInline
+                controls
+                preload="metadata"
+                aria-label={block.reel.title}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <span className="pointer-events-none absolute left-3 top-3 font-mono text-[0.58rem] uppercase tracking-[0.18em] text-red-400/90">
+                9:16 Vert
+              </span>
+              <span className="pointer-events-none absolute right-3 top-3 font-mono text-[0.58rem] uppercase tracking-[0.18em] text-mist-400">
+                1080 · 30fps
+              </span>
+            </div>
+          </div>
+        )}
+
         {block.links && (
           <div className="mt-5 flex flex-wrap gap-3">
             {block.links.map((l) => (
@@ -112,7 +188,7 @@ function Block({ block, index }: { block: CreativeBlock; index: number }) {
           </div>
         )}
 
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-auto flex flex-wrap gap-2 pt-6">
           {block.tags.map((t) => (
             <span
               key={t}
@@ -130,7 +206,7 @@ function Block({ block, index }: { block: CreativeBlock; index: number }) {
               if (typeof window !== "undefined")
                 window.dispatchEvent(new Event("creative:book"));
             }}
-            className="btn-primary mt-7 !py-2.5 text-sm"
+            className="btn-primary mt-7 !py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
           >
             Book Creative Work
             <svg
@@ -155,18 +231,27 @@ export function Creative() {
       <SectionHeading
         eyebrow="Beyond Work"
         title="The *creative* side."
-        subtitle="Technology gives structure. Creativity gives it attention. That combination is what makes a digital presence memorable."
+        subtitle="Technology creates structure. Creativity earns attention. Together, they make a digital presence memorable."
       />
 
       {/* cinematic controller sub-navigation */}
       <CreativeControlNav />
 
+      {/* soft shade so the moving background stays behind the grid;
+          radial falloff keeps it from reading as a panel */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-48 bottom-0 bg-[radial-gradient(80%_90%_at_50%_55%,rgba(3,3,3,0.4),transparent_82%)]"
+      />
+
       {/* content blocks */}
-      <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div className="relative mt-10 grid grid-cols-1 gap-5 lg:grid-cols-2">
         {CREATIVE_BLOCKS.map((block, i) => (
           <div
             key={block.id}
-            className={block.id === "media-overview" ? "lg:col-span-2" : ""}
+            className={`h-full ${
+              block.id === "media-overview" ? "lg:col-span-2" : ""
+            }`}
           >
             <Block block={block} index={i} />
           </div>

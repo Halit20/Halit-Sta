@@ -13,6 +13,16 @@ import type { Service } from "@/lib/data";
    modules wired to a single spine. The active module powers the big
    detail panel (desktop) or expands inline (mobile). */
 
+/* module → contact-form service option, used to preselect on CTA click */
+const SERVICE_TO_FORM: Record<string, string> = {
+  "01": "Website / Web Platform",
+  "02": "AI & Automation",
+  "03": "Branding & Design",
+  "04": "Video / Photo / Drone",
+  "05": "Infrastructure & Deployment",
+  "06": "Digital Consulting",
+};
+
 function ServiceDetail({ service }: { service: Service }) {
   return (
     <div className="relative">
@@ -72,7 +82,14 @@ function ServiceDetail({ service }: { service: Service }) {
 
       <a
         href="#contact"
-        className="mt-6 inline-flex items-center gap-2 text-[0.78rem] uppercase tracking-[0.16em] text-mist-400 transition-colors hover:text-accent"
+        onClick={() => {
+          const mapped = SERVICE_TO_FORM[service.num];
+          if (mapped && typeof window !== "undefined")
+            window.dispatchEvent(
+              new CustomEvent("contact:preselect", { detail: mapped })
+            );
+        }}
+        className="mt-6 inline-flex items-center gap-2 text-[0.78rem] uppercase tracking-[0.16em] text-mist-400 transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/60"
       >
         Discuss this service
         <svg

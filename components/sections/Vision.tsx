@@ -6,16 +6,16 @@ import { ScrubText } from "@/components/ui/ScrubText";
 import { EASE } from "@/lib/motion";
 
 const POINTS = [
-  "Smarter, faster business websites as the default — not the exception",
-  "Brands that look the same level of serious everywhere they appear",
-  "AI and automation doing the repetitive work in the background",
-  "Production-grade infrastructure standard on every project",
-  "One team accountable from idea to launch — and after it",
+  "Smarter, faster digital products as the standard — not the exception",
+  "Brands that remain consistent and credible across every touchpoint",
+  "AI and automation handling repetitive work behind the scenes",
+  "Production-grade infrastructure built into every project",
+  "One accountable partner from strategy to launch — and beyond",
 ];
 
 export function Vision() {
   return (
-    <section id="vision" className="relative overflow-hidden py-28 sm:py-36">
+    <section id="vision" className="relative overflow-hidden py-24 sm:py-28">
       {/* ambient backdrop */}
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -45,8 +45,8 @@ export function Vision() {
             </h2>
 
             <ScrubText
-              text="I'm growing Halit Sta into a focused digital solutions studio — one place where businesses in Kosovo and beyond get engineering, design, AI, media, and infrastructure under a single standard, instead of stitching together five vendors who never talk to each other."
-              className="mt-7 max-w-xl text-lg leading-relaxed text-mist-400"
+              text="I’m building Halit Sta into a focused digital solutions studio — one place where businesses in Kosovo and beyond can access engineering, design, AI, media, and infrastructure through one connected standard, rather than coordinating multiple disconnected vendors."
+              className="mt-7 max-w-xl text-lg leading-relaxed text-mist-300"
             />
 
             <motion.div
@@ -56,7 +56,10 @@ export function Vision() {
               transition={{ duration: 0.7, ease: EASE, delay: 0.25 }}
               className="mt-10"
             >
-              <MagneticButton href="#contact" className="btn-primary">
+              <MagneticButton
+                href="#contact"
+                className="btn-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+              >
                 Build the next one with me
                 <svg
                   className="h-4 w-4"
@@ -97,9 +100,10 @@ export function Vision() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.55, ease: EASE, delay: i * 0.07 }}
-                  className="flex items-start gap-3 border-b border-white/6 py-3.5 text-[0.95rem] text-mist-200 last:border-b-0"
+                  className="flex items-start gap-3 border-b border-white/5 py-3.5 text-[0.95rem] text-mist-100 last:border-b-0"
                 >
                   <svg
+                    aria-hidden="true"
                     className="mt-0.5 h-4 w-4 shrink-0 text-accent"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -112,9 +116,9 @@ export function Vision() {
                 </motion.li>
               ))}
             </ul>
-            <p className="mt-6 border-t border-white/8 pt-5 font-display text-sm font-medium italic text-mist-300">
-              “The goal isn&apos;t more tools. It&apos;s fewer handoffs and a
-              better result.”
+            <p className="mt-7 border-t border-white/8 pt-6 font-display text-sm font-medium italic text-mist-300">
+              “The goal isn’t more tools. It’s fewer handoffs and a better
+              result.”
             </p>
           </motion.div>
         </div>

@@ -329,6 +329,17 @@ body {
     transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* Browser autofill must not paint inputs white/yellow on the dark form */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #0b0b0b inset;
+    -webkit-text-fill-color: #eae6dc;
+    caret-color: #eae6dc;
+    transition: background-color 9999s ease-out;
+  }
+
   /* Long-form prose on legal pages (privacy / terms) */
   .legal-prose h2 {
     @apply mt-12 font-display text-xl font-semibold text-mist-100 first:mt-0;

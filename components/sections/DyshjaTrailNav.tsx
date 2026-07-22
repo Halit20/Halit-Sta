@@ -9,7 +9,7 @@ import { scrollToId } from "@/lib/scroll";
 /**
  * DyshjaTrailNav — an expedition trail map as navigation.
  *
- * Where the Creative section gets a camera control deck, Dyshja n'Natyrë
+ * Where the Creative section gets a camera control deck, Dyshja n’Natyrë
  * gets a hiking route. Two variants:
  *
  *  - "vertical" (desktop): a sticky trail beside the content. A hiker
@@ -282,7 +282,7 @@ export function DyshjaTrailRail({
 
         {/* the vertical trail */}
         <nav
-          aria-label="Dyshja n'Natyrë section navigation"
+          aria-label="Dyshja n’Natyrë section navigation"
           className="relative z-10"
         >
           <div className="relative">
@@ -436,7 +436,7 @@ export function DyshjaTrailNav() {
         </div>
 
         <nav
-          aria-label="Dyshja n'Natyrë section navigation"
+          aria-label="Dyshja n’Natyrë section navigation"
           className="relative z-10 flex items-start gap-1 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {WAYPOINTS.map((w, i) => {

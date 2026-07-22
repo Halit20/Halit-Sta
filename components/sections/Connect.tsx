@@ -28,12 +28,19 @@ export function Connect() {
       <SectionHeading
         eyebrow="Connect"
         title="One person, *every channel.*"
-        subtitle="Wherever you already spend your time — the work, the process, and the person behind it are one message away."
+        subtitle="Wherever you spend your time, my work, process, and creative journey are only one message away."
+      />
+
+      {/* soft shade so the moving background stays behind the grid;
+          radial falloff keeps it from reading as a panel */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-36 bottom-0 bg-[radial-gradient(80%_90%_at_50%_55%,rgba(3,3,3,0.35),transparent_82%)]"
       />
 
       <Reveal
         stagger={0.05}
-        className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        className="relative mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
       >
         {CONNECT_LINKS.map((c) => (
           <motion.a
@@ -43,20 +50,28 @@ export function Connect() {
             {...(c.external
               ? { target: "_blank", rel: "noopener noreferrer" }
               : {})}
-            className="group surface surface-hover flex items-center gap-4 p-5"
+            aria-label={
+              c.external
+                ? `Open ${c.handle} on ${c.label} (opens in a new tab)`
+                : `Email ${c.handle}`
+            }
+            className="group surface flex h-full items-center gap-4 p-5 transition-colors duration-300 hover:!border-accent/30 focus-visible:!border-accent/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/50"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-mist-300 transition-colors group-hover:border-accent/40 group-hover:text-accent">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-mist-300 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent">
               <SocialIcon name={c.icon} className="h-5 w-5" />
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-[0.68rem] uppercase tracking-[0.2em] text-mist-500">
                 {c.label}
               </span>
-              <span className="mt-0.5 block truncate text-sm text-mist-200 transition-colors group-hover:text-mist-100">
+              <span className="mt-0.5 block truncate text-sm text-mist-200 transition-colors duration-300 group-hover:text-mist-100">
                 {c.handle}
               </span>
             </span>
-            <span className="text-mist-500 transition-colors group-hover:text-accent">
+            <span
+              aria-hidden="true"
+              className="text-mist-500 transition-colors duration-300 group-hover:text-accent"
+            >
               <ExternalArrow />
             </span>
           </motion.a>

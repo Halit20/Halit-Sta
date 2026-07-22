@@ -14,12 +14,12 @@ export const MANAGED_PLATFORMS: ManagedPlatform[] = [
   {
     id: "google-maps",
     name: "Google Maps",
-    tagline: "Where guests decide if a place is real.",
+    tagline: "Where guests decide if a place feels real.",
     points: [
-      "Review replies — negative and positive, handled professionally",
-      "Image updates that keep the listing current",
-      "Business presentation and information accuracy",
-      "360° content system for immersive client presentation",
+      "Professional responses to positive and negative reviews",
+      "Current imagery and business information",
+      "Accurate property presentation",
+      "360° visual presentation",
     ],
   },
   {
@@ -27,9 +27,9 @@ export const MANAGED_PLATFORMS: ManagedPlatform[] = [
     name: "Booking.com",
     tagline: "The listing is the storefront.",
     points: [
-      "Listing management and content accuracy",
-      "Booking presence and availability presentation",
-      "Ongoing hospitality platform maintenance",
+      "Listing accuracy and ongoing management",
+      "Availability and property presentation",
+      "Content and image updates",
     ],
   },
   {
@@ -38,8 +38,8 @@ export const MANAGED_PLATFORMS: ManagedPlatform[] = [
     tagline: "Guest-facing from the first photo.",
     points: [
       "Listing management and positioning",
-      "Guest-facing presentation and descriptions",
-      "Visual and content updates as the property evolves",
+      "Guest-facing descriptions and presentation",
+      "Visual updates as the property evolves",
     ],
   },
 ];

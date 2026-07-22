@@ -1,95 +1,106 @@
 /**
  * Social media management — real client work, real platforms.
- * No invented metrics: growth is described as a plan, not a percentage.
+ * No invented metrics: growth is described as a strategy, not a percentage.
  */
 
 export const SOCIAL_CLIENT = {
   name: "Batllava Premium Resort",
   summary:
-    "I manage Batllava Premium Resort's digital presence with a weekly content plan, daily social media execution, visual production, editing, review handling, listing updates, and platform management across Instagram, TikTok, Facebook, Google Maps, Booking.com, and Airbnb.",
+    "I manage Batllava Premium Resort’s digital presence through weekly planning, daily stories, scheduled posts, visual production, editing, community management, review responses, and listing upkeep across Instagram, TikTok, Facebook, Google Maps, Booking.com, and Airbnb.",
   website: "https://www.batllavaresort.com/",
 };
 
-export type SocialPlatform = {
+export type SocialCard = {
   id: string;
   name: string;
+  /** shown only when verified in the project */
   handle?: string;
-  href: string;
-  kind: "social" | "listing";
-  /** what is actually managed on this platform */
+  /** real URL only — cards without one render as non-interactive */
+  href?: string;
+  /** type label shown above the title */
+  kind: "Social" | "Strategy" | "Production" | "Community";
+  /** what is actually done */
   points: string[];
 };
 
-export const SOCIAL_PLATFORMS: SocialPlatform[] = [
+/** First grid: execution, planning, production, and community — 6 cards. */
+export const SOCIAL_CARDS: SocialCard[] = [
   {
     id: "instagram",
     name: "Instagram",
     handle: "@batllavapremiumresort",
     href: "https://www.instagram.com/batllavapremiumresort/",
-    kind: "social",
-    points: ["Daily posts & stories", "Reels & video content", "Weekly content plan"],
+    kind: "Social",
+    points: [
+      "Daily stories & scheduled posts",
+      "Reels & video content",
+      "Weekly content planning",
+    ],
   },
   {
     id: "tiktok",
     name: "TikTok",
     handle: "@premium.resort.batllava1",
     href: "https://www.tiktok.com/@premium.resort.batllava1",
-    kind: "social",
-    points: ["Short-form video", "Trend-aware editing", "Organic growth plan"],
+    kind: "Social",
+    points: [
+      "Short-form video production",
+      "Trend-aware editing",
+      "Organic growth strategy",
+    ],
   },
   {
     id: "facebook",
     name: "Facebook",
     handle: "BatllavaPremiumResort",
     href: "https://www.facebook.com/BatllavaPremiumResort",
-    kind: "social",
-    points: ["Daily posting", "Event & offer content", "Community responses"],
-  },
-  {
-    id: "google-maps",
-    name: "Google Maps",
-    href: "https://www.google.com/maps/place/Batllava+premium+resort/@42.8297754,21.3132181,827m/data=!3m2!1e3!4b1!4m9!3m8!1s0x1354b100529e39f1:0x1dad62b737d43add!5m2!4m1!1i2!8m2!3d42.8297715!4d21.315793!16s%2Fg%2F11xdmf32sl?entry=ttu",
-    kind: "listing",
+    kind: "Social",
     points: [
-      "Review replies — positive & negative",
-      "Image updates & business presentation",
-      "360° visual content system",
+      "Scheduled posts & daily stories",
+      "Event and offer content",
+      "Community responses",
     ],
   },
   {
-    id: "booking",
-    name: "Booking.com",
-    href: "https://www.booking.com/hotel/xk/batllava-premium-resort.html",
-    kind: "listing",
-    points: ["Listing management", "Booking presence", "Hospitality platform maintenance"],
+    id: "planning",
+    name: "Content Planning",
+    kind: "Strategy",
+    points: [
+      "Weekly content calendar",
+      "Platform-specific content planning",
+      "Campaign, event, and offer coordination",
+    ],
   },
   {
-    id: "airbnb",
-    name: "Airbnb",
-    href: "https://www.airbnb.com/rooms/1263885642335264572",
-    kind: "listing",
-    points: ["Listing management", "Guest-facing presentation", "Visual & content updates"],
+    id: "production",
+    name: "Content Production",
+    kind: "Production",
+    points: [
+      "Photo and video production",
+      "Reels, stories, and social visuals",
+      "Editing, color, and final delivery",
+    ],
+  },
+  {
+    id: "community",
+    name: "Community & Reviews",
+    kind: "Community",
+    points: [
+      "Comments and message responses",
+      "Professional review replies",
+      "Guest feedback monitoring",
+    ],
   },
 ];
 
-/** The recurring work behind the presence — the real service, not just posts. */
+/** The recurring weekly service behind the presence — max 8 chips. */
 export const SOCIAL_SERVICES = [
-  "Weekly posting plan",
-  "Daily posts & stories",
-  "Reels & video content",
+  "Weekly content planning",
+  "Daily stories",
+  "Scheduled publishing",
+  "Reels & video production",
   "Image & video editing",
+  "Community management",
+  "Review responses",
   "Organic growth strategy",
-  "Review replies — positive & negative",
-  "Google Maps image updates",
-  "360° content system for clients",
-  "Booking.com management",
-  "Airbnb management",
-];
-
-/** Material captured with — real production kit. */
-export const CONTENT_GEAR = [
-  "Sony ZV-E10",
-  "DJI Mini 5 Pro Fly More Combo",
-  "DJI Avata 2 Fly More Combo",
-  "DJI Action 5 Pro Adventure Combo",
 ];

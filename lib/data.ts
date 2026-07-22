@@ -14,8 +14,6 @@ export const PROFILE = {
   github: "https://github.com/Halit20",
   x: "https://x.com/HalitSta",
   twitch: "https://www.twitch.tv/megashqip",
-  steam: "https://steamcommunity.com/profiles/76561198263551584",
-  spotify: "https://open.spotify.com/user/pu3fp37ml63oyzauqp36jn87w",
   youtube: "https://www.youtube.com/channel/UCVDq-YjzYcyfLS0-XMNrl9w",
   youtubeSecond: "https://www.youtube.com/channel/UCXAlJP1t18cHm66XGZt9x4A",
   heroLead: "I build digital systems, brands, and AI-powered workflows —",
@@ -43,9 +41,7 @@ export type SocialIconName =
   | "facebook"
   | "x"
   | "youtube"
-  | "twitch"
-  | "steam"
-  | "spotify";
+  | "twitch";
 
 /** Personal channels shown in the Connect section. */
 export const CONNECT_LINKS: {
@@ -91,7 +87,7 @@ export const CONNECT_LINKS: {
   {
     id: "facebook",
     label: "Facebook",
-    handle: "littyy.statovci",
+    handle: "Halit Statovci",
     href: PROFILE.facebook,
     icon: "facebook",
     external: true,
@@ -107,7 +103,7 @@ export const CONNECT_LINKS: {
   {
     id: "youtube",
     label: "YouTube",
-    handle: "Dyshja n'Natyrë",
+    handle: "Dyshja n’Natyrë",
     href: PROFILE.youtube,
     icon: "youtube",
     external: true,
@@ -115,25 +111,9 @@ export const CONNECT_LINKS: {
   {
     id: "twitch",
     label: "Twitch",
-    handle: "megashqip",
+    handle: "MegaSHQIP",
     href: PROFILE.twitch,
     icon: "twitch",
-    external: true,
-  },
-  {
-    id: "steam",
-    label: "Steam",
-    handle: "LityY",
-    href: PROFILE.steam,
-    icon: "steam",
-    external: true,
-  },
-  {
-    id: "spotify",
-    label: "Spotify",
-    handle: "HalitSta",
-    href: PROFILE.spotify,
-    icon: "spotify",
     external: true,
   },
 ];
@@ -494,7 +474,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "dyshja",
-    title: "Dyshja n'Natyrë",
+    title: "Dyshja n’Natyrë",
     category: "Creative Media / Outdoor Content",
     tagline:
       "An outdoor media brand — drone, filming, editing, and storytelling, end to end.",
@@ -684,31 +664,38 @@ export const SKILL_GROUPS = [
   },
 ];
 
-export const EDUCATION = [
+export const EDUCATION: {
+  title: string;
+  org: string;
+  note: string;
+  /** verified period tag; omitted where nothing is confirmed */
+  dates?: string;
+}[] = [
   {
     title: "B.Sc. Computer Science & Engineering",
     org: "Universum International College",
-    note: "The foundation of my technical path and the beginning of my deeper work in software, systems, and digital products.",
+    note: "Built my academic foundation in software engineering, computer systems, databases, networking, and the development of practical digital solutions.",
   },
   {
-    title: "100% Scholarship",
+    title: "Full Scholarship",
     org: "Earned through testing and selection",
-    note: "A full scholarship connected with practical work and academic performance — I studied and worked in IT at the college at the same time.",
+    note: "Awarded a full scholarship through competitive testing and selection, allowing me to combine academic study with practical IT work at the college.",
   },
   {
     title: "Erasmus+ — Germany",
     org: "Ludwigshafen University of Business and Society",
-    note: "Six months of Business Management in Germany — one of the most important personal and academic experiences of my life. I met people from around the world, represented Kosovo in international environments, and experienced business education, culture, and travel across Germany and Europe.",
+    dates: "6 Months · Erasmus+",
+    note: "Completed six months of Business Management studies in Germany, gaining international academic exposure, cross-cultural collaboration experience, and a broader understanding of business and organizational environments.",
   },
   {
-    title: "High School — Economy, Banking & Insurance",
-    org: "Business foundation",
-    note: "An early understanding of business, finance, and organizational thinking — the commercial instinct behind the technical work.",
+    title: "Economics, Banking & Insurance",
+    org: "High School Specialization",
+    note: "Developed an early foundation in business, finance, banking, and organizational thinking before moving into computer science and engineering.",
   },
   {
     title: "Student Union & Leadership",
-    org: "University involvement",
-    note: "Coordination and organization experience through the student union during university — working with people, not just systems.",
+    org: "University Leadership",
+    note: "Built practical experience in coordination, organization, communication, and teamwork through active involvement in the university student union.",
   },
 ];
 
@@ -718,7 +705,7 @@ export const CREATIVE = [
   { title: "Drone Flying", tag: "Aerial" },
   { title: "Cinematic Editing", tag: "Production" },
   { title: "Video Storytelling", tag: "Content" },
-  { title: "Dyshja n'Natyrë", tag: "Project" },
+  { title: "Dyshja n’Natyrë", tag: "Project" },
 ];
 
 export type CreativeIcon =
@@ -744,6 +731,10 @@ export type CreativeBlock = {
   links?: { label: string; href: string }[];
   /** optional real YouTube video, rendered as a click-to-load embed */
   video?: { id: string; title: string };
+  /** optional real photograph (no play button), framed still preview */
+  photo?: { src: string; alt: string };
+  /** optional real 9:16 clip, framed vertical preview (muted, loop) */
+  reel?: { src: string; poster?: string; title: string };
   tags: string[];
 };
 
@@ -756,11 +747,11 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     code: "REC 00:00",
     meta: "4K · 24fps",
     title: "Cinematic storytelling, end to end.",
-    text: "My creative side combines cinematic storytelling, outdoor exploration, drone visuals, photography, editing, and social media content — the same eye for attention that shapes every brand I build.",
-    note: "Dyshja n'Natyrë is an active outdoor media brand (Haliti & Aldini) with brand-supported content — supported by @outdoor.meals.",
+    text: "My creative work combines cinematic storytelling, outdoor exploration, drone visuals, photography, editing, and social content — bringing the same visual judgment and storytelling discipline to every brand I build.",
+    note: "Dyshja n’Natyrë is an active outdoor media project created with Aldin, combining exploration, filmmaking, drone production, and cinematic storytelling. Selected content is produced in collaboration with brand partners such as @outdoor.meals.",
     links: [
       {
-        label: "YouTube — Dyshja n'Natyrë",
+        label: "YouTube — Dyshja n’Natyrë",
         href: "https://www.youtube.com/channel/UCVDq-YjzYcyfLS0-XMNrl9w",
       },
       {
@@ -776,8 +767,8 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     icon: "videos",
     code: "REC 00:12",
     meta: "4K · 25fps",
-    title: "Video editing & short-form.",
-    text: "Video editing, reels, short-form content, commercial visuals, and storytelling — cut for pace, clarity, and retention across every platform.",
+    title: "Video editing & short-form content.",
+    text: "Video editing, reels, commercial visuals, and narrative content — shaped for pace, clarity, retention, and platform-specific delivery.",
     video: {
       id: "gieV7bKg3vQ",
       title: "Një Natë Camping në Liqenin e Batllavës në -10°C!",
@@ -791,7 +782,7 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     code: "ALT 120m",
     meta: "D-LOG · 4K",
     title: "Aerial & cinematic perspectives.",
-    text: "Aerial visuals, landscape shots, movement, and cinematic perspectives — flown with the DJI Mini 5 Pro to add scale and motion to any story.",
+    text: "Aerial visuals, landscape coverage, movement, and cinematic perspectives that add scale, atmosphere, and context to every story.",
     video: {
       id: "e4_xvSPuUg4",
       title: "3 Ditë në Ranën e Hedhun",
@@ -805,7 +796,7 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     code: "f/1.8 · ISO 200",
     meta: "RAW · 24MP",
     title: "Brand & lifestyle photography.",
-    text: "Brand visuals, lifestyle shots, product and business photos, and clean social media imagery — composed and graded for a consistent, premium feel.",
+    text: "Brand, lifestyle, product, and business photography — composed and graded for a consistent, premium visual identity.",
     tags: ["Brand", "Lifestyle", "Product", "Social"],
   },
   {
@@ -815,27 +806,27 @@ export const CREATIVE_BLOCKS: CreativeBlock[] = [
     code: "9:16 VERT",
     meta: "1080 · 30fps",
     title: "Short-form vertical content.",
-    text: "Short-form vertical content for Instagram, TikTok, and social platforms — hooks, pacing, captions, and edits built for the feed.",
+    text: "Short-form vertical content for Instagram, TikTok, and social platforms — built around strong hooks, deliberate pacing, clear captions, and platform-native editing.",
     tags: ["Instagram", "TikTok", "Hooks", "Vertical"],
   },
   {
     id: "media-gear",
     label: "Gear",
     icon: "gear",
-    code: "KIT 05",
+    code: "KIT",
     meta: "READY",
     title: "The creator toolkit.",
-    text: "Sony ZV-E10, DJI Mini 5 Pro, DJI Action 5 Pro Adventure Combo, and a tuned editing workflow — a compact, capable kit that goes from idea to published quickly.",
-    tags: ["Sony ZV-E10", "DJI Mini 5 Pro", "DJI Action 5 Pro"],
+    text: "A compact production kit for filming, photography, aerial coverage, and fast post-production — built to move efficiently from concept to published content.",
+    tags: ["Sony ZV-E10", "DJI Mini 5 Pro", "DJI Avata 2", "DJI Action 5 Pro"],
   },
   {
     id: "media-contact",
     label: "Contact",
     icon: "contact",
-    code: "● LIVE",
+    code: "LIVE",
     meta: "OPEN",
     title: "Book creative work.",
-    text: "Need video, drone, photo, or social media content for your business? Let's plan a shoot and build content that earns attention.",
+    text: "Need original video, drone, photography, or social content for your business? Let’s plan the concept, production, and delivery around what your brand actually needs.",
     tags: ["Video", "Drone", "Photo", "Social"],
   },
 ];

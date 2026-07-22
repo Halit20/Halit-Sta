@@ -550,7 +550,7 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     id: "dyshja",
-    title: "Dyshja n'Natyrë",
+    title: "Dyshja n’Natyrë",
     url: "https://www.youtube.com/@DyshjanNatyr%C3%AB",
     urlLabel: "youtube.com · @DyshjanNatyrë",
     category: "Creative Media / Outdoor Content",

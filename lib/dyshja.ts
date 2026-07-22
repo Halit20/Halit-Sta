@@ -1,5 +1,5 @@
 /**
- * Dyshja n'Natyrë — the dedicated cinematic outdoor content section.
+ * Dyshja n’Natyrë — the dedicated cinematic outdoor content section.
  *
  * Videos are real public uploads from the channel. To add a new one manually,
  * append { id, title } below — the thumbnail resolves automatically from the
@@ -7,11 +7,11 @@
  */
 
 export const DYSHJA = {
-  title: "Dyshja n'Natyrë",
+  title: "Dyshja n’Natyrë",
   subtitle:
     "Cinematic outdoor storytelling for Albanian nature, adventure, and exploration.",
   story:
-    "Dyshja n'Natyrë is a shared creative project by Halit Sta and Aldin Cakiqi — two close friends behind one camera. After the gaming era, they started creating cinematic Albanian outdoor content together: nature, challenges, exploration, adventure, sea, mountains, camping, hiking, and the stories in between. They are among the first Albanian creators focused on this specific kind of cinematic outdoor and adventure content.",
+    "Dyshja n’Natyrë is a creative project by Halit Sta and Aldin Cakiqi — two lifelong friends combining outdoor exploration with cinematic production. Together, they plan, film, and edit stories across Albanian nature, from mountains and forests to the sea, camping, hiking, and adventure.",
   contentTypes: [
     "Cinematic outdoor videos",
     "Nature exploration",
@@ -32,32 +32,39 @@ export const DYSHJA = {
 
 /** Every episode starts 1–2 weeks before the camera does. */
 export const DYSHJA_PLANNING = [
-  { label: "Location", detail: "Where to go — and how to travel there" },
-  { label: "Logistics", detail: "What to eat, what to wear, how long to stay" },
-  { label: "Story", detail: "What to film, scripts, and the narrative arc" },
-  { label: "Preparation", detail: "Budget, safety, and equipment checks" },
+  { label: "Location", detail: "Destination research, access, and travel planning" },
+  { label: "Logistics", detail: "Food, clothing, accommodation, timing, and transport" },
+  { label: "Story", detail: "Concept, shot plan, narrative structure, and episode direction" },
+  { label: "Preparation", detail: "Budget, safety, equipment, batteries, storage, and final checks" },
 ];
 
 /** Real production numbers — the invisible weight behind each video. */
-export const DYSHJA_PRODUCTION = [
-  { label: "Raw material", value: "250–600 GB", detail: "per video" },
-  { label: "Final export", value: "70–180 GB", detail: "edited material" },
-  { label: "Upload", value: "4K · 30 FPS", detail: "well above standard bitrate" },
+export const DYSHJA_PRODUCTION: {
+  label: string;
+  value: string;
+  detail?: string;
+}[] = [
+  { label: "Raw material", value: "250–600 GB", detail: "per episode" },
+  { label: "Edited project", value: "70–180 GB", detail: "working files" },
+  { label: "Mastered for YouTube delivery", value: "4K · 30 FPS" },
   { label: "Planning", value: "1–2 weeks", detail: "before every shoot" },
 ];
 
 export const DYSHJA_GEAR = [
-  "Sony ZV-E10 + kit lens",
+  "Sony ZV-E10 + Kit Lens",
   "DJI Mini 2 Fly More Combo",
   "DJI Mini 5 Pro Fly More Combo",
   "DJI Avata 2 Fly More Combo",
-  "DJI Action 5 Adventure Combo",
+  "DJI Action 5 Pro Adventure Combo",
 ];
 
 export const DYSHJA_WORKFLOW = [
   { label: "Editing", value: "DaVinci Resolve · CapCut" },
   { label: "Music", value: "Envato" },
-  { label: "Thumbnails", value: "Real images · AI support · Photoshop" },
+  {
+    label: "Thumbnails",
+    value: "Real Photography · Compositing · AI-Assisted Editing · Photoshop",
+  },
 ];
 
 export type DyshjaVideo = {
@@ -94,13 +101,13 @@ export const DYSHJA_VIDEOS: DyshjaVideo[] = [
   { id: "qjQek3OpTsU", title: "Hiking te Liqenati – Aventurë e Paharrueshme dhe Pamje të Mrekullueshme" },
   { id: "nSOELMNFmjY", title: "Camping mbi Minierën e Braktisur me Pamje Mahnitëse" },
   { id: "gieV7bKg3vQ", title: "Një Natë Camping në Liqenin e Batllavës në -10°C" },
-  { id: "rus2jjYfJ84", title: "Dyshja n'Natyrë – Kush jemi dhe çfarë bëjmë!" },
+  { id: "rus2jjYfJ84", title: "Dyshja n’Natyrë – Kush jemi dhe çfarë bëjmë!" },
 ];
 
 /** Creator roots — origin story only, deliberately smaller than the rest. */
 export const CREATOR_ROOTS = {
-  title: "Creator roots: from gaming content to cinematic digital media.",
-  text: "Before professional digital work, Halit started with gaming videos and streaming during the early days of Albanian gaming content. That era built the first real experience in editing, audience attention, online communities, YouTube, thumbnails, and video structure — the foundations everything since is built on.",
+  title: "Creator roots — from gaming content to cinematic digital media.",
+  text: "Before professional digital work, Halit began with gaming videos and streaming during the early days of Albanian online content. That period built practical experience in editing, audience attention, online communities, YouTube structure, thumbnails, titles, and consistent publishing — foundations that continue to shape his creative work today.",
   links: [
     {
       label: "YouTube — early channel",

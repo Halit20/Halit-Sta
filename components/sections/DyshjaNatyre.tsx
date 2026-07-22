@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { AnimatedText } from "@/components/ui/AnimatedText";
@@ -26,9 +26,16 @@ const INITIAL_VIDEOS = 6;
 
 export function DyshjaNatyre() {
   const [showAll, setShowAll] = useState(false);
+  const reduce = useReducedMotion();
   const trailRef = useRef<HTMLDivElement>(null);
   return (
     <Section id="dyshja" divider tone="warm">
+      {/* soft shade so the moving background stays behind the content;
+          radial falloff keeps it from reading as a panel */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-44 bottom-0 bg-[radial-gradient(80%_92%_at_50%_55%,rgba(3,3,3,0.4),transparent_82%)]"
+      />
       {/* 1 — cinematic intro */}
       <div className="flex flex-col items-center text-center">
         <motion.span
@@ -43,7 +50,7 @@ export function DyshjaNatyre() {
         </motion.span>
 
         <h2 className="mt-6 text-balance font-display text-4xl font-bold leading-[1.04] tracking-tightest sm:text-5xl lg:text-[3.6rem]">
-          <AnimatedText text="Dyshja *n'Natyrë*" wordClassName="text-gradient" delay={0.1} />
+          <AnimatedText text="Dyshja *n’Natyrë*" wordClassName="text-gradient" delay={0.1} />
         </h2>
 
         <motion.p
@@ -113,9 +120,10 @@ export function DyshjaNatyre() {
             ))}
           </div>
           <p className="mt-5 border-t border-white/8 pt-5 text-[0.85rem] leading-relaxed text-mist-500">
-            Among the first Albanian creators focused on cinematic outdoor and
-            adventure content — nature, sea, mountains, and the journey between
-            them.
+            The project is part of a growing generation of Albanian creators
+            bringing cinematic quality to outdoor and adventure storytelling —
+            across nature, mountains, sea, camping, exploration, and the
+            stories between them.
           </p>
         </motion.div>
       </div>
@@ -130,7 +138,11 @@ export function DyshjaNatyre() {
           className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
         >
           {DYSHJA_PLANNING.map((p, i) => (
-            <motion.div key={p.label} variants={fadeUp} className="surface p-5">
+            <motion.div
+              key={p.label}
+              variants={fadeUp}
+              className="surface h-full p-5 transition-colors duration-300 hover:!border-accent/30"
+            >
               <span className="font-mono text-[0.68rem] text-accent/70">
                 0{i + 1}
               </span>
@@ -153,13 +165,14 @@ export function DyshjaNatyre() {
             <motion.div
               key={s.label}
               variants={fadeUp}
-              className="border border-white/8 bg-white/[0.02] p-5 text-center"
+              className="flex h-full flex-col justify-center border border-white/8 bg-white/[0.02] p-5 text-center transition-colors duration-300 hover:border-accent/30"
             >
               <p className="font-display text-xl font-bold text-accent sm:text-2xl">
                 {s.value}
               </p>
               <p className="mt-1 text-[0.66rem] uppercase tracking-[0.18em] text-mist-500">
-                {s.label} · {s.detail}
+                {s.label}
+                {s.detail ? ` · ${s.detail}` : ""}
               </p>
             </motion.div>
           ))}
@@ -176,7 +189,7 @@ export function DyshjaNatyre() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="surface p-6"
+          className="surface h-full p-6 transition-colors duration-300 hover:!border-accent/30"
         >
           <p className="text-[0.66rem] uppercase tracking-[0.2em] text-accent/80">
             Gear stack
@@ -198,7 +211,7 @@ export function DyshjaNatyre() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
-          className="surface p-6"
+          className="surface h-full p-6 transition-colors duration-300 hover:!border-accent/30"
         >
           <p className="text-[0.66rem] uppercase tracking-[0.2em] text-accent/80">
             Post-production
@@ -247,7 +260,7 @@ export function DyshjaNatyre() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.5, ease: EASE }}
+              transition={{ duration: reduce ? 0 : 0.5, ease: EASE }}
               className="overflow-hidden"
             >
               <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -269,7 +282,7 @@ export function DyshjaNatyre() {
               className="btn-ghost"
             >
               {showAll
-                ? "Show latest episodes only"
+                ? "Show fewer episodes"
                 : `Show all ${DYSHJA_VIDEOS.length} episodes`}
               <svg
                 className={`h-3.5 w-3.5 transition-transform duration-300 ${
@@ -319,7 +332,7 @@ export function DyshjaNatyre() {
             href={DYSHJA.links.youtube}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Watch Dyshja n'Natyrë on YouTube"
+            aria-label="Watch Dyshja n’Natyrë on YouTube"
             className="btn-primary"
           >
             Watch on YouTube
@@ -337,10 +350,10 @@ export function DyshjaNatyre() {
             href={DYSHJA.links.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Follow Dyshja n'Natyrë on Instagram"
+            aria-label="Follow Dyshja n’Natyrë on Instagram"
             className="btn-ghost"
           >
-            Follow the journey
+            Follow on Instagram
           </a>
         </div>
       </motion.div>
