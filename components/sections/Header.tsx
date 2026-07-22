@@ -55,10 +55,10 @@ export function Header() {
                   <a
                     key={link.href}
                     href={link.href}
-                    className={`relative px-3.5 py-2 text-[0.76rem] uppercase tracking-[0.14em] transition-colors duration-300 ${
+                    className={`relative px-3.5 py-2 text-[0.8rem] uppercase tracking-[0.14em] transition-colors duration-300 ${
                       isActive
                         ? "text-mist-100"
-                        : "text-mist-400 hover:text-mist-100"
+                        : "text-mist-300 hover:text-mist-100"
                     }`}
                   >
                     {link.label}

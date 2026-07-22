@@ -11,7 +11,9 @@ const nextConfig = {
   },
   // Use relative asset paths (./_next/...) instead of absolute (/_next/...)
   // so chunks/fonts/styles resolve correctly under file://.
-  assetPrefix: ".",
+  // Production-only: in dev the relative prefix breaks the blur-placeholder
+  // image requests (/_next/image rejects non-absolute URLs with a 400).
+  assetPrefix: process.env.NODE_ENV === "production" ? "." : undefined,
   trailingSlash: false,
 };
 

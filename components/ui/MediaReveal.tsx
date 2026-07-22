@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { EASE } from "@/lib/motion";
+import { useAmbientMotion } from "@/lib/hooks";
 
 /** Cinematic media entrance: clip mask opens while the media settles from 115% scale. */
 export function MediaReveal({
@@ -14,8 +15,8 @@ export function MediaReveal({
   className?: string;
   delay?: number;
 }) {
-  const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+  const ambient = useAmbientMotion();
+  if (!ambient) return <div className={className}>{children}</div>;
   const viewport = { once: true, margin: "-8% 0px" } as const;
   return (
     <motion.div

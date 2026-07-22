@@ -27,44 +27,6 @@ const BUDGETS = ["€1k – €3k", "€3k – €5k", "€5k+", "Under €1k", 
  */
 const FORM_ENDPOINT = "";
 
-const CHANNELS = [
-  {
-    label: "Email",
-    value: PROFILE.email,
-    href: `mailto:${PROFILE.email}`,
-    external: false,
-    wide: true,
-  },
-  {
-    label: "LinkedIn",
-    value: "Halit Statovci",
-    href: PROFILE.linkedin,
-    external: true,
-    wide: false,
-  },
-  {
-    label: "GitHub",
-    value: "Halit20",
-    href: PROFILE.github,
-    external: true,
-    wide: false,
-  },
-  {
-    label: "Instagram",
-    value: PROFILE.instagramHandle,
-    href: PROFILE.instagram,
-    external: true,
-    wide: false,
-  },
-  {
-    label: "X",
-    value: "@HalitSta",
-    href: PROFILE.x,
-    external: true,
-    wide: false,
-  },
-];
-
 type Errors = { name?: string; email?: string; message?: string };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -155,27 +117,16 @@ export function Contact() {
               subtitle="Whether you need a website, system, automation, brand identity, visual content, or a complete digital setup — the goal is to build it properly from the beginning."
             />
 
-            <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/5">
-              {CHANNELS.map((c) => (
-                <a
-                  key={c.label}
-                  href={c.href}
-                  {...(c.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  className={`group bg-ink-900/60 p-5 transition-colors hover:bg-ink-800 ${
-                    c.wide ? "col-span-2" : ""
-                  }`}
-                >
-                  <p className="text-[0.68rem] uppercase tracking-[0.2em] text-mist-500">
-                    {c.label}
-                  </p>
-                  <p className="mt-1.5 text-sm text-mist-200 transition-colors group-hover:text-accent">
-                    {c.value}
-                  </p>
-                </a>
-              ))}
-            </div>
+            <p className="mt-10 text-sm leading-relaxed text-mist-500">
+              Prefer a direct line? Email me at{" "}
+              <a
+                href={`mailto:${PROFILE.email}`}
+                className="text-accent underline-offset-2 hover:underline"
+              >
+                {PROFILE.email}
+              </a>{" "}
+              — or find every channel in the Connect section below.
+            </p>
           </div>
 
           {/* form panel */}

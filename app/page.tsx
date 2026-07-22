@@ -18,6 +18,7 @@ import { DyshjaNatyre } from "@/components/sections/DyshjaNatyre";
 import { CreatorRoots } from "@/components/sections/CreatorRoots";
 import { Vision } from "@/components/sections/Vision";
 import { Contact } from "@/components/sections/Contact";
+import { Connect } from "@/components/sections/Connect";
 import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
@@ -49,6 +50,7 @@ export default function Home() {
           <CreatorRoots />
           <Vision />
           <Contact />
+          <Connect />
         </main>
         <Footer />
       </div>

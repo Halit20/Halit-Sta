@@ -1,11 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="hs-accent" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#7dd3fc"/>
-      <stop offset="1" stop-color="#38bdf8"/>
+      <stop offset="0" stop-color="#EAC97E"/>
+      <stop offset="0.55" stop-color="#D6A544"/>
+      <stop offset="1" stop-color="#A87C2C"/>
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="14" fill="#030303"/>
-  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#38bdf8" stroke-opacity="0.35" stroke-width="2"/>
-  <text x="32" y="34" text-anchor="middle" dominant-baseline="central" font-family="'Segoe UI', Arial, Helvetica, sans-serif" font-weight="700" font-size="28" letter-spacing="-0.5" fill="url(#hs-accent)">HS</text>
+  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#D6A544" stroke-opacity="0.35" stroke-width="2"/>
+  <path d="M22 17h7v11h6V17h7v30h-7V35h-6v12h-7Z" fill="url(#hs-accent)"/>
 </svg>

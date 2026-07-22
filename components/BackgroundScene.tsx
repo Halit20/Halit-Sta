@@ -267,7 +267,8 @@ void main() {
   float fadeFar  = smoothstep(17.0, 6.0, z);
   float fadeNear = smoothstep(1.4, 2.4, z);
   float fadeEdge = 1.0 - smoothstep(0.75, 1.05, abs(scr.x));
-  vA = sVis * fadeNear * (0.22 + 0.78 * fadeFar) * fadeEdge;
+  // 0.82: sea dimmed ~18% so hero copy and CTAs read more easily
+  vA = sVis * fadeNear * (0.22 + 0.78 * fadeFar) * fadeEdge * 0.82;
 
   gl_Position = vec4(scr, 0.0, 1.0);
   gl_PointSize = clamp((1.6 + 13.0 / z) * uDpr, 1.5, 10.0 * uDpr);

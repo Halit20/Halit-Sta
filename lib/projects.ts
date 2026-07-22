@@ -566,6 +566,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     purpose:
       "A growing content brand that doubles as a live portfolio of the media work I offer to clients — see the dedicated section below.",
     tags: ["Drone", "Filming", "Editing", "Storytelling"],
+    thumbnail: "projects/dyshja-natyre.webp",
     hue: "152",
     screen: "video",
   },

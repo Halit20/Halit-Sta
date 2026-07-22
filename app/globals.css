@@ -328,4 +328,24 @@ body {
     stroke-dashoffset: 160;
     transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  /* Long-form prose on legal pages (privacy / terms) */
+  .legal-prose h2 {
+    @apply mt-12 font-display text-xl font-semibold text-mist-100 first:mt-0;
+  }
+  .legal-prose h3 {
+    @apply mt-8 font-display text-base font-semibold text-mist-200;
+  }
+  .legal-prose p {
+    @apply mt-4 text-sm leading-relaxed text-mist-400;
+  }
+  .legal-prose ul {
+    @apply mt-4 flex list-disc flex-col gap-2 pl-5 text-sm leading-relaxed text-mist-400;
+  }
+  .legal-prose a {
+    @apply text-accent underline-offset-2 hover:underline;
+  }
+  .legal-prose strong {
+    @apply font-medium text-mist-200;
+  }
 }

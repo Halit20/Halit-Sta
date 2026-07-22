@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { IDENTITY_PILLARS } from "@/lib/data";
 import { EASE } from "@/lib/motion";
-import { PillarVisual } from "@/components/ui/PillarVisual";
+import { SystemVisual } from "@/components/ui/PillarVisual";
 
 type PillarId = "ai" | "web" | "branding" | "media" | "infra";
 type Layout = "both" | "desktop" | "mobile";
@@ -39,101 +39,102 @@ export function IdentityReveal() {
             </motion.span>
             <h2 className="text-balance text-3xl leading-[1.08] sm:text-4xl lg:text-[2.7rem]">
               <span className="text-gradient">
-                One operator. Five disciplines that usually take a whole team.
+                One builder. Five disciplines that usually take a whole team.
               </span>
             </h2>
             <p className="mt-6 max-w-md leading-relaxed text-mist-400">
-              Most businesses stitch together a developer, a designer, an
-              editor, and an ops person. I cover the full digital layer —
-              and make the parts work together.
+              Most businesses need separate specialists for development,
+              design, media, and infrastructure. I connect the full digital
+              layer and make every part work as one system.
             </p>
 
-            {/* live pillar scene (desktop) */}
+            {/* live system scene (desktop) — one visual, nodes switch */}
             {layout !== "mobile" && (
               <div className="mt-10 hidden aspect-[4/3] w-full max-w-md lg:block">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={active}
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.02 }}
-                    transition={{ duration: 0.45, ease: EASE }}
-                    className="h-full w-full"
-                  >
-                    <PillarVisual id={active} />
-                  </motion.div>
-                </AnimatePresence>
+                <SystemVisual active={active} />
+              </div>
+            )}
+
+            {/* mobile: the system box sits between the intro and the list */}
+            {layout !== "desktop" && (
+              <div className="mt-8 aspect-[4/3] w-full max-w-md lg:hidden">
+                <SystemVisual auto />
               </div>
             )}
           </div>
 
           {/* pillars — active row synced to the visual */}
-          <ul className="flex flex-col">
-            {IDENTITY_PILLARS.map((pillar, i) => {
-              const isActive = active === pillar.id;
-              return (
-                <motion.li
-                  key={pillar.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-15% 0px" }}
-                  transition={{ duration: 0.7, ease: EASE, delay: i * 0.04 }}
-                  className={`group relative border-t py-7 transition-colors duration-500 last:border-b ${
-                    isActive ? "border-accent/40" : "border-white/8"
-                  }`}
-                >
-                  {/* active-tracking band: a thin strip around the viewport center,
-                      tracked separately from the once-only entrance above */}
-                  <motion.div
-                    viewport={{ margin: "-45% 0px -45% 0px" }}
-                    onViewportEnter={() => setActive(pillar.id as PillarId)}
+          <div className="relative">
+            {/* soft shade so the moving background never fights the copy;
+                gradient edges keep it from reading as a panel */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-x-8 -inset-y-6 bg-[radial-gradient(85%_95%_at_50%_50%,rgba(3,3,3,0.55),transparent_80%)]"
+            />
+            <ul className="relative flex flex-col">
+              {IDENTITY_PILLARS.map((pillar, i) => {
+                const isActive = active === pillar.id;
+                return (
+                  <motion.li
+                    key={pillar.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-15% 0px" }}
+                    transition={{ duration: 0.7, ease: EASE, delay: i * 0.04 }}
+                    onMouseEnter={() => setActive(pillar.id as PillarId)}
+                    className={`group relative border-t py-7 transition-colors duration-300 last:border-b ${
+                      isActive
+                        ? "border-accent/40"
+                        : "border-white/6 hover:border-white/15"
+                    }`}
                   >
-                    <div className="flex items-start gap-5">
-                      <span
-                        className={`font-display text-sm font-semibold transition-colors duration-500 ${
-                          isActive ? "text-accent" : "text-accent/40"
-                        }`}
-                      >
-                        {pillar.tag}
-                      </span>
-                      <div className="flex-1">
-                        <div className="flex flex-wrap items-baseline gap-x-3">
-                          <h3
-                            className={`font-display text-2xl font-semibold transition-all duration-500 sm:text-3xl ${
-                              isActive
-                                ? "translate-x-1 text-mist-100"
-                                : "text-mist-300"
-                            }`}
-                          >
-                            {pillar.title}
-                          </h3>
-                          <span className="text-sm text-mist-500">{pillar.line}</span>
-                        </div>
-                        <p className="mt-2 max-w-md text-[0.95rem] leading-relaxed text-mist-400">
-                          {pillar.desc}
-                        </p>
-                        {/* mobile: inline scene for the active pillar */}
-                        {isActive && layout !== "desktop" && (
-                          <div className="mt-5 aspect-[4/3] w-full lg:hidden">
-                            <PillarVisual id={pillar.id as PillarId} />
+                    {/* active-tracking band: a thin strip around the viewport center,
+                        tracked separately from the once-only entrance above */}
+                    <motion.div
+                      viewport={{ margin: "-45% 0px -45% 0px" }}
+                      onViewportEnter={() => setActive(pillar.id as PillarId)}
+                    >
+                      <div className="flex items-start gap-5">
+                        <span
+                          className={`font-display text-sm font-semibold transition-colors duration-300 ${
+                            isActive ? "text-accent" : "text-accent/40"
+                          }`}
+                        >
+                          {pillar.tag}
+                        </span>
+                        <div className="flex-1">
+                          <div className="flex flex-wrap items-baseline gap-x-3">
+                            <h3
+                              className={`font-display text-2xl font-semibold transition-colors duration-300 sm:text-3xl ${
+                                isActive
+                                  ? "text-mist-100"
+                                  : "text-mist-300 group-hover:text-accent/75"
+                              }`}
+                            >
+                              {pillar.title}
+                            </h3>
+                            <span className="text-sm text-mist-500">{pillar.line}</span>
                           </div>
-                        )}
+                          <p className="mt-2 max-w-md text-[0.95rem] leading-relaxed text-mist-300">
+                            {pillar.desc}
+                          </p>
+                        </div>
+                        <motion.span
+                          animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -6 }}
+                          transition={{ duration: 0.35, ease: EASE }}
+                          className="mt-1"
+                        >
+                          <svg aria-hidden="true" className="h-5 w-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <path d="M7 17 17 7M9 7h8v8" />
+                          </svg>
+                        </motion.span>
                       </div>
-                      <motion.span
-                        animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -6 }}
-                        transition={{ duration: 0.4, ease: EASE }}
-                        className="mt-1"
-                      >
-                        <svg aria-hidden="true" className="h-5 w-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M7 17 17 7M9 7h8v8" />
-                        </svg>
-                      </motion.span>
-                    </div>
-                  </motion.div>
-                </motion.li>
-              );
-            })}
-          </ul>
+                    </motion.div>
+                  </motion.li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

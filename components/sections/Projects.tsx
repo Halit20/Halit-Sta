@@ -28,9 +28,12 @@ function DetailRow({ label, children }: { label: string; children: React.ReactNo
   );
 }
 
+const INITIAL_VISIBLE = 3;
+
 export function Projects() {
   const [active, setActive] = useState<CaseStudy | null>(null);
   const [filter, setFilter] = useState<ProjectFilter | "all">("all");
+  const [expanded, setExpanded] = useState(false);
 
   const visible = useMemo(
     () =>
@@ -39,6 +42,8 @@ export function Projects() {
         : CASE_STUDIES.filter((p) => p.filters.includes(filter)),
     [filter]
   );
+  const shown = expanded ? visible : visible.slice(0, INITIAL_VISIBLE);
+  const hiddenCount = visible.length - INITIAL_VISIBLE;
 
   // close on Escape + lock scroll while modal is open
   useEffect(() => {
@@ -77,7 +82,10 @@ export function Projects() {
               key={f.key}
               role="tab"
               aria-selected={isActive}
-              onClick={() => setFilter(f.key)}
+              onClick={() => {
+                setFilter(f.key);
+                setExpanded(false);
+              }}
               className={`border px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${
                 isActive
                   ? "border-accent/60 bg-accent/10 text-mist-100"
@@ -98,10 +106,15 @@ export function Projects() {
         viewport={{ once: true }}
         className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
       >
-        {visible.map((project) => (
+        {/* cards revealed by "Show more" mount after the parent's one-shot
+            stagger has already played, so they animate themselves */}
+        {shown.map((project, i) => (
           <TiltCard key={project.id} max={4} className="h-full">
             <motion.button
               variants={fadeUp}
+              {...(i >= INITIAL_VISIBLE
+                ? { initial: "hidden", animate: "show" }
+                : {})}
               onClick={() => setActive(project)}
               aria-label={`View case study: ${project.title}`}
               className="group surface surface-hover relative flex h-full w-full flex-col overflow-hidden text-left"
@@ -166,6 +179,29 @@ export function Projects() {
           </TiltCard>
         ))}
       </motion.div>
+
+      {hiddenCount > 0 && (
+        <div className="mt-10 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setExpanded((e) => !e)}
+            className="btn-ghost !py-2.5 text-sm"
+          >
+            {expanded ? "Show less" : `Show more (${hiddenCount})`}
+            <svg
+              className={`h-4 w-4 transition-transform duration-300 ${
+                expanded ? "rotate-180" : ""
+              }`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       {/* Case-study modal */}
       <AnimatePresence>

@@ -6,14 +6,13 @@ import {
   PROOF_POINTS,
   SERVICES,
 } from "@/lib/data";
-import { CASE_STUDIES } from "@/lib/projects";
 import { fadeUp, staggerParent, VIEWPORT_ONCE, EASE } from "@/lib/motion";
 import { CountUp } from "@/components/ui/CountUp";
 
 const STATS = [
-  { value: CASE_STUDIES.length, suffix: "+", label: "Shipped projects" },
-  { value: SERVICES.length, suffix: "", label: "Service areas" },
-  { value: IDENTITY_PILLARS.length, suffix: "", label: "Disciplines, one operator" },
+  { value: 25, suffix: "+", label: "Projects shipped" },
+  { value: SERVICES.length, suffix: "", label: "Core service areas" },
+  { value: IDENTITY_PILLARS.length, suffix: "", label: "Disciplines, one builder" },
 ];
 
 /** Small inline glyphs so each proof point stops being text-only. */
@@ -28,7 +27,7 @@ const GLYPHS = [
 
 export function ProofStrip() {
   return (
-    <section className="relative overflow-hidden border-y border-white/6 bg-ink-900/40">
+    <section className="relative overflow-hidden border-y border-white/[0.04] bg-ink-900/40">
       {/* one-time accent sweep across the strip */}
       <motion.div
         aria-hidden
@@ -49,11 +48,11 @@ export function ProofStrip() {
           className="mb-10 grid grid-cols-3 gap-6"
         >
           {STATS.map((s) => (
-            <motion.div key={s.label} variants={fadeUp} className="flex flex-col gap-1">
+            <motion.div key={s.label} variants={fadeUp} className="flex flex-col gap-2.5">
               <span className="font-display text-3xl font-bold text-mist-100 sm:text-4xl">
                 <CountUp to={s.value} suffix={s.suffix} />
               </span>
-              <span className="text-[0.7rem] uppercase tracking-[0.2em] text-mist-500">
+              <span className="text-[0.7rem] uppercase tracking-[0.2em] text-mist-400">
                 {s.label}
               </span>
             </motion.div>
@@ -63,36 +62,44 @@ export function ProofStrip() {
         <div className="divider-line mb-10" />
 
         {/* proof points, now with glyphs */}
-        <motion.div
-          variants={staggerParent(0.06)}
-          initial="hidden"
-          whileInView="show"
-          viewport={VIEWPORT_ONCE}
-          className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-3 lg:grid-cols-6"
-        >
-          {PROOF_POINTS.map((p, i) => (
-            <motion.div key={p.label} variants={fadeUp} className="group flex flex-col gap-2.5">
-              <svg
-                className="h-5 w-5 text-accent/70 transition-colors duration-300 group-hover:text-accent"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                {GLYPHS[i % GLYPHS.length]}
-              </svg>
-              <span className="text-[0.82rem] font-medium leading-snug text-mist-200">
-                {p.label}
-              </span>
-              <span className="text-[0.7rem] uppercase tracking-wider text-mist-500">
-                {p.sub}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="relative">
+          {/* subtle shade so the moving background stays behind the copy;
+              soft radial edges keep it from reading as a panel */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-8 -inset-y-5 bg-[radial-gradient(90%_100%_at_50%_50%,rgba(3,3,3,0.4),transparent_85%)]"
+          />
+          <motion.div
+            variants={staggerParent(0.06)}
+            initial="hidden"
+            whileInView="show"
+            viewport={VIEWPORT_ONCE}
+            className="relative grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-6"
+          >
+            {PROOF_POINTS.map((p, i) => (
+              <motion.div key={p.label} variants={fadeUp} className="group flex flex-col gap-2.5">
+                <svg
+                  className="h-5 w-5 text-accent/70 transition-colors duration-300 group-hover:text-accent"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  {GLYPHS[i % GLYPHS.length]}
+                </svg>
+                <span className="text-balance text-[0.82rem] font-medium leading-snug text-mist-200">
+                  {p.label}
+                </span>
+                <span className="text-[0.66rem] uppercase tracking-wider text-mist-500">
+                  {p.sub}
+                </span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   );

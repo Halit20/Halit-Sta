@@ -10,5 +10,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
+    {
+      url: "https://halitsta.com/privacy",
+      lastModified: new Date("2026-07-22"),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: "https://halitsta.com/terms",
+      lastModified: new Date("2026-07-22"),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
   ];
 }

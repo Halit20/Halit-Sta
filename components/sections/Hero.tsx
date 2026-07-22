@@ -87,7 +87,10 @@ export function Hero() {
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </MagneticButton>
-            <MagneticButton href="#work" className="btn-ghost">
+            <MagneticButton
+              href="#work"
+              className="btn-ghost !border-white/25 !text-mist-100 hover:!border-accent/50 hover:!bg-accent/[0.06]"
+            >
               View My Work
             </MagneticButton>
           </motion.div>
@@ -97,7 +100,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             transition={{ staggerChildren: 0.08, delayChildren: 1.2 }}
-            className="mt-12 flex flex-wrap gap-x-6 gap-y-3"
+            className="mt-12 flex flex-wrap gap-x-6 gap-y-3 lg:flex-nowrap lg:gap-x-4"
           >
             {PROFILE.labels.map((label) => (
               <motion.li
@@ -106,7 +109,7 @@ export function Hero() {
                   hidden: { opacity: 0, y: 10 },
                   show: { opacity: 1, y: 0 },
                 }}
-                className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-mist-500"
+                className="flex items-center gap-2 whitespace-nowrap text-xs uppercase tracking-[0.18em] text-mist-500"
               >
                 <span className="h-1 w-1 bg-accent/80" />
                 {label}
@@ -140,7 +143,12 @@ export function Hero() {
                   alt="Portrait of Halit Statovci"
                   fill
                   priority
-                  placeholder="blur"
+                  // In dev the blur URL points at /_next/image, which is
+                  // disabled by output:"export" and 400s; the exported build
+                  // inlines a base64 blur so this only skips it in dev.
+                  placeholder={
+                    process.env.NODE_ENV === "development" ? "empty" : "blur"
+                  }
                   sizes="(max-width: 1024px) 80vw, 420px"
                   className="portrait-duotone object-cover object-[58%_24%]"
                 />
@@ -169,12 +177,12 @@ export function Hero() {
               initial={{ opacity: 0, y: 20, x: -10 }}
               animate={{ opacity: 1, y: 0, x: 0 }}
               transition={{ duration: 0.8, ease: EASE, delay: 1 }}
-              className="absolute -left-3 bottom-10 hidden rounded-xl border border-white/10 bg-ink-900/80 px-4 py-3 backdrop-blur-md sm:block"
+              className="absolute -left-3 bottom-10 hidden rounded-xl border border-white/10 bg-ink-900/80 px-3.5 py-2.5 backdrop-blur-md sm:block"
             >
-              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-mist-500">
+              <p className="text-[0.6rem] uppercase tracking-[0.2em] text-mist-500">
                 Discipline
               </p>
-              <p className="mt-1 font-display text-sm font-semibold text-mist-100">
+              <p className="mt-1 font-display text-[0.78rem] font-semibold text-mist-100">
                 Idea → Launch
               </p>
             </motion.div>
@@ -183,12 +191,12 @@ export function Hero() {
               initial={{ opacity: 0, y: 20, x: 10 }}
               animate={{ opacity: 1, y: 0, x: 0 }}
               transition={{ duration: 0.8, ease: EASE, delay: 1.15 }}
-              className="absolute -right-3 top-12 hidden rounded-xl border border-white/10 bg-ink-900/80 px-4 py-3 backdrop-blur-md sm:block"
+              className="absolute -right-3 top-12 hidden rounded-xl border border-white/10 bg-ink-900/80 px-3.5 py-2.5 backdrop-blur-md sm:block"
             >
-              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-mist-500">
+              <p className="text-[0.6rem] uppercase tracking-[0.2em] text-mist-500">
                 Stack
               </p>
-              <p className="mt-1 font-display text-sm font-semibold text-mist-100">
+              <p className="mt-1 font-display text-[0.78rem] font-semibold text-mist-100">
                 Web · AI · Infra
               </p>
             </motion.div>

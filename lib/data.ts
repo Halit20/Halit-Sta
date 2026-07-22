@@ -14,12 +14,14 @@ export const PROFILE = {
   github: "https://github.com/Halit20",
   x: "https://x.com/HalitSta",
   twitch: "https://www.twitch.tv/megashqip",
+  steam: "https://steamcommunity.com/profiles/76561198263551584",
+  spotify: "https://open.spotify.com/user/pu3fp37ml63oyzauqp36jn87w",
   youtube: "https://www.youtube.com/channel/UCVDq-YjzYcyfLS0-XMNrl9w",
   youtubeSecond: "https://www.youtube.com/channel/UCXAlJP1t18cHm66XGZt9x4A",
   heroLead: "I build digital systems, brands, and AI-powered workflows —",
   heroEmphasis: "for modern businesses.",
   heroSupport:
-    "I build digital systems, brands, and AI-powered workflows for modern businesses — websites, platforms, automations, media, and the infrastructure to run them, from first idea to final launch.",
+    "I build AI-powered systems, digital platforms, and brand experiences for modern businesses — from strategy and automation to infrastructure and launch.",
   labels: ["Web Systems", "AI Workflows", "Branding", "Media", "Infrastructure"],
 };
 
@@ -31,6 +33,109 @@ export const NAV_LINKS = [
   { label: "Experience", href: "#experience" },
   { label: "Media", href: "#media" },
   { label: "Contact", href: "#contact" },
+];
+
+export type SocialIconName =
+  | "email"
+  | "linkedin"
+  | "github"
+  | "instagram"
+  | "facebook"
+  | "x"
+  | "youtube"
+  | "twitch"
+  | "steam"
+  | "spotify";
+
+/** Personal channels shown in the Connect section. */
+export const CONNECT_LINKS: {
+  id: string;
+  label: string;
+  handle: string;
+  href: string;
+  icon: SocialIconName;
+  external: boolean;
+}[] = [
+  {
+    id: "email",
+    label: "Email",
+    handle: PROFILE.email,
+    href: `mailto:${PROFILE.email}`,
+    icon: "email",
+    external: false,
+  },
+  {
+    id: "linkedin",
+    label: "LinkedIn",
+    handle: "Halit Statovci",
+    href: PROFILE.linkedin,
+    icon: "linkedin",
+    external: true,
+  },
+  {
+    id: "github",
+    label: "GitHub",
+    handle: "Halit20",
+    href: PROFILE.github,
+    icon: "github",
+    external: true,
+  },
+  {
+    id: "instagram",
+    label: "Instagram",
+    handle: PROFILE.instagramHandle,
+    href: PROFILE.instagram,
+    icon: "instagram",
+    external: true,
+  },
+  {
+    id: "facebook",
+    label: "Facebook",
+    handle: "littyy.statovci",
+    href: PROFILE.facebook,
+    icon: "facebook",
+    external: true,
+  },
+  {
+    id: "x",
+    label: "X",
+    handle: "@HalitSta",
+    href: PROFILE.x,
+    icon: "x",
+    external: true,
+  },
+  {
+    id: "youtube",
+    label: "YouTube",
+    handle: "Dyshja n'Natyrë",
+    href: PROFILE.youtube,
+    icon: "youtube",
+    external: true,
+  },
+  {
+    id: "twitch",
+    label: "Twitch",
+    handle: "megashqip",
+    href: PROFILE.twitch,
+    icon: "twitch",
+    external: true,
+  },
+  {
+    id: "steam",
+    label: "Steam",
+    handle: "LityY",
+    href: PROFILE.steam,
+    icon: "steam",
+    external: true,
+  },
+  {
+    id: "spotify",
+    label: "Spotify",
+    handle: "HalitSta",
+    href: PROFILE.spotify,
+    icon: "spotify",
+    external: true,
+  },
 ];
 
 export const SUPPORTING_ROLES = [
@@ -47,50 +152,55 @@ export const IDENTITY_PILLARS = [
     tag: "01",
     title: "AI",
     line: "Workflows & automation",
-    desc: "Systems that think alongside the business — reducing repetitive work and accelerating decisions.",
+    desc: "AI workflows, automations, and internal tools that reduce repetitive work and improve decision-making.",
   },
   {
     id: "web",
     tag: "02",
     title: "Web",
     line: "Platforms & products",
-    desc: "Websites, dashboards and marketplaces engineered to convert, scale and last.",
+    desc: "Websites, dashboards, and marketplaces engineered to convert, scale, and last.",
   },
   {
     id: "branding",
     tag: "03",
     title: "Branding",
     line: "Identity & design",
-    desc: "A consistent, serious visual language across every digital and physical touchpoint.",
+    desc: "A consistent visual identity built to earn trust across every digital and physical touchpoint.",
   },
   {
     id: "media",
     tag: "04",
     title: "Media",
     line: "Cinematic content",
-    desc: "Video, photo and drone production that earns attention and tells the right story.",
+    desc: "Video, photo, and drone production that earns attention and tells the right story.",
   },
   {
     id: "infra",
     tag: "05",
     title: "Infrastructure",
     line: "Deploy & operate",
-    desc: "From local build to live production — domains, servers, SSL and clean deployment.",
+    desc: "From local development to live production — hosting, domains, servers, SSL, and reliable deployment.",
   },
 ];
 
 export const PROOF_POINTS = [
-  { label: "Full-Cycle AI Engineering", sub: "Idea → launch" },
-  { label: "B.Sc. Computer Science & Engineering", sub: "Universum Int. College" },
+  { label: "Full-Cycle AI Engineering", sub: "Idea → Launch" },
+  {
+    label: "B.Sc. Computer Science & Engineering",
+    sub: "Universum International College",
+  },
   { label: "Erasmus+ Germany", sub: "International experience" },
   { label: "Ministry of Defence IT", sub: "Institutional environment" },
-  { label: "Web • Systems • AI • Branding • Media", sub: "One operator" },
-  { label: "Infrastructure & Deployment", sub: "Production-ready" },
+  { label: "Web · AI · Branding · Media", sub: "One builder" },
+  { label: "Infrastructure & Deployment", sub: "Production-ready systems" },
 ];
 
 export type Service = {
   num: string;
   title: string;
+  /** short spec line shown under the title in the module list */
+  nav: string;
   description: string;
   includes: string[];
   bestFor: string;
@@ -111,8 +221,9 @@ export const SERVICES: Service[] = [
   {
     num: "01",
     title: "Websites & Web Platforms",
+    nav: "Business websites · Landing pages · Dashboards",
     description:
-      "From a sharp landing page to a full marketplace or admin panel — built to convert, load fast, and scale without a rebuild later.",
+      "From high-converting business websites to dashboards, marketplaces, and admin platforms — engineered for speed, clarity, and long-term scalability.",
     includes: [
       "Business websites",
       "Landing pages",
@@ -121,31 +232,33 @@ export const SERVICES: Service[] = [
       "Admin panels",
       "Custom platforms",
     ],
-    bestFor: "Businesses that have outgrown a template and need a real platform.",
-    note: "Includes experience building for the German market (Rohrreinigung-Peter), backed by academic exposure in Germany through Erasmus+ in Ludwigshafen.",
+    bestFor:
+      "Businesses that have outgrown templates and need a platform built around how they operate.",
     icon: "web",
   },
   {
     num: "02",
     title: "AI & Automation",
+    nav: "AI workflows · Business automations · Internal tools",
     description:
-      "Practical AI and automation that removes repetitive work — internal tools, prompt systems, and workflows wired into how the business already runs.",
+      "Practical AI systems and automations that reduce repetitive work, connect existing tools, and support faster decisions.",
     includes: [
       "AI workflows",
-      "Prompt systems",
       "Business automations",
       "Internal tools",
+      "Knowledge assistants",
+      "API integrations",
       "Productivity systems",
-      "AI-assisted development",
     ],
-    bestFor: "Teams losing hours to manual, repeatable tasks.",
+    bestFor: "Teams losing time to repetitive, manual processes.",
     icon: "ai",
   },
   {
     num: "03",
     title: "Branding & Design",
+    nav: "Logo direction · Brand identity · Business cards",
     description:
-      "A serious, consistent visual identity — logo direction, colour, type, and a system that holds together across web, social, and print.",
+      "A cohesive visual identity — logo direction, typography, color, and design systems that stay consistent across web, social, and print.",
     includes: [
       "Logo direction",
       "Brand identity",
@@ -154,48 +267,52 @@ export const SERVICES: Service[] = [
       "Print assets",
       "Design systems",
     ],
-    bestFor: "Brands that look different on every channel.",
+    bestFor: "Businesses whose brand looks inconsistent across different channels.",
     icon: "brand",
   },
   {
     num: "04",
     title: "Video, Photo & Drone Content",
+    nav: "Video production · Photography · Drone content",
     description:
-      "Cinematic content for brands, places, and products — shot, flown, and edited end to end, including aerial work with DJI drones.",
+      "Original video, photography, and drone content planned, captured, and edited end to end for brands, locations, and products.",
     includes: [
+      "Video production",
       "Video editing",
       "Reels",
       "Photography",
       "Drone footage",
-      "Thumbnails",
       "Social content",
     ],
-    bestFor: "Businesses that need scroll-stopping visuals, not stock.",
+    bestFor:
+      "Brands that need original, high-impact visuals instead of generic stock content.",
     icon: "media",
   },
   {
     num: "05",
     title: "Infrastructure & Deployment",
+    nav: "Hosting · Domains · SSL",
     description:
-      "The part most freelancers hand off — taking a project from local code to a stable, secure production server with domains, SSL, and clean deploys.",
+      "The production layer that takes a project from local development to a stable, secure live environment — including hosting, domains, SSL, servers, and deployment.",
     includes: ["Hosting", "Domains", "SSL", "Linux", "Docker", "Nginx", "Plesk"],
-    bestFor: "Projects that need to go live properly and stay up.",
+    bestFor: "Projects that need to launch reliably and remain stable in production.",
     icon: "infra",
   },
   {
     num: "06",
     title: "Digital Consulting",
+    nav: "Digital strategy · Technical planning · Solution architecture",
     description:
-      "Clarity before code — deciding what to build, how to structure it, and the order to execute, so budget goes to the right things.",
+      "Clarity before execution — defining what to build, how to structure it, and what to prioritize so time and budget go to the right work.",
     includes: [
       "Digital strategy",
       "Technical planning",
       "Solution architecture",
       "Business digitalization",
-      "Workflow planning",
-      "Project execution",
+      "Workflow design",
+      "Delivery roadmap",
     ],
-    bestFor: "Owners unsure what to build first — or whether to at all.",
+    bestFor: "Businesses deciding what to build first and how to execute it properly.",
     icon: "consulting",
   },
 ];

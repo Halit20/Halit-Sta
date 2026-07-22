@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ProjectThumb } from "@/components/ui/ProjectThumb";
 import type { CaseStudy } from "@/lib/projects";
+import { useAmbientMotion } from "@/lib/hooks";
 
 /**
  * Desktop-only pinned showcase: the section sticks while projects travel
@@ -18,7 +19,7 @@ export function ProjectShowcase({
   onOpen: (p: CaseStudy) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const ambient = useAmbientMotion();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -26,7 +27,7 @@ export function ProjectShowcase({
   const n = projects.length;
   const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${((n - 1) / n) * 100}%`]);
 
-  if (reduced || n === 0) return null;
+  if (!ambient || n === 0) return null;
 
   return (
     <div

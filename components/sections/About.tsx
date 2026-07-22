@@ -11,9 +11,9 @@ import { CountUp } from "@/components/ui/CountUp";
 import { EASE, blurIn, staggerParent } from "@/lib/motion";
 
 const STATS = [
-  { k: "Full-cycle", v: "From idea to deployment" },
-  { k: "Multi-disciplinary", v: "Engineering · Design · Media" },
-  { k: "Production-ready", v: "Hosting · SSL · Servers" },
+  { k: "Full-cycle", v: "Strategy to deployment" },
+  { k: "Multi-disciplinary", v: "AI · Engineering · Design · Media" },
+  { k: "Production-ready", v: "Hosting · SSL · Infrastructure" },
 ];
 
 /** Renders a stat value through CountUp if it's a plain number (optionally with a +/% suffix). */
@@ -52,7 +52,11 @@ export function About() {
               src={halitPortrait}
               alt="Halit Statovci working portrait — Full-Cycle AI Engineer based in Kosovo"
               fill
-              placeholder="blur"
+              // Dev-only skip: /_next/image is disabled by output:"export"
+              // (400), while the exported build inlines a base64 blur.
+              placeholder={
+                process.env.NODE_ENV === "development" ? "empty" : "blur"
+              }
               sizes="(max-width: 1024px) 80vw, 380px"
               className="portrait-duotone object-cover object-[58%_25%]"
             />
@@ -68,8 +72,8 @@ export function About() {
             className="surface mx-auto mt-5 max-w-[380px] p-6"
           >
             <p className="font-display text-[1.05rem] italic leading-relaxed text-mist-200">
-              “I build the digital layer a business needs — from idea to
-              launch.”
+              “I build the digital systems that turn ideas into working
+              businesses.”
             </p>
             <footer className="mt-3 text-xs uppercase tracking-[0.2em] text-mist-500">
               — Halit Sta
@@ -81,7 +85,7 @@ export function About() {
         <div>
           <SectionHeading
             eyebrow="About"
-            title="The builder *behind the brand.*"
+            title="The builder *behind the digital system.*"
           />
           <motion.div
             initial="hidden"
@@ -91,34 +95,32 @@ export function About() {
             className="mt-7 space-y-5 text-[1rem] leading-relaxed text-mist-400"
           >
             <motion.p variants={blurIn}>
-              I&apos;m Halit — a Kosovo-based engineer who builds the full digital
-              side of a business. Software, AI workflows, branding, media, and the
-              infrastructure underneath: I&apos;m comfortable across all of it.
+              I&apos;m Halit — a Full-Cycle AI Engineer and Digital Solutions
+              Builder based in Kosovo, working remotely with businesses across
+              Europe.
             </motion.p>
             <motion.p variants={blurIn}>
-              I&apos;ve been building for the internet since the early Albanian
-              YouTube days — as one of the first Albanian-community YouTubers
-              with MegaSHQIP in the gaming era — first content and audiences,
-              then the systems behind them.
+              I design and build the digital infrastructure a business needs to
+              operate, grow, and scale — from AI-powered workflows, custom
+              platforms, and internal systems to websites, branding, and digital
+              content.
             </motion.p>
             <motion.p variants={blurIn}>
-              I didn&apos;t come up through a single lane. I&apos;ve worked in
-              institutional IT and server environments, built web platforms and
-              SaaS interfaces, produced video and drone content, and set up the
-              hosting that keeps it all running.
+              My path started with building online communities and producing
+              content, then expanded into software engineering, automation,
+              server infrastructure, SaaS products, and complete digital
+              ecosystems. That background allows me to understand both the
+              technology underneath and the experience people see on top.
             </motion.p>
             <motion.p variants={blurIn}>
-              That range is the point.{" "}
-              <span className="text-mist-200">
-                I understand both the technical system and the brand on top of it
-              </span>{" "}
-              — so the things I build look right, work properly, and pull in the
-              same direction.
+              I work across the full lifecycle of a project: defining the idea,
+              designing the solution, building the system, deploying it, and
+              making sure it performs reliably in the real world.
             </motion.p>
             <motion.p variants={blurIn} className="text-mist-300">
-              I don&apos;t just hand over a website. I build the digital
-              foundation a business runs on — and I stay close enough to the whole
-              picture to make sure it actually launches.
+              I don&apos;t just deliver a website, a design, or a piece of
+              software. I build connected digital foundations that look right,
+              work properly, simplify operations, and move the business forward.
             </motion.p>
           </motion.div>
 
