@@ -100,7 +100,7 @@ export function Hero() {
             initial="hidden"
             animate="show"
             transition={{ staggerChildren: 0.08, delayChildren: 1.2 }}
-            className="mt-12 flex flex-wrap gap-x-6 gap-y-3 lg:flex-nowrap lg:gap-x-4"
+            className="mt-12 flex flex-wrap gap-x-6 gap-y-3 xl:flex-nowrap xl:gap-x-4"
           >
             {PROFILE.labels.map((label) => (
               <motion.li

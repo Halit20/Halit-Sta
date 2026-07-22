@@ -55,7 +55,7 @@ export function Header() {
                   <a
                     key={link.href}
                     href={link.href}
-                    className={`relative px-3.5 py-2 text-[0.8rem] uppercase tracking-[0.14em] transition-colors duration-300 ${
+                    className={`relative px-2.5 py-2 text-[0.8rem] uppercase tracking-[0.14em] transition-colors duration-300 xl:px-3.5 ${
                       isActive
                         ? "text-mist-100"
                         : "text-mist-300 hover:text-mist-100"
@@ -65,7 +65,7 @@ export function Header() {
                     {isActive && (
                       <motion.span
                         layoutId="nav-underline"
-                        className="absolute -bottom-0.5 left-3.5 right-3.5 h-px bg-gradient-to-r from-transparent via-accent to-transparent"
+                        className="absolute -bottom-0.5 left-2.5 right-2.5 h-px bg-gradient-to-r from-transparent via-accent to-transparent xl:left-3.5 xl:right-3.5"
                         transition={{ duration: 0.4, ease: EASE }}
                       />
                     )}

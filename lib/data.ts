@@ -517,66 +517,86 @@ export const PROCESS_STEPS = [
   {
     num: "01",
     title: "Discovery",
-    desc: "Understanding the business, goals, audience, problems, and opportunities.",
+    desc: "Understanding the business, goals, audience, challenges, and opportunities.",
   },
   {
     num: "02",
     title: "Strategy",
-    desc: "Defining the structure, design direction, technology, content, and execution plan.",
+    desc: "Defining the structure, design direction, technical architecture, content, and execution plan.",
   },
   {
     num: "03",
     title: "Design & Build",
-    desc: "Creating the interface, system, brand assets, workflows, content, and technical implementation.",
+    desc: "Designing and building the interfaces, systems, workflows, brand assets, and content required for the solution.",
   },
   {
     num: "04",
     title: "Launch & Deployment",
-    desc: "Taking the project live with hosting, domain, SSL, optimization, and final checks.",
-  },
-  {
-    num: "05",
-    title: "Improve & Scale",
-    desc: "Iterating with better content, automation, performance, analytics, and new features.",
+    desc: "Testing, deploying, documenting, and preparing the final system for reliable production use.",
   },
 ];
 
-export const EXPERIENCE = [
+export const EXPERIENCE: {
+  org: string;
+  role: string;
+  /** status pill text */
+  period: string;
+  /** verified time interval; omitted where no date is confirmed */
+  dates?: string;
+  /** role progression inside the same company, rendered subtly in-card */
+  phases?: { dates: string; role: string }[];
+  desc: string;
+}[] = [
   {
-    org: "LGS",
-    role: "Full-Cycle AI Engineering & IT Manager",
+    org: "Light Gears Solutions GmbH — LGS",
+    role: "Full-Cycle AI Engineer & IT Manager",
     period: "Current",
-    desc: "At LGS I work on implementing artificial intelligence into the platforms we develop, automating and simplifying workflows, and building the systems and websites behind them — marketplace and SaaS platforms in React and Laravel, dashboard interfaces and design systems, plus deployment on Linux/Docker/Nginx so what I build actually ships and stays live.",
+    dates: "Jan 2026 — Present",
+    desc: "At Light Gears Solutions, I integrate AI into digital platforms, automate operational workflows, and build production-ready systems from interface to infrastructure. My work includes marketplaces and SaaS products using React and Laravel, dashboard systems, internal tools, and deployment through Linux, Docker, NGINX, and Plesk.",
+  },
+  {
+    org: "LELE Production GbR",
+    role: "Full-Cycle AI Engineer · Video Editor",
+    period: "Former",
+    dates: "Aug 2025 — Jan 2026",
+    phases: [
+      { dates: "Nov 2025 — Jan 2026", role: "Full-Cycle AI Engineer" },
+      { dates: "Aug 2025 — Nov 2025", role: "Video Editor" },
+    ],
+    desc: "I joined LELE Production initially as a Video Editor, producing and refining digital content from August to November 2025. I then transitioned into Full-Cycle AI Engineering, working on digital products, AI implementation, automation, web systems, and production infrastructure through January 2026.",
   },
   {
     org: "Ministry of Defence of Kosovo",
-    role: "IT Experience · Technical Support · Systems",
+    role: "IT Support & Systems Intern",
     period: "Institutional",
-    desc: "Six months of hands-on IT inside a serious institutional environment — technical support, systems, and troubleshooting, where reliability and clear process mattered more than shortcuts.",
+    dates: "Apr 2025 — 15 Oct 2025",
+    desc: "Provided hardware, software, network, and user support in a structured institutional environment serving approximately 200 users. I worked with Windows and Linux systems, network diagnostics, technical documentation, and Python and PowerShell automations that reduced repetitive operational work.",
   },
   {
     org: "Universum International College",
     role: "IT Intern",
     period: "University",
-    desc: "During my studies — as part of my 100% scholarship — I worked as an IT intern at the college itself: technical support, systems monitoring, technical reporting, and user support. Practical experience built in parallel with the degree, not after it.",
+    desc: "Alongside my Computer Science and Engineering studies on a full scholarship, I worked as an IT intern supporting users, monitoring systems, preparing technical reports, and resolving day-to-day technical issues. The role allowed me to build practical experience in parallel with my degree.",
   },
   {
     org: "NoirCorp",
     role: "Web Developer",
     period: "Early career",
-    desc: "One of my first major full-stack experiences: I developed a front-end and back-end inventory stock management system for real operations — a system still used today across Kosovo, Albania, Macedonia, and the USA.",
+    dates: "Jul 2024 — Aug 2024",
+    desc: "One of my earliest substantial full-stack projects was an inventory management system built for real operational use. I developed both the frontend and backend, and the system remains in use across Kosovo, Albania, North Macedonia, and the United States.",
   },
   {
-    org: "Freelance / Self-employed",
-    role: "Digital Solutions · Web · Branding · Content",
+    org: "Independent Digital Solutions",
+    role: "Web · AI · Branding · Content · Infrastructure",
     period: "Ongoing",
-    desc: "Multidisciplinary digital execution for local and international businesses — designing and building websites, shaping brand identities, producing social content, automating workflows, and setting up the hosting and domains behind them. Often the only person on the project, from first call to launch.",
+    dates: "Nov 2024 — Present",
+    desc: "I deliver complete digital solutions for local and international businesses — from websites, internal systems, and automation to branding, content, hosting, and deployment. I often manage the entire project lifecycle, from the initial conversation to production launch.",
   },
   {
-    org: "Dyshja n'Natyrë",
+    org: "Dyshja n’Natyrë",
     role: "Creative Media & Outdoor Storytelling",
     period: "Ongoing",
-    desc: "The creative thread runs the longest — from early Albanian-community YouTube with MegaSHQIP to today's Dyshja n'Natyrë: planning, filming (ground and drone), editing, thumbnails, titles, and outdoor storytelling with a cinematic approach. Both a passion project and the place I sharpen the media eye I bring to client work.",
+    desc: "My creative work began with early Albanian YouTube communities and continues through Dyshja n’Natyrë, where I lead filming, drone production, editing, thumbnails, titles, and visual storytelling. The project is both a long-term creative platform and a space where I continuously refine the production skills I bring to client work.",
   },
 ];
 
@@ -592,9 +612,13 @@ export const SKILL_GROUPS = [
       "Next.js",
       "PHP",
       "Laravel",
-      "Node / Express",
+      "Node.js / Express",
+      "Python",
+      "PowerShell",
       "Tailwind CSS",
       "MySQL / MariaDB",
+      "Git",
+      "Vite",
     ],
   },
   {
@@ -603,7 +627,7 @@ export const SKILL_GROUPS = [
       "Linux",
       "Docker",
       "Docker Compose",
-      "Nginx",
+      "NGINX",
       "Plesk",
       "SSH",
       "SSL / Certbot",
@@ -612,36 +636,51 @@ export const SKILL_GROUPS = [
     ],
   },
   {
-    category: "AI & Workflow",
+    category: "AI Systems & Automation",
     items: [
       "ChatGPT",
       "Claude",
       "Claude Code",
       "Codex",
-      "AI-assisted development",
-      "AI implementation into platforms",
-      "Prompt systems",
-      "Workflow automation",
-      "Technical documentation",
+      "AI integrations",
+      "Business automation",
+      "Internal tools",
+      "Knowledge assistants",
+      "Workflow design",
     ],
   },
   {
-    category: "Creative & Production",
+    category: "Design & Product",
     items: [
       "Figma",
       "Canva",
+      "WordPress",
+      "Elementor",
+      "UI / UX",
+      "Design systems",
+      "Brand identity",
+      "Prototyping",
+      "Social visuals",
+    ],
+  },
+  {
+    category: "Creative Production",
+    items: [
       "CapCut",
       "Sony ZV-E10",
       "DJI Mini 5 Pro",
+      "DJI Avata 2",
       "DJI Action 5 Pro",
-      "Drone content",
+      "Video production",
       "Video editing",
-      "Thumbnails & titles",
+      "Photography",
+      "Drone production",
+      "Thumbnails",
     ],
   },
   {
     category: "Languages",
-    items: ["Albanian — Native", "English — C1", "German — A1"],
+    items: ["Albanian — Native", "English — C1", "German — Basic (A1)"],
   },
 ];
 
